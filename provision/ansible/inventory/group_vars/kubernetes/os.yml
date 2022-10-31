@@ -1,0 +1,17 @@
+---
+# (string) Timezone for the servers
+timezone: "Europe/London"
+
+# (list) Additional ssh public keys to add to the nodes
+# ssh_authorized_keys:
+
+packages:
+  - hdparm
+  - htop
+  - intel-gpu-tools
+  - ipvsadm
+  - lm_sensors
+  - nano
+  - nvme-cli
+  - socat
+  - python3-libselinux
