@@ -5,13 +5,13 @@ timezone: "Europe/London"
 # (list) Additional ssh public keys to add to the nodes
 # ssh_authorized_keys:
 
+# also want intel-gpu-tools at some point
+
 packages:
   - hdparm
   - htop
-  - intel-gpu-tools
   - ipvsadm
-  - lm_sensors
+  - lm-sensors
   - nano
   - nvme-cli
   - socat
-  - python3-libselinux
