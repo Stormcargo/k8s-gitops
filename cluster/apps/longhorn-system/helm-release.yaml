@@ -34,6 +34,7 @@ spec:
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 1
       storageMinimalAvailablePercentage: 10
+      StorageOverProvisioningPercentage: 110
     ingress:
       enabled: true
       ingressClassName: nginx
