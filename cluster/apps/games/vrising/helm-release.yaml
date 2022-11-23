@@ -73,14 +73,3 @@ spec:
         mountPath: /mnt/vrising/server
     podAnnotations:
       secret.reloader.stakater.com/reload: "vrising"
-  valuesFrom:
-    - kind: Secret
-      name: vrising
-      valuesKey: server_name
-      targetPath: env.SERVERNAME
-      optional: false
-    - kind: Secret
-      name: vrising
-      valuesKey: world_name
-      targetPath: env.WORLDNAME
-      optional: false
