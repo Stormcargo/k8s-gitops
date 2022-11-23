@@ -1,0 +1,94 @@
+service:
+
+  server:
+    enabled: true
+    type: LoadBalancer
+    loadBalancerIP: 192.168.183.230
+
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vrising
+  namespace: games
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.1.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: trueosiris/vrising
+      tag: "1.9"
+    nameOverride: vrising
+    env:
+      TZ: "Europe/London"
+      GAMEPORT: 9876
+      QUERYPORT: 9877
+      SERVERNAME: ${VRISING_SERVER_NAME}
+      VR_PASSWORD: ${VRISING_SERVER_PASSWORD}
+      VR_MAX_USERS: 4
+      VR_LIST_ON_MASTER_SERVER: false
+    service:
+      main:
+        ports:
+          http:
+            port: 4000
+      server:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${SVC_VRISING_ADDRESS}
+        externalTrafficPolicy: Local
+        ports:
+          server:
+            enabled: true
+            port: 9876
+            protocol: UDP
+            targetPort: 9876
+          query:
+            enabled: true
+            port: 9877
+            protocol: UDP
+            targetPort: 9877
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: false
+    resources:
+      requests:
+        memory: 2000Mi
+        cpu: 100m
+      limits:
+        memory: 3500Mi
+    persistence:
+      config:
+        enabled: true
+        mountPath: /mnt/vrising/persistentdata
+        existingClaim: vrising-config-v1
+      server:
+        enabled: true
+        type: emptyDir
+        mountPath: /mnt/vrising/server
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "vrising"
+  valuesFrom:
+    - kind: Secret
+      name: vrising
+      valuesKey: server_name
+      targetPath: env.SERVERNAME
+      optional: false
+    - kind: Secret
+      name: vrising
+      valuesKey: world_name
+      targetPath: env.WORLDNAME
+      optional: false

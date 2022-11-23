@@ -14,5 +14,7 @@
     },
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs":"active",
-    "editor.hover.delay": 1500
+    "editor.hover.delay": 1500,
+    "workbench.tree.indent": 16,
+    "workbench.tree.renderIndentGuides": "always"
 }
