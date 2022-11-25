@@ -44,14 +44,6 @@ spec:
               url: "https://gmail.com"
             - name: Slack
               url: "https://slack.com/signin"
-        - group: Cloud
-          bookmarks:
-            - name: Box
-              url: "https://box.com"
-            - name: Dropbox
-              url: "https://dropbox.com"
-            - name: Drive
-              url: "https://drive.google.com"
         - group: Design
           bookmarks:
             - name: Awwwards
@@ -76,22 +68,6 @@ spec:
               url: "https://www.dwell.com/"
             - name: Freshome
               url: "https://www.mymove.com/freshome/"
-        - group: Media
-          bookmarks:
-            - name: Spotify
-              url: "http://browse.spotify.com"
-            - name: Trakt
-              url: "http://trakt.tv"
-            - name: YouTube
-              url: "https://youtube.com/feed/subscriptions"
-        - group: Reading
-          bookmarks:
-            - name: Instapaper
-              url: "https://www.instapaper.com/u"
-            - name: Medium
-              url: "http://medium.com"
-            - name: Reddit
-              url: "http://reddit.com"
         - group: Tech
           bookmarks:
             - name: Hacker News
