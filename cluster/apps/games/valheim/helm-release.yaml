@@ -47,8 +47,8 @@ spec:
     service:
       main:
         ports:
-          # http:
-          #   port: 80
+          http:
+            port: 80
           steam1:
             port: 2456
             protocol: UDP
