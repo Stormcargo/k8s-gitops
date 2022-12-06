@@ -37,22 +37,33 @@ spec:
       main:
         enabled: false
     service:
-      main:
+      server:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${SVC_VALHEIM_ADDRESS}
+        externalTrafficPolicy: Local
         ports:
-          http:
-            port: 80
           steam1:
+            enabled: true
             port: 2456
             protocol: UDP
+            targetPort: 2456
           steam2:
+            enabled: true
             port: 2457
             protocol: UDP
+            targetPort: 2457
           steam3:
+            enabled: true
             port: 2458
             protocol: UDP
+            targetPort: 2458
           supervisor:
+            enabled: false
             port: 9001
             protocol: TCP
+            targetport: 2458
+      main:
     persistence:
       config:
         enabled: true
