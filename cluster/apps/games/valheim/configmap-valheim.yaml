@@ -22,7 +22,7 @@ data:
   WORLDS_DIRECTORY_PERMISSIONS: "755"
   WORLDS_FILE_PERMISSIONS: "644"
   ### server//steam
-  # SERVER_PORT: "2456"
+  SERVER_PORT: "2456"
   SERVER_PUBLIC: "true"
   STATUS_HTTP: "true" # Only useful on public server
   SUPERVISOR_HTTP: "true"

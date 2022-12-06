@@ -31,8 +31,6 @@ spec:
       repository: lloesche/valheim-server
       tag: latest
 
-    # env:
-    #   ...
     envFrom:
       - secretRef:
           name: valheim-secret
@@ -76,4 +74,4 @@ spec:
         cpu: 500m
         memory: 512MB
       limits:
-        memory: 4G
+        memory: 6G
