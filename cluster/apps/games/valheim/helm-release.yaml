@@ -23,22 +23,16 @@ spec:
       retries: 3
   values:
     global:
-      # nameOverride: valheim
       annotations:
         reloader.stakater.com/search: "true"
-
     image:
       repository: lloesche/valheim-server
       tag: latest
-
     envFrom:
       - secretRef:
           name: valheim-secret
       - configMapRef:
           name: valheim-config
-      # - configMapRef:
-      #     name: valheimplus-config
-
     ingress:
       main:
         enabled: false
@@ -56,9 +50,9 @@ spec:
           steam3:
             port: 2458
             protocol: UDP
-          # supervisor:
-          #   port: 9001
-          #   protocol: TCP
+          supervisor:
+            port: 9001
+            protocol: TCP
     persistence:
       config:
         enabled: true
@@ -71,7 +65,7 @@ spec:
             mountPath: /opt/valheim
     resources:
       requests:
-        cpu: 500m
-        memory: 512MB
+        cpu: 25m
+        memory: 128M
       limits:
-        memory: 6G
+        memory: 4G
