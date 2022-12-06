@@ -6,6 +6,7 @@ resources:
   - flux-system
   - games
   - kube-system
-  - networking
   - longhorn-system
+  - monitoring
+  - networking
   # - system-upgrade
