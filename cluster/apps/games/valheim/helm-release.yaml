@@ -73,7 +73,7 @@ spec:
             mountPath: /opt/valheim
     resources:
       requests:
-        cpu: 1
+        cpu: 500m
         memory: 512MB
       limits:
         memory: 4G
