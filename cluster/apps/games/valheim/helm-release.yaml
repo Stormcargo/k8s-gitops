@@ -37,7 +37,7 @@ spec:
       main:
         enabled: false
     service:
-      server:
+      main:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: ${SVC_VALHEIM_ADDRESS}
@@ -58,12 +58,7 @@ spec:
             port: 2458
             protocol: UDP
             targetPort: 2458
-          supervisor:
-            enabled: false
-            port: 9001
-            protocol: TCP
-            targetport: 2458
-      main:
+
     persistence:
       config:
         enabled: true
