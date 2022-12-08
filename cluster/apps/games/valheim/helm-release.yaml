@@ -38,6 +38,10 @@ spec:
         enabled: false
     service:
       main:
+        ports:
+          http:
+            port: 80
+      server:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: ${SVC_VALHEIM_ADDRESS}
