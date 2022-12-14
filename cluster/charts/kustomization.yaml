@@ -13,5 +13,6 @@ resources:
   - k8s-gateway-charts.yaml
   - metallb-charts.yaml
   - metrics-server-charts.yaml
+  - node-feature-discovery-charts.yaml
   - stakater-charts.yaml
   - longhorn-charts.yaml
