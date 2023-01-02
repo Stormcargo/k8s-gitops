@@ -1,0 +1,51 @@
+apiVersion: v1
+stringData:
+    comm_config.yaml: ENC[AES256_GCM,data:yODD0Sx6niLYP+br2vV8q0Onc6bK40OFT9B+swiaCzsROwB2wDT6mEZmbHTuRlDimWldizFRDsmDq04/wNG5vhAkVeLWEwqV+MrRpdCM577sQgmIDFudv9Cihbew9c5H4FFtvAcZlLuq23GC9hmuXSPPLmvpGrwMr6NG4sS6IrnKZKO9wBC5QAuaQZy2+uYn+0b3xAZR85emreN3hozJYd4/mJknBboPigAc/lVn5nk0bIWpoa0KkvVhhghdN4C3F4iGAwUowkTcxvf+1RaKLhNAdcwBYP1WErg8Eb6SHZfnJlCidO6kVEcXleEeKj2r1d+RTKiEEDCYr7esSmpbjJwV0cADJsbigmTNJtQv+QeyJ1S2rEfz6n2qjXgMN+dcLpkyt6b0my4DFW6XxgCGV60SpFECWj7CxteJeJndtjn4DsAFtVSYZ7reSs3hYFyoLYmHv6xbrNkeLY04Sw4+zeVzaYRzwTJcjMFxyAQCEuQtep0cxn7mc4pAG/5pgFCvSqPIwH6kt+YemBxPqMFKvjA+NMykLjYteCHybS9qlvSLtIueMZTSGGXo9pwI1FWQWvgYj61lU34S+KfuiUGL1bReZ2+18KKtc3P20rNRUd4Y/f+KibqhhSZbMfjjWfXHnig1/gxWRKChbzkQP5JcJlO4f6pNzVcTEpxKrWHvtmqPm5CEiRwj1ixrUcq1KipaS9o03TlokV4/l1vJzRKTlr3GoUhwpjWFFv9waT8n2i9uiXoByzReGlFxzD9bXYKUHkJsx7bGGGBf1SoWUEwJ9si9ZwPtgqWOkR3t46Rp6OCD/2T/xFPF5Y/EhKzhxeFJsGaeWg==,iv:ZPR0rYUt+rWp4vH8yweWfchoj+bQjFqwf5YULM3NTe4=,tag:cKs49B9cwog8Q13BXJi9FA==,type:str]
+kind: Secret
+metadata:
+    namespace: monitoring
+    name: botkube-communication
+##  stringData:
+##    comm_config.yaml: |
+# as a string
+# communications:
+#   'default-group':
+#     discord:
+#       enabled: false
+#       token: 'DISCORD_TOKEN'
+#       botID: 'DISCORD_BOT_ID'
+#       channels:
+#         'default':
+#           id: 'DISCORD_CHANNEL_ID'
+#           notification:
+#             # -- If true, the notifications are not sent to the channel. They can be enabled with `@Botkube` command anytime.
+#             disabled: false
+#           bindings:
+#             executors:
+#               - kubectl-read-only
+#             sources:
+#               - k8s-err-events
+#               - k8s-recommendation-events
+#       notification:
+#         # -- Configures notification type that are sent. Possible values: `short`, `long`.
+#         type: short
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1v9n8sg6r85f5yd84yg5q9ssth0mz6ujtjjtk664mseej0fr2jf6s8l9umt
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKMDBkUEM0QXo0b2RvNUNY
+            U3UwUTNUMlAxem11Mld0TVg1NWtSUlM5V3lFCllDbzI0Z1JZNnZaNENCQytpQ29S
+            eWNNVEpRQ3liZDZnWUVtQzJ4KytwSVUKLS0tIHNPamNleVV1U2FSVXVRMmpHcEth
+            WlZoSkZIbDdEU285Nkk1TitSelR5RXMKgTsVRtslqk9vh+CskfeS4j2DYX+vaHAn
+            c2EytbnxlkRQk15PWcddmQjOJ2spfzPcWNlWSW4XSMtDYu5v9Uqwsg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-01-02T12:02:54Z"
+    mac: ENC[AES256_GCM,data:pcp8JduM4flCzoy4IYcG4eUk4gWoUCUDU0BJ3f3cU+yd0UNdPeWjvrOnNMGUM/vWt9mI5s28fQKAs8vaUhVHpK08P8l4zqukfcSAaGNNOlDDoHfInvXRjgjAFMyl/GqfRbFgvYvdy8C5noZduVumWu4wWbfTtgaOxjyyPu7o0U4=,iv:X9a2tRrEfSM7hPDdewsdVZBP9asx8N8pVrYMmycnTik=,tag:ljxyrkjxPs+Bb1Sczl3oYQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3
