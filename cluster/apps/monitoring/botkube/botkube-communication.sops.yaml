@@ -4,7 +4,7 @@ metadata:
     namespace: monitoring
     name: botkube-communication
 stringData:
-    comm_config.yaml: ENC[AES256_GCM,data:p44G5F/Oq6X+g6qXItuBfRDtcW2zSHRfkMoyuUAVS4gmorfdDRL/iCFtZfqgWHm3WQDELAA06n0Q32Jd8tLHdqkGV0RWEH7/0ONPPCRBP3hnWKd+jr2v1kL/n4+A0/RDant+is/tLYdr8Zuw72+eZYc77870HHHadU49n0+dY8iJLIPtWhXD3WITVDvBeRU8yhufJeiU9Q5G0TKAleTY2a0fXwtg9/A8wYy117AI06xq9mFDZC5eU7nAqIZeBcXXo7GZIFgOZjkflCOd1STn7GTq2sDGJbnDqwIfaiPpXPw+fOZhFi2hI/UuLNjaLS/bw2+gGUOUB72+maMEOxhQ0BlAiImlmHYq7KOcgah0worruXi+Kzvw/Wh/LpTKmSMzb6Zo3QLaqqAj5/GiVJw1srX1wy5wJj1c6+ID4gXqZ1UHLo5xdBjdRxgkdZNufiAbBDJnj7tBEgZSysXdgByRskVclzUZ1wAknC0lJOGfMuGlPRcJ80aK8x398X7K0jukI02NL5byiIGRDPjJ0YII4qw6YSLte8CXA8UEde9Nlfa9ZS3rPkSZ9kttPl8XkeNPgYs7h2Je9N+o/eE7zoMUNpz3XqGLbooDp6VptE0gGCRhbgMo8eqwBVTBuD4nUT7fu4bEj3FHfBruKZBl08vVUYgu8y6ehjxmZ3SWieDH3V+UuN7DXsL/C+UsklCF6Nb/9df/QB3GJ35O/lDfYx3KkHFfrIVaQG4XdkOdawJkZ7n+Y+5D2YerrsyXR4D4TQ==,iv:mfghF+AwRW/oN/qbWO7QC2658YaJ8uKAoQcHR1XCZOw=,tag:bcdIM4hHH5z6RbizzUesjw==,type:str]
+    comm_config.yaml: ENC[AES256_GCM,data:K8v9P2x7RhKuxsGX0cO1U/G2BqX4epIPA/PLNpMnlGCFhQONXiN2pDTWbbU3+uwW8wsmN68RMSM8LntHnU0kSpMSy4SP8iiQjVgXYgwMQO9+ukPMAJgpuWGsc7q5ai3kXFYcrFD6Z3Oboqvs2wePw00QVncAJx2auMz9PvjthTgwGPFvlNOmO3Mvyudi+z5Zm6/zLDEAhi+ij4xj/uEWcV4kJOhQ+kR5GaIkPJqkwDNVIaPBFCzVXk1AWgRGgUXBItvTW5e0VngyGgok/lraMFQwxSHL4wC9/Wu/amhXBivuNp2oS/u96ZYgKA9x6ndjOOjxwe4Z7WVmnOWY3cYfUn9EYqtJZzdQIQpJsdo54kBt7/0mgEbdSTae9ouuoQRe7k2fmI2roRJIuzm90f/RJYj7jsdoKaVMc2wI40T5OVlgdWpqRdyGOUSY/EQZnxzhjX4u/wjXlTYH49X+JtuIU1rKW8N0HbZ6kk/kqV4Dk8tec+sYx/6wUmJOuZnUDxpGbWsd+5lOuqW2DDvtZb+/jJqoy09P+UsBIsuFTjuFarpo/sa0SAN8EUZsjer0U9yystIg2Nzonmxw/ctMa1gIEpwqZeksz8eP60II44rEFj7rhGxkT7w2QsSpUbe4MAn1Pez8kXJFESMNqh3b2abZCWHMmOBaXBdOQLp5Vy5ErOb9o07ZxQSgk2JY44zWFl0IcLuL8IwM1aoejtcWn1uIBmC6xG1WOXlR3P+X2+6JmhXXo0H2j1ew5DoiDSQIZ5ViM5Gj1wlMNPOJzxKk7+Xm9za/nTXytCMwEw1MIQo69snhb1JDByGklMd5RFch66N4JvAqclYP9DUTP5iqEio=,iv:lxDj5+aUEbCcdmitOY5ToND2+PsV6ZjKA5TTqzbGVlg=,tag:xO6NVk4oPxqbJNG+uanh4A==,type:str]
 ##  stringData:
 ##    comm_config.yaml: |
 # as a string
@@ -44,8 +44,8 @@ sops:
             WlZoSkZIbDdEU285Nkk1TitSelR5RXMKgTsVRtslqk9vh+CskfeS4j2DYX+vaHAn
             c2EytbnxlkRQk15PWcddmQjOJ2spfzPcWNlWSW4XSMtDYu5v9Uqwsg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-01-02T12:30:20Z"
-    mac: ENC[AES256_GCM,data:XYQEthDSCG4qxlMY4tZAk7xwFEqdGw27UxL7zQDGoRQCNshduPgFJ/PjuN4ed/Y1OYHvCYAEes8d5MSYNRg+SHTpIceJlEQ2WM/+q7q5VbuiBIa+EH+AGV4NruQmW1jLyfpZnJ/t6cDpaWUn/xyr15pRg0zT2TVxXxZyqUVjXXU=,iv:cMeoVIOlEYNXyGtikecPjoeShGFfr/uK3bkbXdYjmT8=,tag:Uy95wMK4v4vvgySuCZVs+w==,type:str]
+    lastmodified: "2023-01-02T12:39:30Z"
+    mac: ENC[AES256_GCM,data:1ZHDrrvQLO0obzyO4Y7tzQp4RunKx+Oepvu5ssEesQOHSCgoGsHjX4FkPskpj9KcGGBIwLg7vZP3TVhTz8eVlooFnpLXIp5SViaUBQ1Y95KmYCbL9FjH3BjIZ6LsRAjuTMRe8k5AlviJdJVLnXfQwzKoTNc9hA4efUwbxCnAp9w=,iv:b9JNjb71CIvB8uyzayPkmTIz9n9jDh6KUZHaiEuPB+s=,tag:nANk92fQaJ61NdG01etsSw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
