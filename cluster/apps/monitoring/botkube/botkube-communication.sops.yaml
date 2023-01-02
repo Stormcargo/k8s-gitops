@@ -1,10 +1,10 @@
 apiVersion: v1
-stringData:
-    comm_config.yaml: ENC[AES256_GCM,data:yODD0Sx6niLYP+br2vV8q0Onc6bK40OFT9B+swiaCzsROwB2wDT6mEZmbHTuRlDimWldizFRDsmDq04/wNG5vhAkVeLWEwqV+MrRpdCM577sQgmIDFudv9Cihbew9c5H4FFtvAcZlLuq23GC9hmuXSPPLmvpGrwMr6NG4sS6IrnKZKO9wBC5QAuaQZy2+uYn+0b3xAZR85emreN3hozJYd4/mJknBboPigAc/lVn5nk0bIWpoa0KkvVhhghdN4C3F4iGAwUowkTcxvf+1RaKLhNAdcwBYP1WErg8Eb6SHZfnJlCidO6kVEcXleEeKj2r1d+RTKiEEDCYr7esSmpbjJwV0cADJsbigmTNJtQv+QeyJ1S2rEfz6n2qjXgMN+dcLpkyt6b0my4DFW6XxgCGV60SpFECWj7CxteJeJndtjn4DsAFtVSYZ7reSs3hYFyoLYmHv6xbrNkeLY04Sw4+zeVzaYRzwTJcjMFxyAQCEuQtep0cxn7mc4pAG/5pgFCvSqPIwH6kt+YemBxPqMFKvjA+NMykLjYteCHybS9qlvSLtIueMZTSGGXo9pwI1FWQWvgYj61lU34S+KfuiUGL1bReZ2+18KKtc3P20rNRUd4Y/f+KibqhhSZbMfjjWfXHnig1/gxWRKChbzkQP5JcJlO4f6pNzVcTEpxKrWHvtmqPm5CEiRwj1ixrUcq1KipaS9o03TlokV4/l1vJzRKTlr3GoUhwpjWFFv9waT8n2i9uiXoByzReGlFxzD9bXYKUHkJsx7bGGGBf1SoWUEwJ9si9ZwPtgqWOkR3t46Rp6OCD/2T/xFPF5Y/EhKzhxeFJsGaeWg==,iv:ZPR0rYUt+rWp4vH8yweWfchoj+bQjFqwf5YULM3NTe4=,tag:cKs49B9cwog8Q13BXJi9FA==,type:str]
 kind: Secret
 metadata:
     namespace: monitoring
     name: botkube-communication
+stringData:
+    comm_config.yaml: ENC[AES256_GCM,data:p44G5F/Oq6X+g6qXItuBfRDtcW2zSHRfkMoyuUAVS4gmorfdDRL/iCFtZfqgWHm3WQDELAA06n0Q32Jd8tLHdqkGV0RWEH7/0ONPPCRBP3hnWKd+jr2v1kL/n4+A0/RDant+is/tLYdr8Zuw72+eZYc77870HHHadU49n0+dY8iJLIPtWhXD3WITVDvBeRU8yhufJeiU9Q5G0TKAleTY2a0fXwtg9/A8wYy117AI06xq9mFDZC5eU7nAqIZeBcXXo7GZIFgOZjkflCOd1STn7GTq2sDGJbnDqwIfaiPpXPw+fOZhFi2hI/UuLNjaLS/bw2+gGUOUB72+maMEOxhQ0BlAiImlmHYq7KOcgah0worruXi+Kzvw/Wh/LpTKmSMzb6Zo3QLaqqAj5/GiVJw1srX1wy5wJj1c6+ID4gXqZ1UHLo5xdBjdRxgkdZNufiAbBDJnj7tBEgZSysXdgByRskVclzUZ1wAknC0lJOGfMuGlPRcJ80aK8x398X7K0jukI02NL5byiIGRDPjJ0YII4qw6YSLte8CXA8UEde9Nlfa9ZS3rPkSZ9kttPl8XkeNPgYs7h2Je9N+o/eE7zoMUNpz3XqGLbooDp6VptE0gGCRhbgMo8eqwBVTBuD4nUT7fu4bEj3FHfBruKZBl08vVUYgu8y6ehjxmZ3SWieDH3V+UuN7DXsL/C+UsklCF6Nb/9df/QB3GJ35O/lDfYx3KkHFfrIVaQG4XdkOdawJkZ7n+Y+5D2YerrsyXR4D4TQ==,iv:mfghF+AwRW/oN/qbWO7QC2658YaJ8uKAoQcHR1XCZOw=,tag:bcdIM4hHH5z6RbizzUesjw==,type:str]
 ##  stringData:
 ##    comm_config.yaml: |
 # as a string
@@ -44,8 +44,8 @@ sops:
             WlZoSkZIbDdEU285Nkk1TitSelR5RXMKgTsVRtslqk9vh+CskfeS4j2DYX+vaHAn
             c2EytbnxlkRQk15PWcddmQjOJ2spfzPcWNlWSW4XSMtDYu5v9Uqwsg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-01-02T12:02:54Z"
-    mac: ENC[AES256_GCM,data:pcp8JduM4flCzoy4IYcG4eUk4gWoUCUDU0BJ3f3cU+yd0UNdPeWjvrOnNMGUM/vWt9mI5s28fQKAs8vaUhVHpK08P8l4zqukfcSAaGNNOlDDoHfInvXRjgjAFMyl/GqfRbFgvYvdy8C5noZduVumWu4wWbfTtgaOxjyyPu7o0U4=,iv:X9a2tRrEfSM7hPDdewsdVZBP9asx8N8pVrYMmycnTik=,tag:ljxyrkjxPs+Bb1Sczl3oYQ==,type:str]
+    lastmodified: "2023-01-02T12:30:20Z"
+    mac: ENC[AES256_GCM,data:XYQEthDSCG4qxlMY4tZAk7xwFEqdGw27UxL7zQDGoRQCNshduPgFJ/PjuN4ed/Y1OYHvCYAEes8d5MSYNRg+SHTpIceJlEQ2WM/+q7q5VbuiBIa+EH+AGV4NruQmW1jLyfpZnJ/t6cDpaWUn/xyr15pRg0zT2TVxXxZyqUVjXXU=,iv:cMeoVIOlEYNXyGtikecPjoeShGFfr/uK3bkbXdYjmT8=,tag:Uy95wMK4v4vvgySuCZVs+w==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
