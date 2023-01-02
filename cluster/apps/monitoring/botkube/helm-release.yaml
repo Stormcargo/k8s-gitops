@@ -28,10 +28,6 @@ spec:
       clusterName: k8s-cluster
       configWatcher: true
     existingCommunicationsSecretName: botkube-communication
-    executors:
-      'kubectl-read-only':
-        kubectl:
-          enabled: true
     deployment:
       annotations:
         configmap.reloader.stakater.com/reload: botkube-configmap
