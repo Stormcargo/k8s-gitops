@@ -14,7 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: botkubeio-charts
-        namespace: monitoring
+        namespace: flux-system
       interval: 5m
   install:
     createNamespace: true
