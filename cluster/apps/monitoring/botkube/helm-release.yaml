@@ -38,7 +38,7 @@ spec:
         secret.reloader.stakater.com/reload: botkube-communication
 
     serviceMonitor:
-      enabled: true
+      enabled: false
 
     sources:
       'crds':
