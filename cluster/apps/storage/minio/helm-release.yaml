@@ -78,6 +78,7 @@ spec:
         tls:
           - hosts:
               - *host-console
+            secretName: "minio-tls"
       s3:
         enabled: true
         ingressClassName: nginx
@@ -93,6 +94,7 @@ spec:
         tls:
           - hosts:
               - *api-host
+            secretName: "s3-tls"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
