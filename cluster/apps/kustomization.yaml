@@ -9,4 +9,5 @@ resources:
   - longhorn-system
   - monitoring
   - networking
+  - storage
   # - system-upgrade
