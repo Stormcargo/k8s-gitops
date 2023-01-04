@@ -7,7 +7,7 @@ spec:
   capacity:
     storage: 1Mi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: minio-nfs
   persistentVolumeReclaimPolicy: Retain
   nfs:
@@ -28,7 +28,7 @@ metadata:
   namespace: storage
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: minio-nfs
   resources:
     requests:
