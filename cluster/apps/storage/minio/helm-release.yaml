@@ -98,9 +98,9 @@ spec:
               - *api-host
             secretName: "s3-tls"
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 1000
+      runAsGroup: 1003
+      fsGroup: 1003
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100

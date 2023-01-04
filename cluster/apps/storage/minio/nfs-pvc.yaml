@@ -18,6 +18,7 @@ spec:
     - nconnect=8
     - hard
     - noatime
+    - noac
 
 ---
 apiVersion: v1
