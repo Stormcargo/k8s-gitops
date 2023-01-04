@@ -65,6 +65,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "true"
           hajimari.io/icon: "pail"
           hajimari.io/group: "storage"
@@ -83,6 +84,7 @@ spec:
         enabled: true
         ingressClassName: nginx
         annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "false"
         hosts:
           - host: &api-host "s3.${SECRET_DOMAIN}"
