@@ -70,7 +70,7 @@ spec:
           hajimari.io/icon: mdi:pail
           hajimari.io/group: "storage"
         hosts:
-          - host: &console-host "minio.${SECRET_PUBLIC_DOMAIN}"
+          - host: &console-host "minio.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -93,7 +93,7 @@ spec:
             chunked_transfer_encoding off;
           hajimari.io/enable: "false"
         hosts:
-          - host: &host-api "s3.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host-api "s3.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
