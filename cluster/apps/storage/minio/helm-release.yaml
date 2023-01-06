@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app minio
+  name: minio
   namespace: storage
 spec:
   interval: 15m
@@ -34,7 +34,7 @@ spec:
       MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
     envFrom:
       - secretRef:
-          name: *app
+          name: minio
     args: ["server", "/data", "--console-address", ":9001"]
     service:
       main:
@@ -52,7 +52,7 @@ spec:
         spec:
           httpGet:
             path: /minio/health/live
-            port: *port-api
+            port: 9000
           initialDelaySeconds: 0
           periodSeconds: 10
           timeoutSeconds: 1
@@ -63,20 +63,14 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
         annotations:
-          nginx.ingress.kubernetes.io/enable-cors: "true"
-          nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
-          nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-          nginx.ingress.kubernetes.io/cors-allow-headers: "true"
-          nginx.ingress.kubernetes.io/cors-expose-headers: "*, X-CustomResponseHeader"
-          nginx.ingress.kubernetes.io/cors-allow-origin: "s3.${SECRET_DOMAIN}"
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "true"
-          hajimari.io/icon: "pail"
+          hajimari.io/icon: mdi:pail
           hajimari.io/group: "storage"
         hosts:
-          - host: &host-console "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &console-host "minio.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -84,27 +78,22 @@ spec:
                   port: *port-console
         tls:
           - hosts:
-              - *host-console
+              - *console-host
             secretName: "minio-tls"
       s3:
         enabled: true
         ingressClassName: nginx
         annotations:
-          nginx.ingress.kubernetes.io/enable-cors: "true"
-          nginx.ingress.kubernetes.io/cors-allow-origin: "minio.${SECRET_DOMAIN}"
-          nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-          nginx.ingress.kubernetes.io/cors-allow-headers: "true"
-          nginx.ingress.kubernetes.io/cors-expose-headers: "*, X-CustomResponseHeader"
-          nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+          external-dns.home.arpa/enabled: "true"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
           nginx.ingress.kubernetes.io/proxy-body-size: 1024m
           nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             chunked_transfer_encoding off;
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "false"
         hosts:
-          - host: &api-host "s3.${SECRET_DOMAIN}"
+          - host: &host-api "s3.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -112,7 +101,7 @@ spec:
                   port: *port-api
         tls:
           - hosts:
-              - *api-host
+              - *host-api
             secretName: "s3-tls"
     podSecurityContext:
       runAsUser: 0
