@@ -67,6 +67,10 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/enable-cors: "true"
           nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+          nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+          nginx.ingress.kubernetes.io/cors-allow-headers: "true"
+          nginx.ingress.kubernetes.io/cors-expose-headers: "*, X-CustomResponseHeader"
+          nginx.ingress.kubernetes.io/cors-allow-origin: "s3.${SECRET_DOMAIN}"
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "true"
           hajimari.io/icon: "pail"
@@ -87,6 +91,10 @@ spec:
         ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/enable-cors: "true"
+          nginx.ingress.kubernetes.io/cors-allow-origin: "minio.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+          nginx.ingress.kubernetes.io/cors-allow-headers: "true"
+          nginx.ingress.kubernetes.io/cors-expose-headers: "*, X-CustomResponseHeader"
           nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
           nginx.ingress.kubernetes.io/proxy-body-size: 1024m
