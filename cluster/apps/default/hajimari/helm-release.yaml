@@ -30,6 +30,7 @@ spec:
           - default
           - longhorn-system
           - networking
+          - monitoring
           - storage
       name: "you"
       customApps:
