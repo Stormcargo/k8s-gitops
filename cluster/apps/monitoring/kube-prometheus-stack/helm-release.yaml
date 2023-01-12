@@ -90,6 +90,14 @@ spec:
       enabled: true
       prometheusSpec:
         replicas: 1
+        ruleNamespaceSelector: {}
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector: {}
+        podMonitorNamespaceSelector: {}
+        podMonitorSelectorNilUsesHelmValues: false
         scrapeInterval: "60s"
         storageSpec:
           volumeClaimTemplate:
