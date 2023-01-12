@@ -110,7 +110,7 @@ spec:
           - "prometheus.${SECRET_DOMAIN}"
         paths:
           - /
-        pathType: prefix
+        pathType: Prefix
         tls:
           - secretName: prometheus--tls
             hosts:
