@@ -107,7 +107,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "torch"
         hosts:
-          - host: "prometheus.${SECRET_DOMAIN}"
+          - "prometheus.${SECRET_DOMAIN}"
         paths:
           - /
         pathType: prefix
