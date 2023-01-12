@@ -99,3 +99,19 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "torch"
+        hosts:
+          - host: "prometheus.${SECRET_DOMAIN}"
+        paths:
+          - /
+        pathType: prefix
+        tls:
+          - secretName: prometheus--tls
+            hosts:
+              - prometheus.${SECRET_DOMAIN}
