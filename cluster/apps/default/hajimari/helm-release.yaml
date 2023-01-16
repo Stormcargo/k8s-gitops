@@ -26,14 +26,16 @@ spec:
     hajimari:
       defaultEnable: false
       name: "you"
-      customApps:
-        - name: Some External Cluster Service
-          url: http://192.168.1.100:5000
-          icon: test-tube
+      # customApps:
+      #   - name: Some External Cluster Service
+      #     url: http://192.168.1.100:5000
+      #     icon: test-tube
       showGlobalBookmarks: true
       globalBookmarks:
         - group: K8S@Home
           bookmarks:
+            - name: Home Infra Repo
+              url: "https://github.com/Stormcargo/k8s-gitops/"
             - name: K8S@Home Search
               url: "https://nanne.dev/k8s-at-home-search/"
             - name: Template Chart Docs
