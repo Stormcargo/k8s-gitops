@@ -25,13 +25,6 @@ spec:
   values:
     hajimari:
       defaultEnable: false
-      namespaceSelector:
-        matchNames:
-          - default
-          - longhorn-system
-          - networking
-          - monitoring
-          - storage
       name: "you"
       customApps:
         - name: Some External Cluster Service
