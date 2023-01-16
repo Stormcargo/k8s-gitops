@@ -39,54 +39,39 @@ spec:
           icon: test-tube
       showGlobalBookmarks: true
       globalBookmarks:
-        - group: Communicate
+        - group: K8S@Home
           bookmarks:
-            - name: Discord
-              url: "https://discord.com"
-            - name: Gmail
-              url: "https://gmail.com"
-            - name: Slack
-              url: "https://slack.com/signin"
-        - group: Design
-          bookmarks:
-            - name: Awwwards
-              url: "https://awwwards.com"
-            - name: Dribbble
-              url: "https://dribbble.com"
-            - name: Muz.li
-              url: "https://medium.muz.li/"
+            - name: K8S@Home Search
+              url: "https://nanne.dev/k8s-at-home-search/"
+            - name: Template Chart Docs
+              url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
         - group: Dev
           bookmarks:
-            - name: Codepen
-              url: "https://codepen.io/"
             - name: Devdocs
               url: "https://devdocs.io"
             - name: Devhints
               url: "https://devhints.io"
-        - group: Lifestyle
+        - group: Media
           bookmarks:
-            - name: Design Milk
-              url: "https://design-milk.com/category/interior-design/"
-            - name: Dwell
-              url: "https://www.dwell.com/"
-            - name: Freshome
-              url: "https://www.mymove.com/freshome/"
+            - name: YouTube
+              url: "https://youtube.com/"
+            - name: Guardian
+              url: "https://guardian.co.uk/"
         - group: Tech
           bookmarks:
             - name: Hacker News
               url: "https://news.ycombinator.com/"
             - name: The Verge
               url: "https://theverge.com/"
-            - name: MIT Technology Review
-              url: "https://www.technologyreview.com/"
+            - name: Arstechnica
+              url: "https://www.arstechnica.com/"
     ingress:
       main:
         enabled: true
         ingressClassName: "nginx"
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "weather-sunset"
+          hajimari.io/enable: "false"
           nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         hosts:
           - host: "hajimari.${SECRET_DOMAIN}"
