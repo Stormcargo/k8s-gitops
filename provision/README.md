@@ -220,12 +220,6 @@ Flux is pull-based by design meaning it will periodically check your git reposit
 
 Now that you have the webhook url and secret, it's time to set everything up on the Github repository side. Navigate to the settings of your repository on Github, under "Settings/Webhooks" press the "Add webhook" button. Fill in the webhook url and your secret.
 
-### 💾 Storage
-
-- [longhorn](https://github.com/longhorn/longhorn)
-- [nfs-subdir-external-provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner)
-- [csi-driver-nfs](https://github.com/kubernetes-csi/csi-driver-nfs)
-
 ### 🔏 Authenticate Flux over SSH
 
 Authenticating Flux to your git repository has a couple benefits like using a private git repository and/or using the Flux [Image Automation Controllers](https://fluxcd.io/docs/components/image/).
@@ -301,7 +295,3 @@ The benefits of a public repository include:
       ```
   10. Optionally set your repository to Private in your repository settings.
 </details>
-
-## 👉 Troubleshooting
-
-Our [wiki](https://github.com/onedr0p/flux-cluster-template/wiki) (WIP, contributions welcome) is a good place to start troubleshooting issues. If that doesn't cover your issue, come join and say Hi in our community [Discord](https://discord.gg/k8s-at-home).

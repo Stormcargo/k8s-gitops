@@ -114,6 +114,7 @@ spec:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/enable: "true"
           hajimari.io/icon: "torch"
+          hajimari.io/appName: "Prometheus"
         hosts:
           - "prometheus.${SECRET_DOMAIN}"
         paths:

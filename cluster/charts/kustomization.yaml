@@ -10,6 +10,7 @@ resources:
   - grafana-charts.yaml
   - hajimari-charts.yaml
   - ingress-nginx-charts.yaml
+  - intel-charts.yaml
   - jetstack-charts.yaml
   - kubereboot-charts.yaml
   - k8s-gateway-charts.yaml

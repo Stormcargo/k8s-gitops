@@ -47,6 +47,8 @@ spec:
               url: "https://nanne.dev/k8s-at-home-search/"
             - name: Template Chart Docs
               url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
+            - name: Flux Docs
+              url: "https://fluxcd.io/flux/"
         - group: Dev
           bookmarks:
             - name: Devdocs
