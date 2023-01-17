@@ -15,6 +15,8 @@ spec:
         name: node-feature-discovery-charts
         namespace: flux-system
   values:
+    nodeFeatureRule:
+      createCRD: true
     worker:
       config: ### <NFD-WORKER-CONF-START-DO-NOT-REMOVE>
         core:
@@ -57,4 +59,3 @@ spec:
                 - usbId:
                     vendor: ["1a86"]
                     device: ["7523"]
-    ### <NFD-WORKER-CONF-END-DO-NOT-REMOVE>
