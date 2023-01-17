@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: intel-device-plugin-operator
-    # - name: intel-device-plugins-gpu
+    - name: intel-device-plugins-gpu
     - name: node-feature-discovery
   values:
     controller:
