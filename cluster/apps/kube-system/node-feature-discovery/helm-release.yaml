@@ -15,39 +15,17 @@ spec:
         name: node-feature-discovery-charts
         namespace: flux-system
   values:
-    nodeFeatureRule:
-      createCRD: true
     worker:
-      config: ### <NFD-WORKER-CONF-START-DO-NOT-REMOVE>
+      config:
         core:
-          sources:
-            - custom
-            - pci
-            - usb
+          sources: ["custom", "pci", "usb"]
         sources:
           usb:
-            deviceClassWhitelist:
-              - "02"
-              - "03"
-              - "0e"
-              - "ef"
-              - "fe"
-              - "ff"
-            deviceLabelFields:
-              - "class"
-              - "vendor"
-              - "device"
+            deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
+            deviceLabelFields: ["class", "vendor", "device"]
           pci:
-            deviceClassWhitelist:
-              - "0200"
-              - "03"
-              - "12"
-            deviceLabelFields:
-              - "class"
-              - "vendor"
-              - "device"
-              - "subsystem_vendor"
-              - "subsystem_device"
+            deviceClassWhitelist: ["0200", "03", "12"]
+            deviceLabelFields: ["class", "vendor", "device", "subsystem_vendor", "subsystem_device"]
           custom:
             - name: intel-gpu
               matchOn:
