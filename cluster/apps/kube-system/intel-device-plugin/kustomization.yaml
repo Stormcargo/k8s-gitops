@@ -5,4 +5,5 @@ namespace: kube-system
 resources:
   # - gpu
   - operator
-  - nodefeaturerule.yaml
+  - exporter
+  # - nodefeaturerule.yaml
