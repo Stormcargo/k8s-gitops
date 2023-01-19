@@ -32,6 +32,7 @@ spec:
       MINIO_PROMETHEUS_JOB_ID: minio
       MINIO_BROWSER_REDIRECT_URL: https://minio.${SECRET_DOMAIN}/
       MINIO_SERVER_URL: https://s3.${SECRET_DOMAIN}/
+      CONSOLE_MINIO_SERVER: https://minio.${SECRET_DOMAIN}
       # MINIO_DOMAIN: "https://s3.${SECRET_DOMAIN}"
       MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
     envFrom:
