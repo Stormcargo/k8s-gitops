@@ -30,6 +30,7 @@ spec:
           - default
           - longhorn-system
           - networking
+          - media
           - monitoring
           - storage
       name: "you"
