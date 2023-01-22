@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - config-pvc.yaml
-  - plex-secret.sops.yaml
+  # - plex-secret.sops.yaml
