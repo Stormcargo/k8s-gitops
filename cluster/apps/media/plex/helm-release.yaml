@@ -36,6 +36,8 @@ spec:
           name: plex-secret
     env:
       TZ: Europe/London
+      PLEX_UID: 0
+      PLEX_GID: 0
     service:
       main:
         type: LoadBalancer
