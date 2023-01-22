@@ -28,6 +28,7 @@ spec:
       namespaceSelector:
         matchNames:
           - default
+          - games
           - longhorn-system
           - networking
           - media
@@ -50,6 +51,8 @@ spec:
               url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
             - name: Flux Docs
               url: "https://fluxcd.io/flux/"
+            - name: Material Design Icons
+              url: "https://pictogrammers.com/library/mdi/"
         - group: Dev
           bookmarks:
             - name: Devdocs
