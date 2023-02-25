@@ -9,4 +9,4 @@ resources:
   - metallb
   - k8s-gateway
   - cert-manager
-  - ./multus/ks.yaml
+  - multus
