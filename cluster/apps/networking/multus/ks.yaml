@@ -12,5 +12,5 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-gitops
+    name: flux-system
   wait: true
