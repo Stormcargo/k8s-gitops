@@ -18,7 +18,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: *app
-              image: ghcr.io/onedr0p/kubernetes-kubectl:1.26.1@sha256:b3c111e0eca603f3e3f638a713669f7b2c64e8eb58ba5937632a7c2a2b58f51c
+              image: ghcr.io/onedr0p/kubernetes-kubectl:1.26.2@sha256:ac57906914821d74d65f880984c1af869a0bb33758d0701f227cf294e3665de5
               envFrom:
                 - secretRef:
                     name: *app
