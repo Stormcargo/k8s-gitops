@@ -8,7 +8,7 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: local-path-provisioner
+      chart: ./deploy/chart/local-path-provisioner
       sourceRef:
         kind: GitRepository
         name: local-path-provisioner
