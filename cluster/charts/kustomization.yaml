@@ -15,6 +15,7 @@ resources:
   - jetstack-charts.yaml
   - kubereboot-charts.yaml
   - k8s-gateway-charts.yaml
+  - local-path-provisioner-repo.yaml
   - metallb-charts.yaml
   - metrics-server-charts.yaml
   - node-feature-discovery-charts.yaml
