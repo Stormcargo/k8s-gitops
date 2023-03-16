@@ -130,7 +130,6 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: loki-tls
         affinity: |
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
