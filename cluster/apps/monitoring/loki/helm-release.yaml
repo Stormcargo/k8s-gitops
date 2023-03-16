@@ -132,8 +132,8 @@ spec:
                 pathType: Prefix
         tls:
           - hosts:
-              - secretName: loki-tls
               - *host
+            secretName: loki-tls
 
     write:
       replicas: 3
