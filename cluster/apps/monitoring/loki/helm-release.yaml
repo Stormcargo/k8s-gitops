@@ -114,7 +114,7 @@ spec:
 
     gateway:
       enabled: true
-      replicas: 1
+      replicas: 2
       ingress:
         enabled: true
         ingressClassName: "nginx"
@@ -157,7 +157,6 @@ spec:
                 - arm64
 
     read:
-      replicas: 3
       persistence:
         storageClass: local-path
       extraVolumeMounts:
@@ -191,12 +190,27 @@ spec:
       persistence:
         size: 10Gi
         storageClass: longhorn
+      affinity: |
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: NotIn
+                values:
+                - arm64
 
     monitoring:
-      serviceMonitor:
+      dashboards:
         enabled: true
-        metricsInstance:
-          enabled: false
+        annotations:
+          kustomize.toolkit.fluxcd.io/substitute: disabled
+        labels:
+          grafana_dashboard: 'true'
+      rules:
+        enabled: true
+      serviceMonitor:
+        enabled: false
       selfMonitoring:
         enabled: false
         grafanaAgent:
