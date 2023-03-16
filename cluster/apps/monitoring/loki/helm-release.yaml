@@ -201,7 +201,7 @@ spec:
 
     monitoring:
       dashboards:
-        enabled: true
+        enabled: false
         annotations:
           kustomize.toolkit.fluxcd.io/substitute: disabled
         labels:
