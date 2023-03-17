@@ -68,10 +68,14 @@ spec:
             insecure: true
             s3forcepathstyle: true
             secret_access_key: ${SECRET_MINIO_SECRET_KEY}
+          boltdb_shipper:
+            resync_interval: 5s
+            cache_ttl: 168h
+            shared_store: s3
 
         common:
           path_prefix: /var/loki
-          replication_factor: 3
+          replication_factor: 1
           # storage:
           #   s3:
           #     s3: null
