@@ -64,7 +64,7 @@ spec:
           aws:
             access_key_id: ${LOKI_MINIO_ACCESS_KEY}
             bucketnames: loki
-            endpoint: http://minio.storage.svc.cluster.local:9000
+            endpoint: minio.storage.svc.cluster.local:9000
             insecure: true
             s3forcepathstyle: true
             secret_access_key: ${LOKI_MINIO_SECRET_KEY}
