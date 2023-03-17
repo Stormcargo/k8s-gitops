@@ -60,18 +60,27 @@ spec:
                 prefix: loki_index_
                 period: 24h
 
+        storage_config:
+          aws:
+            access_key_id: ${SECRET_MINIO_ACCESS_KEY}
+            bucketnames: loki
+            endpoint: http://minio.storage.svc.cluster.local:9000
+            insecure: true
+            s3forcepathstyle: true
+            secret_access_key: ${SECRET_MINIO_SECRET_KEY}
+
         common:
           path_prefix: /var/loki
           replication_factor: 3
-          storage:
-            s3:
-              s3: null
-              insecure: true
-              s3forcepathstyle: true
-              endpoint: "http://minio.storage.svc.cluster.local:9000"
-              bucketnames: loki
-              access_key_id: "${LOKI_MINIO_ACCESS_KEY}"
-              secret_access_key: "${LOKI_MINIO_SECRET_KEY}"
+          # storage:
+          #   s3:
+          #     s3: null
+          #     insecure: true
+          #     s3forcepathstyle: true
+          #     endpoint: "http://minio.storage.svc.cluster.local:9000"
+          #     bucketnames: loki
+          #     access_key_id: "${LOKI_MINIO_ACCESS_KEY}"
+          #     secret_access_key: "${LOKI_MINIO_SECRET_KEY}"
 
           ring:
             kvstore:
