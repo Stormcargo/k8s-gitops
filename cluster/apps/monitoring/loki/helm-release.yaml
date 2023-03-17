@@ -65,13 +65,13 @@ spec:
           replication_factor: 3
           storage:
             s3:
-              s3: null
+              # s3: null
               insecure: true
               s3forcepathstyle: true
-              endpoint: "192.168.183.210:9000"
+              # endpoint: "192.168.183.210:9000"
               bucketnames: loki
-              access_key_id: "${LOKI_MINIO_ACCESS_KEY}"
-              secret_access_key: "${LOKI_MINIO_SECRET_KEY}"
+              # access_key_id: "${LOKI_MINIO_ACCESS_KEY}"
+              # secret_access_key: "${LOKI_MINIO_SECRET_KEY}"
           ring:
             kvstore:
               store: memberlist
@@ -218,3 +218,10 @@ spec:
           enabled: false
     test:
       enabled: false
+
+    storage_config:
+      aws:
+        bucketnames: loki
+        endpoint: "http://minio.storage.svc.cluster.local:9000"
+        access_key_id: "${SECRET_MINIO_USERNAME}"
+        secret_access_key: "${SECRET_MINIO_PASSWORD}"
