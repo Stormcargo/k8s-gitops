@@ -70,8 +70,8 @@ spec:
               s3forcepathstyle: true
               endpoint: "http://minio.storage.svc.cluster.local:9000"
               bucketnames: loki
-              accessKeyId: "${LOKI_MINIO_ACCESS_KEY}"
-              secretAccessKey: "${LOKI_MINIO_SECRET_KEY}"
+              access_key_id: "${LOKI_MINIO_ACCESS_KEY}"
+              secret_access_key: "${LOKI_MINIO_SECRET_KEY}"
 
           ring:
             kvstore:
