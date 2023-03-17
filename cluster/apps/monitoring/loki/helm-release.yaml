@@ -62,12 +62,12 @@ spec:
 
         storage_config:
           aws:
-            access_key_id: ${SECRET_MINIO_ACCESS_KEY}
+            access_key_id: ${LOKI_MINIO_ACCESS_KEY}
             bucketnames: loki
             endpoint: http://minio.storage.svc.cluster.local:9000
             insecure: true
             s3forcepathstyle: true
-            secret_access_key: ${SECRET_MINIO_SECRET_KEY}
+            secret_access_key: ${LOKI_MINIO_SECRET_KEY}
           boltdb_shipper:
             resync_interval: 5s
             cache_ttl: 168h
@@ -171,7 +171,7 @@ spec:
 
     read:
       persistence:
-        storageClass: local-path
+        storageClass: longhorn
       extraVolumeMounts:
         - name: rules
           mountPath: /rules
