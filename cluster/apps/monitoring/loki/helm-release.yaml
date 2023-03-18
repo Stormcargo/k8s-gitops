@@ -79,7 +79,6 @@ spec:
         common:
           path_prefix: /var/loki
           replication_factor: 1
-
           ring:
             kvstore:
               store: memberlist
