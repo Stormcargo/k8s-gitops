@@ -190,5 +190,7 @@ spec:
           installOperator: false
         lokiCanary:
           enabled: false
+          nodeSelector:
+            kubernetes.io/arch: amd64
     test:
       enabled: false
