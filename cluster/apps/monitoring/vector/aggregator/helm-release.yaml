@@ -47,14 +47,14 @@ spec:
           type: syslog
           address: 0.0.0.0:5140
           mode: udp
-      transforms:
-        kubernetes_logs_remap:
-          type: remap
-          inputs:
-            - kubernetes_logs
-          source: |
-            # Standardize 'app' index
-            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+      # transforms:
+      #   kubernetes_logs_remap:
+      #     type: remap
+      #     inputs:
+      #       - kubernetes_logs
+      #     source: |
+      #       # Standardize 'app' index
+      #       .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
       sinks:
         loki_journal:
           type: loki
@@ -96,14 +96,13 @@ spec:
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
+          - weight: 1
             podAffinityTerm:
               labelSelector:
                 matchExpressions:
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values: ["Stateless-Aggregator"]
-              topologyKey: kubernetes.io/hostname
+                  - key: kubernetes.io/arch
+                    operator: NotIn
+                    values: ["arm64"]
   postRenderers:
     - kustomize:
         patchesJson6902:
