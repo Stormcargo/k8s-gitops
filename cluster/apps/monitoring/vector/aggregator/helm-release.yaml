@@ -93,16 +93,8 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-    affinity:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: NotIn
-                    values: ["arm64"]
+    nodeSelector:
+      kubernetes.io/arch: amd64
   postRenderers:
     - kustomize:
         patchesJson6902:
