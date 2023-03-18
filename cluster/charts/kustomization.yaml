@@ -22,3 +22,4 @@ resources:
   - prometheus-community-charts.yaml
   - stakater-charts.yaml
   - longhorn-charts.yaml
+  - vector-charts.yaml
