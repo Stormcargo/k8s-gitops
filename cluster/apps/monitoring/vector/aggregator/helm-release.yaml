@@ -43,18 +43,6 @@ spec:
           type: vector
           address: 0.0.0.0:6010
           version: "2"
-        opnsense_filterlog_logs:
-          type: syslog
-          address: 0.0.0.0:5140
-          mode: udp
-      # transforms:
-      #   kubernetes_logs_remap:
-      #     type: remap
-      #     inputs:
-      #       - kubernetes_logs
-      #     source: |
-      #       # Standardize 'app' index
-      #       .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
       sinks:
         loki_journal:
           type: loki
