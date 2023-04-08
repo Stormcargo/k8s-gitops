@@ -59,6 +59,8 @@ spec:
               url: "https://devdocs.io"
             - name: Devhints
               url: "https://devhints.io"
+            - name: ChatGPT
+              url: "https://chat.openai.com/"
         - group: Media
           bookmarks:
             - name: YouTube
