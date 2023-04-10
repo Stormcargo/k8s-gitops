@@ -5,6 +5,7 @@ resources:
   - default
   - flux-system
   - games
+  - home
   - kube-system
   - longhorn-system
   - media
