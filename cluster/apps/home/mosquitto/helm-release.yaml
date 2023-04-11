@@ -24,31 +24,39 @@ spec:
     remediation:
       retries: 5
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: public.ecr.aws/docker/library/eclipse-mosquitto
+      tag: 2.0.15
     global:
       nameOverride: *app
-    image:
-      repository: eclipse-mosquitto
-      tag: 2.0.15
-    podAnnotations:
-      reloader.stakater.com/auto: "true"
+
     service:
       main:
+        type: LoadBalancer
+        loadBalancerIP: $MQTT_SVC_ADDRESS
+        annotations:
+          coredns.io/hostname: "mqtt.${SECRET_DOMAIN}"
+        externalTrafficPolicy: Local
         ports:
           http:
             enabled: false
           mqtt:
             enabled: true
             port: 1883
-    configMaps:
-      config:
-        enabled: true
-        data:
-          mosquitto.conf: |
-            listener 1883
-            allow_anonymous true
-            persistence true
-            persistence_location /mosquitto/data
-            connection_messages false
+    # configMaps:
+    #   config:
+    #     enabled: true
+    #     data:
+    #       mosquitto.conf: |
+    #         listener 1883
+    #         allow_anonymous true
+    #         persistence true
+    #         persistence_location /mosquitto/data
+    #         connection_messages false
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -57,7 +65,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: mosquitto-config
+        existingClaim: mosquitto-config-v1
       configinc:
         enabled: true
         type: custom
