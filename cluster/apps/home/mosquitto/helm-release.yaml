@@ -55,16 +55,15 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
     persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: mosquitto-config
-        mountPath: /mosquitto/config/mosquitto.conf
-        subPath: mosquitto.conf
       data:
         enabled: true
-        existingClaim: mosquitto-data
-        mountPath: /mosquitto/data
+        existingClaim: mosquitto-config
+      configinc:
+        enabled: true
+        type: custom
+        volumeSpec:
+          secret:
+            secretName: mosquitto
     resources:
       requests:
         cpu: 15m
