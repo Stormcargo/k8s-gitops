@@ -71,7 +71,7 @@ spec:
         type: custom
         volumeSpec:
           secret:
-            secretName: mosquitto
+            secretName: mosquitto-secret
     resources:
       requests:
         cpu: 15m
