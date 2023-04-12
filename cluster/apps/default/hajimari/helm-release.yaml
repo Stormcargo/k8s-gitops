@@ -29,6 +29,7 @@ spec:
         matchNames:
           - default
           - games
+          - home
           - longhorn-system
           - networking
           - media
