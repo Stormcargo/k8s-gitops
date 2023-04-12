@@ -29,52 +29,46 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: public.ecr.aws/docker/library/eclipse-mosquitto
+      repository: eclipse-mosquitto
       tag: 2.0.15
     global:
       nameOverride: *app
-
     service:
       main:
         type: LoadBalancer
         loadBalancerIP: ${MQTT_SVC_ADDRESS}
-        annotations:
-          coredns.io/hostname: "mqtt.${SECRET_DOMAIN}"
         externalTrafficPolicy: Local
         ports:
           http:
             enabled: false
           mqtt:
             enabled: true
+            primary: true
             port: 1883
-    # configMaps:
-    #   config:
-    #     enabled: true
-    #     data:
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+    configMaps:
+      config:
+        enabled: true
+        data:
+          mosquitto.conf: |
+            listener 1883
+            allow_anonymous true
+            persistence false
+            connection_messages false
     #       mosquitto.conf: |
     #         listener 1883
     #         allow_anonymous true
     #         persistence true
     #         persistence_location /mosquitto/data
     #         connection_messages false
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
     persistence:
-      data:
+      config:
         enabled: true
-        existingClaim: mosquitto-config-v1
-      configinc:
-        enabled: true
-        type: custom
-        volumeSpec:
-          secret:
-            secretName: mosquitto-secret
-    resources:
-      requests:
-        cpu: 15m
-        memory: 105Mi
-      limits:
-        memory: 105Mi
+        type: configMap
+        name: mosquitto-config
+        mountPath: /mosquitto/config/mosquitto.conf
+        subPath: mosquitto.conf
