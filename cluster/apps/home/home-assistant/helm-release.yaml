@@ -53,7 +53,7 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "tls.{{ .Release.Name }}"
+          - secretName: hass-tls
             hosts:
               - *host
     probes:
@@ -97,7 +97,7 @@ spec:
                 - path: /
                   pathType: Prefix
           tls:
-            - secretName: tls.hass-vscode
+            - secretName: hass-vscode-tls
               hosts:
                 - *host
         resources:

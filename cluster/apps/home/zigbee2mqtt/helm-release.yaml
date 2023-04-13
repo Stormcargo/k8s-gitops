@@ -87,7 +87,7 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "tls.{{ .Release.Name }}"
+          - secretName: zigbee-tls
             hosts:
               - *host
     securityContext:
