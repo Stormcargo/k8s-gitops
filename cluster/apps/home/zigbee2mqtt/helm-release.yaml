@@ -50,7 +50,7 @@ spec:
       ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
       ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
       ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
-      ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home.svc.cluster.local."
+      ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://mosquitto.home.svc.cluster.local"
       # ZIGBEE2MQTT_CONFIG_MQTT_USER: $Z2M_USERNAME
       # ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD: $Z2M_PASSWORD
       ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
@@ -78,7 +78,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:zigbee
         hosts:
