@@ -87,7 +87,8 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
+          - secretName: "tls.{{ .Release.Name }}"
+            hosts:
               - *host
     securityContext:
       privileged: true
