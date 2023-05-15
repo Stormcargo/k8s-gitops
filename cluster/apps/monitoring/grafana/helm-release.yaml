@@ -31,7 +31,6 @@ spec:
       ingressClassName: nginx
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-production"
-        hajimari.io/enable: "true"
         hajimari.io/icon: "chart-bar"
       labels: {}
       path: /
