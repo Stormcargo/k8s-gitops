@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: sabnzbd
-  namespace: default
+  namespace: media
 spec:
   interval: 15m
   chart:
@@ -27,10 +27,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    annotations:
+      reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/onedr0p/sabnzbd
       tag: 4.0.1@sha256:8c1f42be3ae0770ad80921780e22f0cdc09197483752ec13a808a35e60bb5496
@@ -89,14 +87,10 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
-    # Note: If downloading very large nzbs it might be worth using NFS for your download directory.
     persistence:
+      config:
+        enabled: true
+        existingClaim: sabnzbd-config
       media:
         enabled: true
         type: nfs
