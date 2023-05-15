@@ -43,7 +43,6 @@ spec:
       main:
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hajimari.io/enable: "true"
           hajimari.io/icon: "home-assistant"
         enabled: true
         ingressClassName: nginx
@@ -89,7 +88,6 @@ spec:
           ingressClassName: nginx
           annotations:
             cert-manager.io/cluster-issuer: "letsencrypt-production"
-            hajimari.io/enable: "true"
             hajimari.io/icon: mdi:code-greater-than
           hosts:
             - host: &host hass-vscode.${SECRET_DOMAIN}
