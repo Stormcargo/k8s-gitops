@@ -74,7 +74,6 @@ spec:
           # nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
           # nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH
           # nginx.ingress.kubernetes.io/enable-cors: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:pail
           hajimari.io/group: "storage"
         hosts:
