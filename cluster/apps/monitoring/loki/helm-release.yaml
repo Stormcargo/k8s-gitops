@@ -125,7 +125,7 @@ spec:
       ingress:
         enabled: true
         ingressClassName: "nginx"
-        hajimari.io/enable: "true"
+        hajimari.io/enable: "false"
         hosts:
           - host: &host "loki-gateway.${SECRET_DOMAIN}"
             paths:
