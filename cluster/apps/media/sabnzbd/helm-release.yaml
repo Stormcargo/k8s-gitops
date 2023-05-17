@@ -100,7 +100,7 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /mnt/external/media
+        path: /mnt/external/Media
         mountPath: /media
       incomplete:
         enabled: true
