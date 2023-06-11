@@ -16,5 +16,6 @@
     "editor.guides.bracketPairs":"active",
     "editor.hover.delay": 1500,
     "workbench.tree.indent": 16,
-    "workbench.tree.renderIndentGuides": "always"
+    "workbench.tree.renderIndentGuides": "always",
+    "ansible.python.interpreterPath": "/home/stormcargo/.pyenv/versions/3.10.2/bin/python"
 }
