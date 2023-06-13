@@ -2,7 +2,7 @@
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: hass-homekit-static
+  name: hass-homekit-static1
   namespace: home
 spec:
   config: '{
