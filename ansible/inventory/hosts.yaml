@@ -1,0 +1,14 @@
+---
+kubernetes:
+  children:
+    master:
+      hosts:
+        rz-mini01:
+          ansible_user: ubuntu
+          ansible_host: 192.168.183.200
+        rz-mini02:
+          ansible_user: ubuntu
+          ansible_host: 192.168.183.201
+        rz-mini03:
+          ansible_user: ubuntu
+          ansible_host: 192.168.183.205
