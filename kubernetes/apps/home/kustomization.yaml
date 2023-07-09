@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./zigbee2mqtt/ks.yaml
+  - ./mosquitto/ks.yaml
