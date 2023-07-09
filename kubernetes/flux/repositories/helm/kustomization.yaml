@@ -14,6 +14,7 @@ resources:
   - ./jetstack.yaml
   - ./k8s-gateway.yaml
   - ./kubernetes-dashboard.yaml
+  - ./longhorn-charts.yaml
   - ./metrics-server.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
