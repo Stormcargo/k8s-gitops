@@ -102,7 +102,7 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: hajimari-config
+        type: emptyDir
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
     resources:
