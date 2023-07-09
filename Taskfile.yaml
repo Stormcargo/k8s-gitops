@@ -1,0 +1,45 @@
+---
+version: "3"
+
+vars:
+  TEMPLATE_DIR: "{{.ROOT_DIR}}/template"
+  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+
+env:
+  KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
+  SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
+
+includes:
+  ansible: .taskfiles/AnsibleTasks.yaml
+  brew: .taskfiles/BrewTasks.yaml
+  cluster: .taskfiles/ClusterTasks.yaml
+
+tasks:
+
+  default: task -l
+
+  init:
+    desc: Initialize configuration files
+    dir: "{{.TEMPLATE_DIR}}"
+    cmds:
+      - cp --no-clobber vars/addons.sample.yaml vars/addons.yaml
+      - cp --no-clobber vars/config.sample.yaml vars/config.yaml
+      - cmd: echo "=== Configuration files copied ==="
+        silent: true
+      - cmd: echo "Proceed with updating the configuration files..."
+        silent: true
+      - cmd: echo "{{.TEMPLATE_DIR}}/vars/config.yaml"
+        silent: true
+      - cmd: echo "{{.TEMPLATE_DIR}}/vars/addons.yaml"
+        silent: true
+    status:
+      - test -f "{{.TEMPLATE_DIR}}/vars/addons.yaml"
+      - test -f "{{.TEMPLATE_DIR}}/vars/config.yaml"
+
+  configure:
+    desc: Configure repository from Ansible vars
+    dir: "{{.TEMPLATE_DIR}}"
+    cmd: ansible-playbook configure.yaml
+    env:
+      ANSIBLE_DISPLAY_SKIPPED_HOSTS: "false"
