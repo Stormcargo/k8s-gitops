@@ -34,8 +34,10 @@ spec:
       namespaceSelector:
         matchNames:
           - default
+          - flux-system
           - games
           - home
+          - kube-system
           - networking
           - media
           - monitoring
