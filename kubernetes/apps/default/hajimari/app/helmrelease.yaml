@@ -36,7 +36,6 @@ spec:
           - default
           - games
           - home
-          - longhorn-system
           - networking
           - media
           - monitoring
@@ -74,6 +73,8 @@ spec:
               url: "https://youtube.com/"
             - name: Guardian
               url: "https://guardian.co.uk/"
+            - name: Arstechnica
+              url: "https://arstechnica.com/"
         - group: Tech
           bookmarks:
             - name: Hacker News
