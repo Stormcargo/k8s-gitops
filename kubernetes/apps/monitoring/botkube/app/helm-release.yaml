@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: botkube
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.botkube.io/
+      chart: botkube
+      version: v1.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: botkubeio-charts
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    settings:
+      clusterName: k8s-cluster
+      configWatcher: true
+    existingCommunicationsSecretName: botkube-communication
+    deployment:
+      annotations:
+        configmap.reloader.stakater.com/reload: botkube-configmap
+        secret.reloader.stakater.com/reload: botkube-communication
+
+    serviceMonitor:
+      enabled: false
+
+    sources:
+      'crds':
+        displayName: "CRDS"
+        kubernetes:
+          namespaces:
+            include:
+              - all
+          events:
+            - create
+            - delete
+            - error
+          resources:
+            - name: helm.toolkit.fluxcd.io/v2beta1/helmreleases
+            - name: source.toolkit.fluxcd.io/v1beta2/helmcharts
+            - name: kustomize.toolkit.fluxcd.io/v1beta2/kustomizations
+            # - name: notification.toolkit.fluxcd.io/v1beta1/alerts
+            # - name: monitoring.coreos.com/v1/podmonitors
+            # - name: monitoring.coreos.com/v1/servicemonitors

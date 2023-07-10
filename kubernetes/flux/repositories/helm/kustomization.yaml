@@ -5,6 +5,7 @@ resources:
   - ./angelnu.yaml
   - ./bitnami.yaml
   - ./bjw-s.yaml
+  - ./botkubeio.yaml
   - ./cilium.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
