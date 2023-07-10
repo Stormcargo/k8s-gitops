@@ -1,0 +1,115 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app home-assistant
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    image:
+      repository: ghcr.io/onedr0p/home-assistant
+      tag: 2023.5.4@sha256:fc40184c87d39bb0db629f924ca835aa55fd715f27de12a0de2f217efd39f758
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: hass-homekit-static
+    env:
+      TZ: "${TZ}"
+      PYTHONUSERBASE: /config/deps
+    service:
+      main:
+        ports:
+          http:
+            port: 8123
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant-config
+    ingress:
+      main:
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hajimari.io/icon: "home-assistant"
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - host: &host "hass.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: hass-tls
+            hosts:
+              - *host
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: false
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: codercom/code-server
+          tag: 4.12.0
+        workingDir: "/config"
+        git:
+          deployKeySecret: home-assistant-code-server-secret
+        args:
+          - --user-data-dir
+          - "/config/.vscode"
+          - --auth
+          - "none"
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-production"
+            hajimari.io/icon: mdi:code-greater-than
+          hosts:
+            - host: &host hass-vscode.${SECRET_DOMAIN}
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: hass-vscode-tls
+              hosts:
+                - *host
+        resources:
+          requests:
+            cpu: 10m
+            memory: 94M
+          limits:
+            memory: 412M
+        volumeMounts:
+          - name: config
+            mountPath: /config
+    resources:
+      requests:
+        cpu: 34m
+        memory: 351M
+      limits:
+        memory: 660M
