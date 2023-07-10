@@ -14,7 +14,7 @@ spec:
         "type": "static",
         "addresses": [
            {
-             "address": "192.168.183.249/24"
+             "address": "192.168.183.248/24"
            }
          ]
       }
