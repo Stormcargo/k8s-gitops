@@ -6,9 +6,9 @@ metadata:
   namespace: home
 spec:
   config: '{
-      "cniVersion": "1.0.0",
+      "cniVersion": "0.3.1",
       "type": "macvlan",
-      "master": "eth0.10",
+      "master": "eth0",
       "mode": "bridge",
       "ipam": {
         "type": "static",
