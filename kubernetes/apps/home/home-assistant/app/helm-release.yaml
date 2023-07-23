@@ -26,10 +26,7 @@ spec:
       repository: ghcr.io/onedr0p/home-assistant
       tag: 2023.5.4@sha256:fc40184c87d39bb0db629f924ca835aa55fd715f27de12a0de2f217efd39f758
     podAnnotations:
-      k8s.v1.cni.cncf.io/networks: [
-            { "name" : "hass-homekit-static",
-              "interface": "macvlan1" }
-      ]
+      k8s.v1.cni.cncf.io/networks: "hass-homekit-static"
     env:
       TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
