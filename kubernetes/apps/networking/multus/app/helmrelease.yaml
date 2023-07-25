@@ -30,3 +30,5 @@ spec:
         bin: /opt/cni/bin
 
       version: "0.3.1"
+    hostPaths:
+      netns: /var/run/netns
