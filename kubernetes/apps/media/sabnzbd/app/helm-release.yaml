@@ -8,7 +8,7 @@ spec:
   interval: 15m
   dependsOn:
     - name: longhorn
-      namespace: longhorn-system
+      namespace: storage
   chart:
     spec:
       chart: app-template
