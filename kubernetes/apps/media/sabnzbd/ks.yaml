@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-sabnzbd
   namespace: media
 spec:
-  path: ./kubernetes/apps/kube-system/sabnzbd/app
+  path: ./kubernetes/apps/media/sabnzbd/app
   prune: true
   sourceRef:
     kind: GitRepository
