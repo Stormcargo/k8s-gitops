@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/home-assistant
-      tag: 2023.5.4@sha256:fc40184c87d39bb0db629f924ca835aa55fd715f27de12a0de2f217efd39f758
+      tag: 2023.8.1@sha256:9ec76e5f804a8d0bae0d763581b9058feb0ae1d40499781afb5ea703e6d16857
     podAnnotations:
       k8s.v1.cni.cncf.io/networks: "hass-homekit-static"
     env:
