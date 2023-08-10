@@ -38,7 +38,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: home-assistant-config
+        existingClaim: home-assistant-config-v1
     ingress:
       main:
         annotations:
