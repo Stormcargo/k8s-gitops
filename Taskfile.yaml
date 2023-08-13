@@ -13,7 +13,7 @@ env:
 includes:
   ansible: .taskfiles/AnsibleTasks.yaml
   brew: .taskfiles/BrewTasks.yaml
-  cluster: .taskfiles/ClusterTasks.yaml
+  c: .taskfiles/ClusterTasks.yaml
 
 tasks:
 
