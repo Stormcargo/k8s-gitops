@@ -91,6 +91,7 @@ spec:
       config:
         enabled: true
         existingClaim: sabnzbd-config-0
+        mountPath: /config
       downloads:
         enabled: true
         type: nfs
