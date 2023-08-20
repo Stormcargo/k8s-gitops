@@ -79,17 +79,17 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: paperless-data-v1
-        mountPath: /data/data
+        existingClaim: paperless-data-v2
+        mountPath: /usr/src/paperless/data
       library:
         enabled: true
-        mountPath: /data/library
+        mountPath: /usr/src/paperless/media
         type: nfs
         server: ${NAS_ADDR}
         path: /mnt/external/Documents/library
       nas-consume:
         enabled: true
-        mountPath: /data/consume
+        mountPath: /usr/src/paperless/consume
         type: nfs
         server: ${NAS_ADDR}
         path: /mnt/external/Documents/consume
@@ -98,7 +98,7 @@ spec:
         mountPath: /data/export
         type: nfs
         server: ${NAS_ADDR}
-        path: /mnt/external/Documents/export
+        path: /usr/src/paperless/export
     resources:
       requests:
         memory: 1000Mi
