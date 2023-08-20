@@ -41,6 +41,7 @@ spec:
           - networking
           - media
           - monitoring
+          - services
           - storage
       name: "you"
       # customApps:
