@@ -98,7 +98,7 @@ spec:
         mountPath: /usr/src/paperless/export
         type: nfs
         server: ${NAS_ADDR}
-        path: /mnt/external/Documents/exports
+        path: /mnt/external/Documents/export
     resources:
       requests:
         memory: 1000Mi
