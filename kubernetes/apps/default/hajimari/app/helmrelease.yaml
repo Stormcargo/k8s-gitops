@@ -86,7 +86,7 @@ spec:
               url: "https://theverge.com/"
             - name: Arstechnica
               url: "https://www.arstechnica.com/"
-        - group: Tech
+        - group: Games
           bookmarks:
             - name: Metrodle
               url: "https://metrodle.com/"
