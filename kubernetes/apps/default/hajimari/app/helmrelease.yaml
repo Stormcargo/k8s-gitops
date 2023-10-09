@@ -86,6 +86,10 @@ spec:
               url: "https://theverge.com/"
             - name: Arstechnica
               url: "https://www.arstechnica.com/"
+        - group: Tech
+          bookmarks:
+            - name: Metrodle
+              url: "https://metrodle.com/"
     ingress:
       main:
         enabled: true
