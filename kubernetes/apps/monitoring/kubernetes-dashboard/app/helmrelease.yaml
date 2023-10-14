@@ -38,16 +38,17 @@ spec:
       - --token-ttl=43200
     ingress:
       enabled: true
-      className: nginx
+      hosts:
+        - "kubernetes.${SECRET_DOMAIN}"
+      ingressClassName: nginx
+      pathType: prefix
+      secretName: kubernetes-dashboard-tls
+      issuer:
+        name: letsencrypt-production
+        scope: cluster
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-staging
         hajimari.io/icon: mdi:kubernetes
-      hosts:
-        - &host "kubernetes.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
-          secretName: kubernetes-dashboard-tls
     metricsScraper:
       enabled: true
     metrics-server:
