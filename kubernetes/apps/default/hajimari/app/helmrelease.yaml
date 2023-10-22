@@ -55,7 +55,7 @@ spec:
             - name: Home Infra Repo
               url: "https://github.com/Stormcargo/k8s-gitops/"
             - name: K8S@Home Search
-              url: "https://nanne.dev/k8s-at-home-search/"
+              url: "https://kubesearch.dev/"
             - name: Template Chart Docs
               url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
             - name: Flux Docs
@@ -76,8 +76,6 @@ spec:
               url: "https://youtube.com/"
             - name: Guardian
               url: "https://guardian.co.uk/"
-            - name: Arstechnica
-              url: "https://arstechnica.com/"
         - group: Tech
           bookmarks:
             - name: Hacker News
