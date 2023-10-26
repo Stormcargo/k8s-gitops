@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./paperless/ks.yaml
+  - ./speedtest-exporter/ks.yaml
