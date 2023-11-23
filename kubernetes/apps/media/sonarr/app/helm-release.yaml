@@ -54,14 +54,8 @@ spec:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /mnt/external/Media
+        path: /mnt/external
         mountPath: /media
-      downloads:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/external/downloads
-        mountPath: /downloads
 
     podSecurityContext:
       runAsUser: 568
