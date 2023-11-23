@@ -92,18 +92,24 @@ spec:
         enabled: true
         existingClaim: sabnzbd-config-0
         mountPath: /config
-      downloads:
-        enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/external/downloads
-        mountPath: /downloads
       media:
         enabled: true
         type: nfs
         server: ${NAS_ADDR}
-        path: /mnt/external/Media
+        path: /mnt/external
         mountPath: /media
+      # downloads:
+      #   enabled: true
+      #   type: nfs
+      #   server: ${NAS_ADDR}
+      #   path: /mnt/external/downloads
+      #   mountPath: /downloads
+      # media:
+      #   enabled: true
+      #   type: nfs
+      #   server: ${NAS_ADDR}
+      #   path: /mnt/external/Media
+      #   mountPath: /media
       incomplete:
         enabled: true
         type: emptyDir
