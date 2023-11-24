@@ -1,11 +1,11 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: node-feature-discovery
-  namespace: kube-system
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: node-feature-discovery
@@ -14,17 +14,19 @@ spec:
         kind: HelmRepository
         name: node-feature-discovery-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     crds: CreateReplace
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    nodeFeatureRule:
-      createCRD: true
     worker:
       config:
         core:
@@ -33,17 +35,5 @@ spec:
           usb:
             deviceClassWhitelist: ["02", "03", "0e", "ef", "fe", "ff"]
             deviceLabelFields: ["class", "vendor", "device"]
-          pci:
-            deviceClassWhitelist: ["0200", "03", "12"]
-            deviceLabelFields: ["class", "vendor", "device", "subsystem_vendor", "subsystem_device"]
-          custom:
-            - name: intel-gpu
-              matchOn:
-                - pciId:
-                    class: ["0300"]
-                    vendor: ["8086"]
-            - name: zzh
-              matchOn:
-                - usbId:
-                    vendor: ["1a86"]
-                    device: ["7523"]
+    prometheus:
+      enable: true
