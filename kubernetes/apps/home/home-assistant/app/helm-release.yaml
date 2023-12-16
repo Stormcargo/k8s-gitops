@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app home-assistant
@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/home-assistant
-      tag: 2023.11.3@sha256:a24bb33c22c67e1e89a0cace283af24315ccbedd859199b2048f2fc97bbd1139
+      tag: 2023.12.3@sha256:4de48fcfd5a5bc1b90ca1803c70d550d5cbe1f75eb5d86f8b7cc11da1010acfa
     podAnnotations:
       k8s.v1.cni.cncf.io/networks: "hass-homekit-static"
     env:
@@ -74,7 +74,7 @@ spec:
         enabled: true
         image:
           repository: codercom/code-server
-          tag: 4.19.0
+          tag: 4.19.1
         workingDir: "/config"
         git:
           deployKeySecret: home-assistant-code-server-secret
