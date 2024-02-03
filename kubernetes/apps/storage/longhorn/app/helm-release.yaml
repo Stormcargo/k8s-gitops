@@ -49,3 +49,6 @@ spec:
         hajimari.io/appName: "Longhorn"
         hajimari.io/targetBlank: "true"
         hajimari.io/info: "Storage"
+    metrics:
+      serviceMonitor:
+        enabled: true
