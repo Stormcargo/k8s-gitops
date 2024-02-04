@@ -30,16 +30,16 @@ data:
             - icon: github.png
               href: "https://github.com/Stormcargo/k8s-gitops/"
     - Dev
-        - Devdocs:
+        - Devdocs
           - href: "https://devdocs.io"
-        - Devhints:
+        - Devhints
           - href: "https://devhints.io"
-        - ChatGPT:
+        - ChatGPT
           - href: "https://chat.openai.com/"
 
   services.yaml: |
     - Favourites
-      - Grafana Dashboard:
+      - Grafana Dashboard
         - icon: si-grafana
           href: https://grafana.${SECRET_DOMAIN}
           description: Cluster Visualization
