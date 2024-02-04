@@ -9,34 +9,33 @@ data:
   bookmarks.yaml: |
     - General:
         - Gmail:
-          - icon: gmail.png
+            icon: gmail.png
             href: 'http://gmail.com'
         - YouTube:
-          - icon: youtube.png
+            icon: youtube.png
             href: "https://youtube.com/"
         - Guardian:
-          - href: "https://guardian.co.uk/"
+            href: "https://guardian.co.uk/"
         - Hacker News:
-          - href: "https://news.ycombinator.com/"
+            href: "https://news.ycombinator.com/"
         - The Verge:
-          - href: "https://theverge.com/"
+            href: "https://theverge.com/"
         - Arstechnica:
-          - href: "https://www.arstechnica.com/"
+            href: "https://www.arstechnica.com/"
     - Infra:
         - kubesearch:
-            - icon: kubernetes-dashboard.png
-              href: 'https://kubesearch.dev/'
+            icon: kubernetes-dashboard.png
+            href: 'https://kubesearch.dev/'
         - home-cluster:
-            - icon: github.png
-              href: "https://github.com/Stormcargo/k8s-gitops/"
+            icon: github.png
+            href: "https://github.com/Stormcargo/k8s-gitops/"
         - ChatGPT
-            - icon: openai.png
-              href: "https://chat.openai.com/"
-    # - Dev
-    #     - Devdocs
-    #         - href: "https://devdocs.io"
-    #     - Devhints
-    #         - href: "https://devhints.io"
+            icon: openai.png
+            href: "https://chat.openai.com/"
+        - Devdocs
+            href: "https://devdocs.io"
+        - Devhints
+            href: "https://devhints.io"
 
   kubernetes.yaml: |
     mode: cluster
