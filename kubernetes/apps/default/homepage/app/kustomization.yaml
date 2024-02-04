@@ -5,3 +5,4 @@ namespace: default
 resources:
   - ./helmrelease.yaml
   - ./configmap.yaml
+  - ./rbac.yaml
