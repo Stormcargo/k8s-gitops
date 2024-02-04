@@ -55,7 +55,7 @@ spec:
         enabled: true
         className: internal-nginx
         hosts:
-          - host: &host home.${EXTERNAL_DOMAIN}
+          - host: &host home.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
