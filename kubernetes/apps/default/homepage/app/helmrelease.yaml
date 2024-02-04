@@ -53,7 +53,10 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal-nginx
+        className: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         hosts:
           - host: &host home.${SECRET_DOMAIN}
             paths:
