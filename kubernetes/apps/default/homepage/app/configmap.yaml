@@ -14,7 +14,7 @@ data:
         - YouTube:
           - icon: youtube.png
             href: "https://youtube.com/"
-        - Guardian
+        - Guardian:
           - href: "https://guardian.co.uk/"
         - Hacker News:
           - href: "https://news.ycombinator.com/"
@@ -36,13 +36,6 @@ data:
           - href: "https://devhints.io"
         - ChatGPT
           - href: "https://chat.openai.com/"
-
-  services.yaml: |
-    - Favourites
-      - Grafana Dashboard:
-          icon: si-grafana
-          href: https://grafana.${SECRET_DOMAIN}
-          description: Cluster Visualization
 
   kubernetes.yaml: |
     mode: cluster
