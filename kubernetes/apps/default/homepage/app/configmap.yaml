@@ -40,7 +40,7 @@ data:
   services.yaml: |
     - Favourites
       - Grafana Dashboard:
-          icon: si-grafana
+        - icon: si-grafana
           href: https://grafana.${SECRET_DOMAIN}
           description: Cluster Visualization
 
