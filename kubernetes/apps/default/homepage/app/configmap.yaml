@@ -9,8 +9,8 @@ data:
   bookmarks.yaml: |
     - General:
         - Gmail:
-            icon: gmail.png
-            href: 'http://gmail.com'
+            - icon: gmail.png
+              href: 'http://gmail.com'
         - YouTube:
             icon: youtube.png
             href: "https://youtube.com/"
@@ -29,12 +29,12 @@ data:
         - home-cluster:
             icon: github.png
             href: "https://github.com/Stormcargo/k8s-gitops/"
-        - ChatGPT
+        - ChatGPT:
             icon: openai.png
             href: "https://chat.openai.com/"
-        - Devdocs
+        - Devdocs:
             href: "https://devdocs.io"
-        - Devhints
+        - Devhints:
             href: "https://devhints.io"
 
   kubernetes.yaml: |
