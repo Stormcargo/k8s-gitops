@@ -31,11 +31,11 @@ data:
               href: "https://github.com/Stormcargo/k8s-gitops/"
     - Dev
         - Devdocs
-          - href: "https://devdocs.io"
+            - href: "https://devdocs.io"
         - Devhints
-          - href: "https://devhints.io"
+            - href: "https://devhints.io"
         - ChatGPT
-          - href: "https://chat.openai.com/"
+            - href: "https://chat.openai.com/"
 
   kubernetes.yaml: |
     mode: cluster
