@@ -66,7 +66,7 @@ data:
       #   icon: mdi-download-circle
     providers:
       longhorn:
-        url: http://longhorn.storage.svc.cluster.local
+        url: http://longhorn-frontend.storage.svc.cluster.local
   widgets.yaml: |
     - resources:
         backend: kubernetes
