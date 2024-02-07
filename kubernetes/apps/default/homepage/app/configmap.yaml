@@ -73,8 +73,6 @@ data:
         cpu: true
         expanded: true
         memory: true
-    - logo:
-        icon: https://raw.githubusercontent.com/LilDrunkenSmurf/k3s-home-cluster/main/icons/lds-transparent.png
     - search:
         provider: [google]
         focus: false
