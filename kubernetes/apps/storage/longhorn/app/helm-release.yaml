@@ -26,7 +26,9 @@ spec:
     defaultSettings:
       backupstorePollInterval: 300
       defaultDataPath: /mnt/usb
-      backupTarget: nfs://${NAS_ADDR}:/mnt/external/longhorn-backups
+      backupTarget: s3://longhorn@weur/
+      backupTargetCredentialSecret: longhorn-backup-secret
+      # backupTarget: nfs://${NAS_ADDR}:/mnt/external/longhorn-backups
       defaultDataLocality: best-effort
       defaultReplicaCount: 3
       defaultLonghornStaticStorageClass: longhorn
