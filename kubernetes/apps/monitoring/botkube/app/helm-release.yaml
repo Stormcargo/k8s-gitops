@@ -36,21 +36,26 @@ spec:
     serviceMonitor:
       enabled: false
 
-    sources:
-      'crds':
-        displayName: "CRDS"
-        kubernetes:
-          namespaces:
-            include:
-              - all
-          events:
-            - create
-            - delete
-            - error
-          resources:
-            - name: helm.toolkit.fluxcd.io/v2beta1/helmreleases
-            - name: source.toolkit.fluxcd.io/v1beta2/helmcharts
-            - name: kustomize.toolkit.fluxcd.io/v1beta2/kustomizations
-            # - name: notification.toolkit.fluxcd.io/v1beta1/alerts
-            # - name: monitoring.coreos.com/v1/podmonitors
-            # - name: monitoring.coreos.com/v1/servicemonitors
+    actions:
+      'describe-created-resource':
+        enabled: true
+      'show-logs-on-error':
+        enabled: false
+    communications:
+      default-group:
+        discord:
+          enabled: "true"
+          channels:
+            default:
+              notification:
+                disabled: false
+              bindings:
+                executors:
+                  - kubectl-read-only
+                sources:
+                  - k8s-recommendation-events
+                  - k8s-err-with-logs-events
+    executors:
+      kubectl-read-only:
+        botkube/kubectl:
+          enabled: true
