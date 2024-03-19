@@ -57,6 +57,7 @@ spec:
             args:
               - server
               - /data
+              - --address https://s3.${SECRET_DOMAIN}:9000
               - --console-address
               - :9001
             probes:
