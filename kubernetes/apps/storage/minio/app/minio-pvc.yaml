@@ -20,16 +20,16 @@ spec:
     - noatime
     - noac
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: minio-nfs
-#   namespace: storage
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   storageClassName: minio-nfs
-#   resources:
-#     requests:
-#       storage: 1Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-nfs
+  namespace: storage
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: minio-nfs
+  resources:
+    requests:
+      storage: 1Mi
