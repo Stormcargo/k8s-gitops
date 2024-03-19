@@ -30,6 +30,7 @@ spec:
       namespace: networking
   values:
     controller:
+      allowSnippetAnnotations: true
       extraEnvs:
         - name: TZ
           value: "${TIMEZONE}"
