@@ -29,6 +29,12 @@ spec:
           nfsMount: "true"
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: &uid 568
+            runAsGroup: *uid
+            fsGroup: *uid
+            fsGroupChangePolicy: OnRootMismatch
         containers:
           app:
             image:
@@ -66,9 +72,6 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-            securityContext:
-              privileged: true
-              runAsUser: 568
             resources:
               requests:
                 memory: 100Mi
