@@ -35,6 +35,8 @@ spec:
             runAsGroup: *uid
             fsGroup: *uid
             fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 100
         containers:
           app:
             image:
@@ -98,7 +100,7 @@ spec:
 
     ingress:
       app:
-        className: internal
+        className: nginx
         annotations:
           nginx.ingress.kubernetes.io/configuration-snippet: |
             more_set_headers "Host $host";
@@ -116,7 +118,7 @@ spec:
             # secretName: "minio-tls"
       s3:
         enabled: true
-        className: external
+        className: nginx
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -139,3 +141,5 @@ spec:
         type: nfs
         server: ${NAS_ADDR}
         path: /mnt/external/minio-store
+        globalMounts:
+          - path: /data
