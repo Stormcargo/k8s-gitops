@@ -134,8 +134,6 @@ spec:
     persistence:
       data:
         enabled: true
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /mnt/external/minio-store
+        existingClaim: minio-nfs
         globalMounts:
           - path: /data
