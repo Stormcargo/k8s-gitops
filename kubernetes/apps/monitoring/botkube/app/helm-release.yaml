@@ -106,9 +106,9 @@ spec:
         command: kubectl
         displayName: "Kubectl alias"
 
-    kgp:
-      command: kubectl get pods
-      displayName: "Get pods"
+      kgp:
+        command: kubectl get pods
+        displayName: "Get pods"
 
     resources:
       requests:
