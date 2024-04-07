@@ -40,10 +40,10 @@ spec:
               PAPERLESS_CONSUMER_POLLING: 60
               PAPERLESS_CONSUMER_RECURSIVE: "true"
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
-              # PAPERLESS_CONSUMPTION_DIR: /data/nas/consume
-              # PAPERLESS_DATA_DIR: /library/data
+              PAPERLESS_CONSUMPTION_DIR: /nas-data/consume
+              PAPERLESS_DATA_DIR: /nas-data/library
               PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
-              # PAPERLESS_EXPORT_DIR: /data/nas/export
+              PAPERLESS_EXPORT_DIR: /nas-data/export
               PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_REMOTE_USER
               # PAPERLESS_MEDIA_ROOT: /library/media
               PAPERLESS_OCR_LANGUAGES: eng
@@ -106,23 +106,11 @@ spec:
             app:
               - path: /usr/src/paperless/data
       library:
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /usr/src/paperless/media
-        globalMounts:
-          - path: /mnt/external/Documents/library
-      nas-consume:
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /usr/src/paperless/consume
-        globalMounts:
-          - path: /mnt/external/Documents/consume
-      nas-export:
-        type: nfs
-        server: ${NAS_ADDR}
-        path: /usr/src/paperless/export
-        globalMounts:
-          - path: /mnt/external/Documents/export
+        existingClaim: paperless-nfs
+        advancedMounts:
+          paperless:
+            app:
+              - path: /nas-data
 
     sidecars:
       gotenburg:
