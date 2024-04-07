@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,46 +27,64 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/paperless-ngx/paperless-ngx
-      tag: 2.7.0
-    env:
-      PAPERLESS_CONSUMER_POLLING: 60
-      PAPERLESS_CONSUMER_RECURSIVE: "true"
-      PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
-      # PAPERLESS_CONSUMPTION_DIR: /data/nas/consume
-      # PAPERLESS_DATA_DIR: /library/data
-      PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
-      # PAPERLESS_EXPORT_DIR: /data/nas/export
-      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_REMOTE_USER
-      # PAPERLESS_MEDIA_ROOT: /library/media
-      PAPERLESS_OCR_LANGUAGES: eng
-      PAPERLESS_OCR_LANGUAGE: eng
-      PAPERLESS_PORT: &port 80
-      PAPERLESS_REDIS: redis://localhost:6379
-      PAPERLESS_TASK_WORKERS: 2
-      PAPERLESS_TIKA_ENABLED: 1
-      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
-      PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-      PAPERLESS_TIME_ZONE: Europe/London
-      PAPERLESS_URL: https://paperless.${SECRET_DOMAIN}
-      USERMAP_UID: 1026
-      USERMAP_GID: 100
-    # envFrom:
-    #   - secretRef:
-    #       name: paperless-secret
+    controllers:
+      paperless:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: 2.7.1
+          env:
+            PAPERLESS_CONSUMER_POLLING: 60
+            PAPERLESS_CONSUMER_RECURSIVE: "true"
+            PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+            # PAPERLESS_CONSUMPTION_DIR: /data/nas/consume
+            # PAPERLESS_DATA_DIR: /library/data
+            PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
+            # PAPERLESS_EXPORT_DIR: /data/nas/export
+            PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_REMOTE_USER
+            # PAPERLESS_MEDIA_ROOT: /library/media
+            PAPERLESS_OCR_LANGUAGES: eng
+            PAPERLESS_OCR_LANGUAGE: eng
+            PAPERLESS_PORT: &port 80
+            PAPERLESS_REDIS: redis://localhost:6379
+            PAPERLESS_TASK_WORKERS: 2
+            PAPERLESS_TIKA_ENABLED: 1
+            PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+            PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+            PAPERLESS_TIME_ZONE: Europe/London
+            PAPERLESS_URL: https://paperless.${SECRET_DOMAIN}
+            USERMAP_UID: 1026
+            USERMAP_GID: 100
+          probes:
+            liveness:
+              enabled: true
+            readiness:
+              enabled: true
+            startup:
+              enabled: true
+              spec:
+                failureThreshold: 30
+                periodSeconds: 5
+          resources:
+            requests:
+              cpu: 11m
+              memory: 2048Mi
+            limits:
+              memory: 2048Mi
+
     service:
-      main:
+      app:
+        controller: paperless
         ports:
           http:
             port: *port
+
     ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
+      app:
+        className: nginx
         annotations:
           hajimari.io/icon: file-multiple
         hosts:
@@ -76,6 +94,7 @@ spec:
         tls:
           - hosts:
               - *host
+
     persistence:
       data:
         enabled: true
@@ -99,11 +118,7 @@ spec:
         type: nfs
         server: ${NAS_ADDR}
         path: /mnt/external/Documents/export
-    resources:
-      requests:
-        memory: 1000Mi
-      limits:
-        memory: 5000Mi
+
     sidecars:
       gotenburg:
         image: thecodingmachine/gotenberg:8.2.2
