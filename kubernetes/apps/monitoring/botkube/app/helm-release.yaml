@@ -24,7 +24,6 @@ spec:
     remediation:
       retries: 5
   values:
-values:
     replicaCount: 1
 
     settings:
