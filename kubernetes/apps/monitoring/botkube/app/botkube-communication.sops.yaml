@@ -2,33 +2,13 @@ apiVersion: v1
 kind: Secret
 metadata:
     namespace: monitoring
-    name: botkube-communication
-stringData:
-    comm_config.yaml: ENC[AES256_GCM,data:oQ0TFP8o1cPUL8NyiEKmdoxBIBiR5qCEGHmaa1ud48URdv5MnYogvHfUHpO+QR6OEn6gDjlN5YslZrscVQlsPdcboRyT6XE/7O3VZRvHF89tb5mgCLLt5M87GsTqmwZg4haV+UfjfJdwshmdj5io8U1pyn57Rlqqwwkcs8nuBW8VzJ2daMRF3SsBkYxW7Nv5FK77zXcjPB0dDv+0YCj7R2aG/26uzZ51P498/qXhnRihR4RYWV3xMBU3RIS1hHpUKGPvAqS7gV/cc5+BdMLas1nsKzxOHHSjMTzecXXFjXUwcPlPQIWF3lbb4e2rhbLKZXQyhzm3NKqh6t7YL11y547rOdZCgxz3N2trKPZM6R3dTqF5ueIUeqFUdt1WAZafr2F75zBwCnzfgQmy4h7WvRJMaNO60E/7tTa5ev3VNehtCwwh3usIpkF/fcKAPiCevtl1re3sS5ooPbQzSSRhqclxMNOsAV3hCu+yv2f6JTnPuQCLln3qS05gXwpKi+5tEJ/VTJduMyfKd6L7Bp0kx+y2L+m39hg2RzUo1EIEJpzqeyl5EwD8LyiKF3fV1y8SNXK5xcCkdeixZdxtDp30ac/bCWlxco29BX8o6VD9ZDx/MBEyCU2LdFk2uDCOz47JDb4sKLK1DC2Dmc7m+J5Zu7aBwX3P2bYbQFz8Zc8JEImaPF3lA99w6cMXlGsHX+xiecMjuqoH7WASohf+k9zGBa2vD4mhtTLYOTaavx3tCRxzcxJZ1CFhdQ2OrswT2T4JUctpb4V8/pOpjmqO7hpJhHAmsCcuZ1oDWXqjW89mC2lCI9bkdH4fe6+PAIRYMEnuEtKgILEnmyb1nVfa8XvkhGQK0Ev9Z5nRWoK0YGUGmVNhYTVuVdkKgXKJVvcrV+oYAgynKTbbcwQ=,iv:nFzhUO1znXrNa+O+R/0O5RMHyjgBp/CRACxBcbtmDx8=,tag:V/uAnwHcpqjiCQaG6TNw3A==,type:str]
-##  stringData:
-##    comm_config.yaml: |
-# as a string
-# communications:
-#   'default-group':
-#     discord:
-#       enabled: false
-#       token: 'DISCORD_TOKEN'
-#       botID: 'DISCORD_BOT_ID'
-#       channels:
-#         'default':
-#           id: 'DISCORD_CHANNEL_ID'
-#           notification:
-#             # -- If true, the notifications are not sent to the channel. They can be enabled with `@Botkube` command anytime.
-#             disabled: false
-#           bindings:
-#             executors:
-#               - kubectl-read-only
-#             sources:
-#               - k8s-err-events
-#               - k8s-recommendation-events
-#       notification:
-#         # -- Configures notification type that are sent. Possible values: `short`, `long`.
-#         type: short
+    name: botkube-secrets
+    labels:
+        botkube.io/config-watch: "true"
+data:
+    BOTKUBE_DISCORD_BOT_ID: ENC[AES256_GCM,data:ukZef+TJ/6ZOpWItvkkxAO3L,iv:i9Itec+a2Lj20FAVNNmxD45ZemF9lYzIgNyAMIPbHuk=,tag:giQhcYD0rJN6WHZA85CtsQ==,type:str]
+    BOTKUBE_DISCORD_TOKEN: ENC[AES256_GCM,data:U58LzmEFkcSz/iZctmUu5XnAGYrspOvT40M6AbWgzGpTXzys/rT4A6pFxuwDZ58F0SWl1b6g6V8x9CsN8tlfqg8d+wou4A==,iv:TpwJLT3DvbHe5CgEEEz1RJ/YwlHBU808ZCSYwGni3tQ=,tag:ynJzuMp+FBOQJShzaJrgvQ==,type:str]
+    BOTKUBE_DISCORD_CHANNEL_ID: ENC[AES256_GCM,data:x+MCBFyfcy5s8LSL9zaQBu2mgQ==,iv:WIwKupnPDs/1/Op0QRSETZyF9hz2INsnLhFOngJRIZU=,tag:ZJI/JgKic9cjRFMimYkmdg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -44,8 +24,8 @@ sops:
             WlZoSkZIbDdEU285Nkk1TitSelR5RXMKgTsVRtslqk9vh+CskfeS4j2DYX+vaHAn
             c2EytbnxlkRQk15PWcddmQjOJ2spfzPcWNlWSW4XSMtDYu5v9Uqwsg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-04-07T14:26:10Z"
-    mac: ENC[AES256_GCM,data:6RyRcZYEGBEGArqfsv7wBlmwV1xUgyFiyOn3g8H2dZdh+pkQULRtQGYbQSa2FHY1U1EZinTJHH6g5k278WrkxemmSJ2NLr6dHExpzPn4Oo3Ax0rzh3oz+tyF2zjwrteIRHLshRxXaYfrGlxsDcxD2+SmlKVzrAASZ1vlffuoW/4=,iv:2Q2Ccbr6KOhrhtrRWIUXRM8cTLqS/paPIaQwseE+MCY=,tag:JuN7z87EPyaolAdm+oe2xQ==,type:str]
+    lastmodified: "2024-04-07T14:36:12Z"
+    mac: ENC[AES256_GCM,data:iyoYsjbovJPIWYcJsqhhSchzQKBUaQeUA2gBh1nG7MImIlHBt+xJ4aZKo91nPXGBBta4aAQUsHRkODG8dKb9tSZNsLBvt3kz5Fjg7srv1eiYr2yRa2ZCFKZ2rPAR69mVzLK55q+P1v6TE1hFL3Hf9Ijj+B+0cxmnc21qPdu0HFk=,iv:EzfgeA9Ze0tbMnDKwNh0sXSBbEGRF5xonz+FLNjqHDo=,tag:J/83i1DeABnKfVPmqy25cA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

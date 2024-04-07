@@ -119,8 +119,19 @@ spec:
       limits:
         memory: 1000Mi
 
-    ## Parameters for anonymous analytics collection.
     analytics:
-      # -- If true, sending anonymous analytics is disabled. To learn what date we collect,
-      # see [Privacy Policy](https://docs.botkube.io/privacy#privacy-policy).
       disable: true
+
+  valuesFrom:
+    - targetPath: communications.default-group.discord.token
+      kind: Secret
+      name: botkube-secrets
+      valuesKey: BOTKUBE_DISCORD_TOKEN
+    - targetPath: communications.default-group.discord.botID
+      kind: Secret
+      name: botkube-secrets
+      valuesKey: BOTKUBE_DISCORD_BOT_ID
+    - targetPath: communications.default-group.discord.channels.default.id
+      kind: Secret
+      name: botkube-secrets
+      valuesKey: BOTKUBE_DISCORD_CHANNEL_ID
