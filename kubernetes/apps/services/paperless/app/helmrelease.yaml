@@ -106,11 +106,11 @@ spec:
             app:
               - path: /usr/src/paperless/data
       library:
-        existingClaim: paperless-nfs
-        advancedMounts:
-          paperless:
-            app:
-              - path: /nas-data
+        type: nfs
+        server: ${NAS_ADDR}
+        path: /mnt/external/Documents
+        globalMounts:
+          - path: /nas-data
 
     sidecars:
       gotenburg:
