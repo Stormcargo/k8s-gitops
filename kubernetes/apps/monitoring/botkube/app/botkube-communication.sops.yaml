@@ -4,7 +4,7 @@ metadata:
     namespace: monitoring
     name: botkube-communication
 stringData:
-    comm_config.yaml: ENC[AES256_GCM,data:n2EYgPx7KMjBpcUCOGi6pWwBFwhMpABsdQCLAReHdi/D2rJCXzfXhAjo7OYM4Q8rcwIE5AGX+OAEQP0kQTZxcNohFz07GkpHmqKp/YGLWnMoUuUx9Qf2m8Nnc4S1ELzQQDO7uKz1x2GPspf3e7HVbD/5qCb0/jGp2aUFl9rA8136BexhSAGCD6qpkidb6QVjbTAy6hejYIOZKyW0PqUEknN4+vtnvc2m45Gxs1Nj5hJ9FQ1sqtNWRG2gEw74/pi5OkylIF7FfWVZQUiDnUpkFZ7yyJMI4VXRrBve8O7TLzDhRpFMPirQCPQXRFaURINeFHulEYgOwVpb453i+eyGFm1v8uZzob2M/Om98kLHOm9lw9Cpn9IA0DZnZ/zAxjypohDK5ORNLFm8+DKnZQBJKMEzV+G8X/cV4Dd6cl6gHEn1uOma3q7GbXg+igfbD+ANL9Q+74RY8T5S6pcFOA88Xdtv8cjTY9GnHiu6+0Ide0UbLpfp4022qyshX1l1kFNnmdVe/2pmH/6R6zJpsZH2bBw6SvhZW1TDkLdjYHCX/hKzHYfykNSzh1Y+78KJez8XFpR+Kntr5Tk7BNoMzBFVf4QT8PH6HAe27tDDBZYbYfjAkwqx4ZAHTi/dcW9MQY09sqOnr/4HkKilO3OqwTVOQNXLVQTz+8US7Mj894UZNZHw7eEyeztIIb+UgEf3wJeB3GJx0cASEDVYPJLcRnP16KSGmTT3ZtQZqHGxbsX1/x+HDpE0pS3Q0cEnMEVy5jkthulAVm4FzdJXV9pYkkzP1sQXObagmgw2uMvDikuJYpwkivzN5iWL9OK6H+YjyvfqSy7oWo510pL+Kz7Toag=,iv:knvgl/eL8RChxfGmVL2Yawvpr5gj/MCWUUxBd8Zb8m4=,tag:sua/tIHO4bq5NCsEIB5VeA==,type:str]
+    comm_config.yaml: ENC[AES256_GCM,data:oQ0TFP8o1cPUL8NyiEKmdoxBIBiR5qCEGHmaa1ud48URdv5MnYogvHfUHpO+QR6OEn6gDjlN5YslZrscVQlsPdcboRyT6XE/7O3VZRvHF89tb5mgCLLt5M87GsTqmwZg4haV+UfjfJdwshmdj5io8U1pyn57Rlqqwwkcs8nuBW8VzJ2daMRF3SsBkYxW7Nv5FK77zXcjPB0dDv+0YCj7R2aG/26uzZ51P498/qXhnRihR4RYWV3xMBU3RIS1hHpUKGPvAqS7gV/cc5+BdMLas1nsKzxOHHSjMTzecXXFjXUwcPlPQIWF3lbb4e2rhbLKZXQyhzm3NKqh6t7YL11y547rOdZCgxz3N2trKPZM6R3dTqF5ueIUeqFUdt1WAZafr2F75zBwCnzfgQmy4h7WvRJMaNO60E/7tTa5ev3VNehtCwwh3usIpkF/fcKAPiCevtl1re3sS5ooPbQzSSRhqclxMNOsAV3hCu+yv2f6JTnPuQCLln3qS05gXwpKi+5tEJ/VTJduMyfKd6L7Bp0kx+y2L+m39hg2RzUo1EIEJpzqeyl5EwD8LyiKF3fV1y8SNXK5xcCkdeixZdxtDp30ac/bCWlxco29BX8o6VD9ZDx/MBEyCU2LdFk2uDCOz47JDb4sKLK1DC2Dmc7m+J5Zu7aBwX3P2bYbQFz8Zc8JEImaPF3lA99w6cMXlGsHX+xiecMjuqoH7WASohf+k9zGBa2vD4mhtTLYOTaavx3tCRxzcxJZ1CFhdQ2OrswT2T4JUctpb4V8/pOpjmqO7hpJhHAmsCcuZ1oDWXqjW89mC2lCI9bkdH4fe6+PAIRYMEnuEtKgILEnmyb1nVfa8XvkhGQK0Ev9Z5nRWoK0YGUGmVNhYTVuVdkKgXKJVvcrV+oYAgynKTbbcwQ=,iv:nFzhUO1znXrNa+O+R/0O5RMHyjgBp/CRACxBcbtmDx8=,tag:V/uAnwHcpqjiCQaG6TNw3A==,type:str]
 ##  stringData:
 ##    comm_config.yaml: |
 # as a string
@@ -44,8 +44,8 @@ sops:
             WlZoSkZIbDdEU285Nkk1TitSelR5RXMKgTsVRtslqk9vh+CskfeS4j2DYX+vaHAn
             c2EytbnxlkRQk15PWcddmQjOJ2spfzPcWNlWSW4XSMtDYu5v9Uqwsg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-04-07T14:23:09Z"
-    mac: ENC[AES256_GCM,data:VzBv0Lne1PVznx9I/DJivI1F8lfvIlXGRWm8LZm+QVAgk88faJZ/eXyn+2dOgEsALZOEfX+ZXv01t5G577MfwMlXwKJs2+/s8qPzQNBeZfj/hywd0jgKTr/zwvpxJ+unbhVHC+oJbCp+tOKFg5DPcXpRjViNLKS5mMXHCFPxduQ=,iv:oVEnQPMsoDq840Dag5GBeUVHE52l1xAOA0Q3WpnEocQ=,tag:EhcGqBVJqyex5RME7o9Mow==,type:str]
+    lastmodified: "2024-04-07T14:26:10Z"
+    mac: ENC[AES256_GCM,data:6RyRcZYEGBEGArqfsv7wBlmwV1xUgyFiyOn3g8H2dZdh+pkQULRtQGYbQSa2FHY1U1EZinTJHH6g5k278WrkxemmSJ2NLr6dHExpzPn4Oo3Ax0rzh3oz+tyF2zjwrteIRHLshRxXaYfrGlxsDcxD2+SmlKVzrAASZ1vlffuoW/4=,iv:2Q2Ccbr6KOhrhtrRWIUXRM8cTLqS/paPIaQwseE+MCY=,tag:JuN7z87EPyaolAdm+oe2xQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
