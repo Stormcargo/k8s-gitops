@@ -27,8 +27,6 @@ spec:
 values:
     replicaCount: 1
 
-    fullnameOverride: *app
-
     settings:
       clusterName: k8s-cluster
       configWatcher: true
