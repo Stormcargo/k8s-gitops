@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./minio-secret.sops.yaml
-  - ./minio-pvc.yaml
+  # - ./minio-pvc.yaml
