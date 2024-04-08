@@ -94,7 +94,7 @@ spec:
                 service:
                   identifier: app
                   port: http
-          - host: &s3Host s3.${SECRET_DOMAIN}
+          - host: &s3-host s3.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -103,7 +103,7 @@ spec:
         tls:
           - hosts:
               - *host
-              - *s3host
+              - *s3-host
             secretName: "minio-tls"
     persistence:
       data:
