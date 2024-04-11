@@ -5,3 +5,5 @@ resources:
   - ./namespace.yaml
   - ./hajimari/ks.yaml
   - ./homepage/ks.yaml
+  - ./valheim/ks.yaml
+

@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &name valheim
+  namespace: games
+
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    replace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      strategy: rollback
+    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
+
+  values:
+    controllers:
+      valheim:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            nameOverride: *name
+            image:
+              repository: lloesche/valheim-server
+              tag: latest@sha256:972cd120f3ce875aff4f8a4a8b79c8cb9fa89f23480df514feda479ac598ddfa
+              pullPolicy: IfNotPresent
+
+            env:
+                BACKUPS: "false"
+                CONFIG_DIRECTORY_PERMISSIONS: "755"
+                WORLDS_DIRECTORY_PERMISSIONS: "755"
+                WORLDS_FILE_PERMISSIONS: "644"
+                SERVER_PORT: "2456"
+                SERVER_PUBLIC: "true"
+                STATUS_HTTP: "true"
+                SUPERVISOR_HTTP: "true"
+                PUID: "1000"
+                PGID: "1000"
+                TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: valheim-config-secret
+
+            # resources:
+            #   requests:
+            #     cpu: 200m
+            #   limits:
+            #     memory: 8Gi
+
+    service:
+      app:
+        controller: *name
+        type: LoadBalancer
+        loadBalancerIP: ${SVC_VALHEIM_ADDRESS}
+        ports:
+          steam1:
+            port: 2456
+            protocol: UDP
+          steam2:
+            port: 2457
+            protocol: UDP
+
+    persistence:
+      config:
+        existingClaim: *name
