@@ -9,7 +9,7 @@ spec:
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: "valheim-dst"
+    name: "valheim-bootstrap"
   resources:
     requests:
       storage: "10Gi"
