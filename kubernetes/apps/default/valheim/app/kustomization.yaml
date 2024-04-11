@@ -7,4 +7,4 @@ resources:
   - ./volsync-secret.yaml
   - ./helmrelease.yaml
   - ./valheim-secret.sops.yaml
-  - ../../../../templates/volsync
+  - ../../../templates/volsync
