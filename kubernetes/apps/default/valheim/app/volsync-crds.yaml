@@ -2,61 +2,61 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "${APP}"
+  name: valheim
 spec:
-  accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
+  accessModes: ["ReadWriteOnce"]
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: "${APP}-dst"
+    name: "valheim-dst"
   resources:
     requests:
-      storage: "${VOLSYNC_CAPACITY}"
-  storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
+      storage: "10Gi"
+  storageClassName: "longhorn"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "${APP}-bootstrap"
+  name: "valheim-bootstrap"
 spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "${APP}-volsync"
+    repository: "valheim-volsync"
     copyMethod: Snapshot
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapclass}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn}"
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-8Gi}"
-    storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn-snapshot}"
-    accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
+    volumeSnapshotClassName: "longhorn-snapclass"
+    cacheStorageClassName: "longhorn"
+    cacheAccessModes: ["ReadWriteOnce"]
+    cacheCapacity: "8Gi"
+    storageClassName: "longhorn-snapshot}"
+    accessModes: ["ReadWriteOnce"]
     moverSecurityContext:
-      runAsUser: "${VOLSYNC_UID:-568}"
-      runAsGroup: "${VOLSYNC_GID:-568}"
-      fsGroup: "${VOLSYNC_GID:-568}"
-    capacity: "${VOLSYNC_CAPACITY}"
+      runAsUser: "568"
+      runAsGroup: "568"
+      fsGroup: "568"
+    capacity: "10Gi"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "${APP}"
+  name: "valheim"
 spec:
-  sourcePVC: "${CLAIM:-${APP}}"
+  sourcePVC: "valheim"
   trigger:
     schedule: "0 * * * *"
   restic:
-    copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
+    copyMethod: "Snapshot"
     pruneIntervalDays: 10
-    repository: "${APP}-volsync"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapclass}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-8Gi}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn}"
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn-snapshot}"
-    accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
+    repository: "valheim-volsync"
+    volumeSnapshotClassName: "longhorn-snapclass"
+    cacheCapacity: "8Gi"
+    cacheStorageClassName: "longhorn"
+    cacheAccessModes: ["ReadWriteOnce"]
+    storageClassName: "longhorn-snapshot"
+    accessModes: ["ReadWriteOnce"]
     moverSecurityContext:
-      runAsUser: "${VOLSYNC_UID:-568}"
-      runAsGroup: "${VOLSYNC_GID:-568}"
-      fsGroup: "${VOLSYNC_GID:-568}"
+      runAsUser: "568"
+      runAsGroup: "568"
+      fsGroup: "568"
     retain:
       daily: 7
