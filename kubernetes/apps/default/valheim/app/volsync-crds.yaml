@@ -1,20 +1,4 @@
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: valheim
-  namespace: default
-spec:
-  accessModes: ["ReadWriteOnce"]
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: "valheim-bootstrap"
-  resources:
-    requests:
-      storage: "10Gi"
-  storageClassName: "longhorn"
----
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -61,3 +45,19 @@ spec:
       fsGroup: 568
     retain:
       daily: 7
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: valheim
+  namespace: default
+spec:
+  accessModes: ["ReadWriteOnce"]
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: "valheim-bootstrap"
+  resources:
+    requests:
+      storage: "10Gi"
+  storageClassName: "longhorn"
