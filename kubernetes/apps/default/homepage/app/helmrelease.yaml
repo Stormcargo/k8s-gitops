@@ -86,7 +86,6 @@ spec:
         tls:
           - hosts:
               - *host
-            secretname: "homepage-tls"
 
     persistence:
       config:
