@@ -75,11 +75,10 @@ spec:
             connection_messages false
 
     persistence:
-      config-file:
+      config:
+        enabled: true
         type: configMap
         name: mosquitto-config
-        advancedMounts:
-          mosquitto:
-            app:
-              - path: /mosquitto/config/mosquitto.conf
-                subPath: mosquitto.conf
+        globalMounts:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
