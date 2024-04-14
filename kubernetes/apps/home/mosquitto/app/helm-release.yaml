@@ -53,16 +53,6 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
 
-    configMaps:
-      config:
-        enabled: true
-        data:
-          mosquitto.conf: |
-            listener 1883
-            allow_anonymous true
-            persistence false
-            connection_messages false
-
     service:
       app:
         controller: *app
