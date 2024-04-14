@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -23,52 +23,52 @@ spec:
   upgrade:
     remediation:
       retries: 5
+
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: eclipse-mosquitto
-      tag: 2.0.18
-    global:
-      nameOverride: *app
+    controllers:
+      mosquitto:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.18
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                memory: 10M
+              limits:
+                memory: 10M
+
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+
+
     service:
-      main:
+      app:
+        controller: *app
         type: LoadBalancer
-        loadBalancerIP: ${MQTT_SVC_ADDRESS}
-        externalTrafficPolicy: Local
+        annotations:
+          io.cilium/lb-ipam-ips: ${MQTT_SVC_ADDR}
         ports:
           http:
-            enabled: false
-          mqtt:
-            enabled: true
-            primary: true
             port: 1883
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-    configMaps:
-      config:
-        enabled: true
-        data:
-          mosquitto.conf: |
-            listener 1883
-            allow_anonymous true
-            persistence false
-            connection_messages false
-    #       mosquitto.conf: |
-    #         listener 1883
-    #         allow_anonymous true
-    #         persistence true
-    #         persistence_location /mosquitto/data
-    #         connection_messages false
+
     persistence:
-      config:
+      mosquitto-config:
         enabled: true
         type: configMap
-        name: mosquitto-config
-        mountPath: /mosquitto/config/mosquitto.conf
-        subPath: mosquitto.conf
+        name: mosquitto-configmap
+        globalMounts:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
