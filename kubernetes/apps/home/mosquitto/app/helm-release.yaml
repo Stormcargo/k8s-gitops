@@ -63,11 +63,23 @@ spec:
           http:
             port: 1883
 
-    persistence:
-      mosquitto-config:
+
+    configMaps:
+      config:
         enabled: true
+        data:
+          mosquitto.conf: |
+            listener 1883
+            allow_anonymous true
+            persistence false
+            connection_messages false
+
+    persistence:
+      config-file:
         type: configMap
         name: mosquitto-config
-        globalMounts:
-          - path: /mosquitto/config/mosquitto.conf
-            subPath: mosquitto.conf
+        advancedMounts:
+          mosquitto:
+            app:
+              - path: /mosquitto/config/mosquitto.conf
+                subPath: mosquitto.conf
