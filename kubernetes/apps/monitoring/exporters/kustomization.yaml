@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./sonarr-exporter/ks.yaml
   - ./sabnzbd-exporter/ks.yaml
+  - ./speedtest-exporter/ks.yaml
