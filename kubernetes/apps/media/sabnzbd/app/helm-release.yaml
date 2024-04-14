@@ -78,7 +78,6 @@ spec:
     service:
       app:
         controller: *app
-      main:
         ports:
           http:
             port: *port
