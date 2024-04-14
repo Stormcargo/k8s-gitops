@@ -111,7 +111,8 @@ spec:
     persistence:
       config:
         existingClaim: sabnzbd-config-0
-        mountPath: /config
+        globalMounts:
+          - path: /config
       media:
         type: nfs
         server: ${NAS_ADDR}
