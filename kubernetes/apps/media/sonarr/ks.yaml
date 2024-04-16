@@ -16,7 +16,6 @@ spec:
   timeout: 5m
   dependsOn:
     - name: volsync
-      namespace: storage
   postBuild:
     substitute:
       APP: *app
