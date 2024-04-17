@@ -21,3 +21,4 @@ spec:
     substitute:
       APP: *app
       CLAIM: sonarr-config-v1
+      VOLSYNC_CAPACITY: 1Gi
