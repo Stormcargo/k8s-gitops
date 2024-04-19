@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./config-pvc.yaml
-  - ./volsync-crds.yaml
+  # - ./volsync-crds.yaml
