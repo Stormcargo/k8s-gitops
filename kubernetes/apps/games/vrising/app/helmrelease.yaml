@@ -50,8 +50,6 @@ spec:
       app:
         controller: *name
         type: LoadBalancer
-        labels:
-          io.cilium/lb-ipam-layer2: "true"
         loadBalancerIP: ${SVC_VRISING_ADDRESS}
         ports:
           steam1:
