@@ -71,10 +71,9 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        mountPath: /mnt/vrising/persistentdata
         existingClaim: *name
       server:
         enabled: true
         type: emptyDir
-        mountPath: /mnt/vrising/server
+        globalMounts:
+          - path: /mnt/vrising/server
