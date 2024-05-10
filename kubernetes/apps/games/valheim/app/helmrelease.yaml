@@ -56,11 +56,12 @@ spec:
               - secretRef:
                   name: valheim-config-secret
 
-            # resources:
-            #   requests:
-            #     cpu: 200m
-            #   limits:
-            #     memory: 8Gi
+            resources:
+              requests:
+                memory: 4Gi
+                cpu: 200m
+              limits:
+                memory: 10Gi
 
     service:
       app:

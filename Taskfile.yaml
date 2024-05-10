@@ -15,6 +15,7 @@ includes:
   brew: .taskfiles/BrewTasks.yaml
   c: .taskfiles/ClusterTasks.yaml
   es: .taskfiles/ExternalSecretsTasks.yaml
+  vs: .taskfiles/VolsyncTasks.yaml
 
 tasks:
 
