@@ -37,8 +37,8 @@ spec:
 
             env:
               TZ: ${TIMEZONE}
-              GAMEPORT: &server 27015
-              QUERYPORT: &query 27016
+              GAMEPORT: &server 9876
+              QUERYPORT: &query 9877
               MAX_USERS: 4
               MAX_ADMIN: 2
 
@@ -53,9 +53,11 @@ spec:
         loadBalancerIP: ${SVC_VRISING_ADDRESS}
         ports:
           steam1:
+            enabled: true
             port: *server
             protocol: UDP
           steam2:
+            enabled: true
             port: *query
             protocol: UDP
 
