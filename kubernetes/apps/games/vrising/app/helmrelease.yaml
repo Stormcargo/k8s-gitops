@@ -25,7 +25,7 @@ spec:
             nameOverride: *name
             image:
               repository: trueosiris/vrising
-              tag: "2.0"
+              tag: "2.1"
               pullPolicy: IfNotPresent
 
             resources:
