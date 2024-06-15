@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -21,12 +21,18 @@ spec:
   upgrade:
     remediation:
       retries: 5
-  values:
+values:
+  nodeSelector:
+    network-interface: enp2s0
+  main:
     image:
       repository: ghcr.io/onedr0p/home-assistant
       tag: 2024.4.3@sha256:71e02388dcd720e2f49538046f81bb1932e64e7680c73230fae1b2ace7400805
     podAnnotations:
       k8s.v1.cni.cncf.io/networks: "hass-homekit-static"
+    envFrom:
+      - secretRef:
+          name: home-assistant-env
     env:
       TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
@@ -69,47 +75,144 @@ spec:
       fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 100
-    addons:
-      codeserver:
+  addons:
+    codeserver:
+      enabled: true
+      image:
+        repository: codercom/code-server
+        tag: 4.23.1
+      workingDir: "/config"
+      git:
+        deployKeySecret: home-assistant-code-server-secret
+      args:
+        - --user-data-dir
+        - "/config/.vscode"
+        - --auth
+        - "none"
+      ingress:
         enabled: true
-        image:
-          repository: codercom/code-server
-          tag: 4.23.1
-        workingDir: "/config"
-        git:
-          deployKeySecret: home-assistant-code-server-secret
-        args:
-          - --user-data-dir
-          - "/config/.vscode"
-          - --auth
-          - "none"
-        ingress:
-          enabled: true
-          ingressClassName: nginx
-          annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-production"
-            hajimari.io/icon: mdi:code-greater-than
-          hosts:
-            - host: &host hass-vscode.${SECRET_DOMAIN}
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - secretName: hass-vscode-tls
-              hosts:
-                - *host
-        resources:
-          requests:
-            cpu: 10m
-            memory: 94M
-          limits:
-            memory: 412M
-        volumeMounts:
-          - name: config
-            mountPath: /config
-    resources:
-      requests:
-        cpu: 34m
-        memory: 351M
-      limits:
-        memory: 660M
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hajimari.io/icon: mdi:code-greater-than
+        hosts:
+          - host: &host hass-vscode.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: hass-vscode-tls
+            hosts:
+              - *host
+      resources:
+        requests:
+          cpu: 10m
+          memory: 94M
+        limits:
+          memory: 412M
+      volumeMounts:
+        - name: config
+          mountPath: /config
+  resources:
+    requests:
+      cpu: 34m
+      memory: 351M
+    limits:
+      memory: 660M
+
+
+#   values:
+#     nodeSelector:
+#       network-interface: enp2s0
+#     image:
+#       repository: ghcr.io/onedr0p/home-assistant
+#       tag: 2024.4.3@sha256:71e02388dcd720e2f49538046f81bb1932e64e7680c73230fae1b2ace7400805
+#     podAnnotations:
+#       k8s.v1.cni.cncf.io/networks: "hass-homekit-static"
+#     env:
+#       TZ: "${TZ}"
+#       PYTHONUSERBASE: /config/deps
+#     service:
+#       main:
+#         ports:
+#           http:
+#             port: 8123
+#     persistence:
+#       config:
+#         enabled: true
+#         existingClaim: home-assistant-config-v1
+#     ingress:
+#       main:
+#         annotations:
+#           cert-manager.io/cluster-issuer: "letsencrypt-production"
+#           hajimari.io/icon: "home-assistant"
+#         enabled: true
+#         ingressClassName: nginx
+#         hosts:
+#           - host: &host "hass.${SECRET_DOMAIN}"
+#             paths:
+#               - path: /
+#                 pathType: Prefix
+#         tls:
+#           - secretName: hass-tls
+#             hosts:
+#               - *host
+#     probes:
+#       liveness:
+#         enabled: false
+#       readiness:
+#         enabled: false
+#       startup:
+#         enabled: false
+#     podSecurityContext:
+#       runAsUser: 568
+#       runAsGroup: 568
+#       fsGroup: 568
+#       fsGroupChangePolicy: "OnRootMismatch"
+#       supplementalGroups:
+#         - 100
+#     addons:
+#       codeserver:
+#         enabled: true
+#         image:
+#           repository: codercom/code-server
+#           tag: 4.23.1
+#         workingDir: "/config"
+#         git:
+#           deployKeySecret: home-assistant-code-server-secret
+#         args:
+#           - --user-data-dir
+#           - "/config/.vscode"
+#           - --auth
+#           - "none"
+#         ingress:
+#           enabled: true
+#           ingressClassName: nginx
+#           annotations:
+#             cert-manager.io/cluster-issuer: "letsencrypt-production"
+#             hajimari.io/icon: mdi:code-greater-than
+#           hosts:
+#             - host: &host hass-vscode.${SECRET_DOMAIN}
+#               paths:
+#                 - path: /
+#                   pathType: Prefix
+#           tls:
+#             - secretName: hass-vscode-tls
+#               hosts:
+#                 - *host
+#         resources:
+#           requests:
+#             cpu: 10m
+#             memory: 94M
+#           limits:
+#             memory: 412M
+#         volumeMounts:
+#           - name: config
+#             mountPath: /config
+#     resources:
+#       requests:
+#         cpu: 34m
+#         memory: 351M
+#       limits:
+#         memory: 660M
+
