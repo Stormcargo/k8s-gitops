@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/home-assistant
-              tag: 2024.4.3@sha256:71e02388dcd720e2f49538046f81bb1932e64e7680c73230fae1b2ace7400805
+              tag: 2024.6.3@sha256:74e6ffd612eed81f093a3a2423518c849d84a8944459f806ad08777bf3a45d4d
             # envFrom:
             #   - secretRef:
             #       name: home-assistant-env
