@@ -8,6 +8,7 @@ metadata:
   labels:
     substitution.flux.home.arpa/enabled: "true"
 spec:
+  targetNamespace: home
   path: ./kubernetes/apps/home/zigbee2mqtt/app
   prune: true
   sourceRef:
