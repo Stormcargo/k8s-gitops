@@ -123,4 +123,4 @@ spec:
       config:
         existingClaim: *app
         globalMounts:
-          - path: /config
+          - path: /data
