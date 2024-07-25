@@ -94,7 +94,7 @@ spec:
 
     service:
       app:
-        controller: zigbee2mqtt
+        controller: *app
         ports:
           http:
             primary: true
@@ -118,9 +118,7 @@ spec:
           - secretName: zigbee-tls
             hosts:
               - *host
+
     persistence:
       config:
-        enabled: true
-        existingClaim: zigbee2mqtt-config-v1
-        globalMounts:
-          - path: "/data"
+        existingClaim: *app
