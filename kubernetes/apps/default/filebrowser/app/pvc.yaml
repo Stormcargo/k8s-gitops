@@ -9,14 +9,3 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: longhorn
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: filebrowser-media
-spec:
-  accessModes: ['ReadOnlyMany']
-  resources:
-    requests:
-      storage: 500Gi
-  storageClassName: media-nfs
