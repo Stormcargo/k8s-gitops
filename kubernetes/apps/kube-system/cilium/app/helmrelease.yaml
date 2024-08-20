@@ -42,6 +42,8 @@ spec:
       socketPath: /var/run/k3s/containerd/containerd.sock
     endpointRoutes:
       enabled: true
+    envoy:
+      enabled: false
     hubble:
       enabled: true
       metrics:
