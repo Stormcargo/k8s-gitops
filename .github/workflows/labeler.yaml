@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "Labeler"
 
 on:
@@ -18,4 +19,3 @@ jobs:
         uses: actions/labeler@v5
         with:
           configuration-path: .github/labeler.yaml
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"

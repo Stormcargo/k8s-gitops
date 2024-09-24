@@ -1,0 +1,124 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+---
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.7.6
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.30.3
+
+clusterName: "home-k8s"
+endpoint: https://192.168.183.199:6443
+clusterPodNets:
+  - "10.69.0.0/16"
+clusterSvcNets:
+  - "10.96.0.0/16"
+additionalApiServerCertSans: &sans
+  - "192.168.183.199"
+  - 127.0.0.1 # KubePrism
+additionalMachineCertSans: *sans
+
+# Disable built-in Flannel to use Cilium
+cniConfig:
+  name: none
+
+nodes:
+  - hostname: "rzmini-01"
+    ipAddress:  "192.168.183.200"
+    installDisk: "/dev/nvme0n1"
+    talosImageURL: factory.talos.dev/installer/e570def3e711fa4d3fec3f1351e814d9d8cbc0a597f3d02f161bb34650ad82f7
+    controlPlane: true
+    machineDisks:
+      - device: /dev/disk/by-id/ata-SPCC_Solid_State_Disk_AA000000000000001842
+        partitions:
+          - mountpoint: /var/mnt/longhorn
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "1c:fd:08:7b:b4:5d"
+        dhcp: true
+        vip:
+          ip: "192.168.183.199"
+
+  - hostname: "rzmini-02"
+    ipAddress: "192.168.183.201"
+    installDisk: "/dev/nvme0n1"
+    talosImageURL: factory.talos.dev/installer/e570def3e711fa4d3fec3f1351e814d9d8cbc0a597f3d02f161bb34650ad82f7
+    controlPlane: true
+    machineDisks:
+      - device: /dev/disk/by-id/ata-Samsung_SSD_850_EVO_1TB_S2PWNX0J401766D
+        partitions:
+          - mountpoint: /var/mnt/longhorn
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "1c:fd:08:7b:b4:3e"
+        dhcp: true
+        vip:
+          ip: "192.168.183.199"
+
+  - hostname: "rzmini-03"
+    ipAddress: "192.168.183.202"
+    installDisk: "/dev/nvme0n1"
+    talosImageURL: factory.talos.dev/installer/e570def3e711fa4d3fec3f1351e814d9d8cbc0a597f3d02f161bb34650ad82f7
+    controlPlane: true
+    machineDisks:
+      - device: /dev/disk/by-id/ata-CT1000BX500SSD1_2233E6545ABA
+        partitions:
+          - mountpoint: /var/mnt/longhorn
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "1c:fd:08:79:bb:ca"
+        dhcp: true
+        vip:
+          ip: "192.168.183.199"
+
+# Global patches
+patches:
+    # NFS Config
+    - |
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+
+    # Mount longhorn drives
+    - |       
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/mnt/longhorn
+              type: bind
+              source: /var/mnt/longhorn
+              options: ["bind", "rshared", "rw"]
+
+    - "@./patches/global/cluster-discovery.yaml"
+    - "@./patches/global/containerd.yaml"
+    - "@./patches/global/disable-search-domain.yaml"
+    - "@./patches/global/hostdns.yaml"
+    - "@./patches/global/kubelet.yaml"
+    - "@./patches/global/sysctl.yaml"
+
+# Controller patches
+controlPlane:
+  patches:
+    - "@./patches/controller/api-access.yaml"
+    - "@./patches/controller/cluster.yaml"
+    - "@./patches/controller/disable-admission-controller.yaml"
+    - "@./patches/controller/etcd.yaml"
+

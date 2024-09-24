@@ -6,9 +6,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
+  url: "https://github.com/Stormcargo/k8s-gitops"
   ref:
-    branch: main
-  url: "https://github.com/Stormcargo/k8s-gitops.git"
+    branch: "main"
   ignore: |
     # exclude all
     /*
