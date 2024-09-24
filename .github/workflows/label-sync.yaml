@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "Label Sync"
 
 on:
@@ -19,5 +20,4 @@ jobs:
         uses: EndBug/label-sync@v2
         with:
           config-file: .github/labels.yaml
-          token: "${{ secrets.GITHUB_TOKEN }}"
           delete-other-labels: true

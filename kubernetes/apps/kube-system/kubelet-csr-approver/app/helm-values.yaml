@@ -1,0 +1,3 @@
+---
+providerRegex: ^(rzmini-01|rzmini-02|rzmini-03)$
+bypassDnsResolution: true
