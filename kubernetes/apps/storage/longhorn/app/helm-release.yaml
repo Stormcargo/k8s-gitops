@@ -25,7 +25,7 @@ spec:
       reclaimPolicy: Delete
     defaultSettings:
       backupstorePollInterval: 300
-      defaultDataPath: /mnt/usb
+      defaultDataPath: /var/mnt/longhorn
       backupTarget: s3://longhorn@weur/
       backupTargetCredentialSecret: longhorn-backup-secret
       # backupTarget: nfs://${NAS_ADDR}:/mnt/external/longhorn-backups
