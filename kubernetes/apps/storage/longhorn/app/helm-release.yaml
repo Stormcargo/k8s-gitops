@@ -20,19 +20,14 @@ spec:
   values:
     persistence:
       defaultClass: true
-      defaultClassReplicaCount: 3
-      defaultFsType: ext4
-      reclaimPolicy: Delete
     defaultSettings:
-      backupstorePollInterval: 300
       defaultDataPath: /var/mnt/longhorn
-      backupTarget: s3://longhorn@weur/
+      # backupTarget: s3://longhorn@weur/
       backupTargetCredentialSecret: longhorn-backup-secret
-      # backupTarget: nfs://${NAS_ADDR}:/mnt/external/longhorn-backups
       defaultDataLocality: best-effort
       defaultReplicaCount: 3
       defaultLonghornStaticStorageClass: longhorn
-      createDefaultDiskLabeledNodes: true
+      createDefaultDiskLabeledNodes: false
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 1
       storageMinimalAvailablePercentage: 10
