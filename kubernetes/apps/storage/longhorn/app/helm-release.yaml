@@ -39,7 +39,7 @@ spec:
       StorageOverProvisioningPercentage: 120
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: internal
       host: "longhorn.${SECRET_DOMAIN}"
       tls: true
       tlsSecret: "longhorn-tls"
