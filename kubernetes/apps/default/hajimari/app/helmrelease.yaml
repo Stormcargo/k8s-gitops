@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   dependsOn:
     - name: ingress-nginx-internal
-      # namespace: networking
+      namespace: network
   values:
     hajimari:
       defaultEnable: true
