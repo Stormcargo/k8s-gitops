@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.3.2
+      version: 3.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -58,7 +58,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${MQTT_SVC_ADDR}
+          lbipam.cilium.io/ips: ${MQTT_SVC_ADDR}
         ports:
           http:
             port: 1883
