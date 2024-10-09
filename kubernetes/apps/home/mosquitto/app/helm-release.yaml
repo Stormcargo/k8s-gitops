@@ -58,7 +58,7 @@ spec:
         controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${MQTT_SVC_ADDR}
+          lbipam.cilium.io/ips: ${MQTT_SVC_ADDRESS}
         ports:
           http:
             port: 1883
