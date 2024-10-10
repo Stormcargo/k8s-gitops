@@ -9,6 +9,8 @@ spec:
   targetNamespace: games
   path: ./kubernetes/apps/games/valheim/app
   prune: true
+  dependsOn:
+    - name: longhorn
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
