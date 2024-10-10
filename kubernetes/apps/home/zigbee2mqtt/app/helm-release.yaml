@@ -104,7 +104,7 @@ spec:
             port: 9000
     ingress:
       app:
-        className: nginx
+        className: internal
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/icon: mdi:zigbee
