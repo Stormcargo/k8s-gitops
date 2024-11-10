@@ -88,7 +88,7 @@ spec:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/icon: "home-assistant"
         hosts:
-          - host: &host "hass.${SECRET_DOMAIN}"
+          - host: "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
