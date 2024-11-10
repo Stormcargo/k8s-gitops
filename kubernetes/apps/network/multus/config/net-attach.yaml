@@ -5,17 +5,29 @@ metadata:
   name: hass-homekit-static
   namespace: home
 spec:
-  config: '{
+  config: |-
+    {
       "cniVersion": "0.3.1",
-      "type": "macvlan",
-      "master": "bond0",
-      "mode": "bridge",
-      "ipam": {
-        "type": "static",
-        "addresses": [
-           {
-             "address": "192.168.183.249/24"
-           }
-         ]
-      }
-    }'
+      "name": "hass-homekit-static",
+
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "bond0",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "192.168.183.0/24", "gw": "192.168.183.1" }
+            ]
+          }
+        },
+        {
+          "capabilities": { "mac": true },
+          "type": "tuning"
+        }
+      ]
+    }

@@ -28,7 +28,13 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           annotations:
-            k8s.v1.cni.cncf.io/networks: "hass-homekit-static"
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"hass-homekit-static",
+                "namespace": "network",
+                "ips": ["192.168.183.249/24"],
+                "mac": "3e:59:e4:f7:43:08"
+              }]
         containers:
           app:
             image:
