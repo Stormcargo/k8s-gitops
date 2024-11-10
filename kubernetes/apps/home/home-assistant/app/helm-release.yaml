@@ -83,7 +83,7 @@ spec:
     ingress:
       app:
         enabled: true
-        className: nginx
+        className: internal
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/icon: "home-assistant"
