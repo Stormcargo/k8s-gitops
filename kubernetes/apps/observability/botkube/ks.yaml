@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: observability
-  path: ./kubernetes/apps/monitoring/botkube/app
+  path: ./kubernetes/apps/observability/botkube/app
   prune: true
   sourceRef:
     kind: GitRepository
