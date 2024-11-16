@@ -31,6 +31,9 @@ spec:
   restic:
     repository: "${APP}-volsync"
     copyMethod: Snapshot
+    cleanupCachePVC: true
+    cleanupTempPVC: true
+    enableFileDeletion: true
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapclass}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn-cache}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
