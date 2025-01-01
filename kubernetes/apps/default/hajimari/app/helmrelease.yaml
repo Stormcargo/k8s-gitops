@@ -40,7 +40,7 @@ spec:
           - kube-system
           - networking
           - media
-          - monitoring
+          - observability
           - services
           - storage
       name: "you"
