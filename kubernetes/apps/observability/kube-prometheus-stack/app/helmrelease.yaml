@@ -41,8 +41,11 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal
-        hosts: ["alertmanager.${SECRET_DOMAIN}"]
+        hosts: 
+          - "alertmanager.${SECRET_DOMAIN}"
         pathType: Prefix
+        annotations:
+          hajimari.io/enabled: false
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
