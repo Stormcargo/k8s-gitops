@@ -45,7 +45,7 @@ spec:
           - "alertmanager.${SECRET_DOMAIN}"
         pathType: Prefix
         annotations:
-          hajimari.io/enabled: false
+          hajimari.io/enabled: "false"
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
