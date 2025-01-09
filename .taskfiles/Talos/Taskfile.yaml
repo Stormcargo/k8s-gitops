@@ -58,7 +58,7 @@ tasks:
       - msg: Unable to retrieve Talos config
         sh: talosctl config info &>/dev/null
       - msg: Node not found
-        sh: talosctl --nodes {{.NODE}} get machineconfig &>/dev/null
+        sh: talosctl --nodes {{.NODE}} get machineconfig >/dev/null 2>&1
       - msg: Upstream Talos version not found
         sh: |
           curl -fsSL -H "Authorization: Bearer $(curl -fsSL 'https://ghcr.io/token?scope=repository:siderolabs/talos:pull' | jq -r '.token')" https://ghcr.io/v2/siderolabs/talos/manifests/{{.VERSION}} &>/dev/null
@@ -66,16 +66,16 @@ tasks:
   upgrade-k8s:
     desc: Upgrade Kubernetes across the cluster
     dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
-    cmd: talosctl --nodes {{.CONTROLLER}} upgrade-k8s --to {{.TO}}
+    cmd: talosctl --nodes {{.NODE}} upgrade-k8s --to {{.VERSION}}
     requires:
-      vars: ['CONTROLLER', 'TO']
+      vars: ['NODE', 'VERSION']
     preconditions:
       - msg: Missing talosconfig
         sh: test -f {{.TALOSCONFIG}}
       - msg: Unable to retrieve Talos config
-        sh: talosctl config info &>/dev/null
-      - msg: Node not found
-        sh: talosctl --nodes {{.CONTROLLER}} get machineconfig &>/dev/null 2>&1
+        sh: talosctl --nodes {{.NODE}} get machineconfig >/dev/null 2>&1
+      - msg: Node not controller
+        sh: talosctl config info --output json | jq --exit-status '.endpoints | index("{{.NODE}}") != null'
 
   nuke:
     desc: Resets nodes back to maintenance mode
