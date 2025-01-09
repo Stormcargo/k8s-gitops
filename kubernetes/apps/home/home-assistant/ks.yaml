@@ -20,7 +20,6 @@ spec:
     - name: volsync
     - name: multus
   interval: 30m
-  retryInterval: 1m
   timeout: 5m
   postBuild:
     substitute:

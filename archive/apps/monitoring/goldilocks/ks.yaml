@@ -16,5 +16,5 @@ spec:
       name: goldilocks
       namespace: monitoring
   interval: 30m
-  retryInterval: 1m
+  : 1m
   timeout: 3m
