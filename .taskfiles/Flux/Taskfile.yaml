@@ -23,11 +23,9 @@ tasks:
       - kubectl apply --server-side --filename {{.CLUSTER_SETTINGS_FILE}}
       - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/flux/config --force-conflicts
     preconditions:
-      - msg: Missing kubeconfig
-        sh: test -f {{.KUBECONFIG}}
-      - msg: Missing Sops Age key file
-        sh: test -f {{.SOPS_AGE_KEY_FILE}}
-
+      - test -f {{.KUBECONFIG}}
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which flux kubectl sops
 
   reconcile:
     desc: Force update Flux to pull in changes from your Git repository
