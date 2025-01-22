@@ -55,6 +55,7 @@ spec:
         datasources:
           - name: Prometheus
             type: prometheus
+            uid: prometheus
             access: proxy
             url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
             isDefault: true
@@ -86,9 +87,11 @@ spec:
           revision: 14
           datasource: Prometheus
         smartctl:
+          # renovate: depName="SMARTctl Exporter Dashboard"
           gnetId: 22604
           revision: 2
-          datasource: Prometheus
+          datasource: 
+            - { name: DS_PROMETHEUS, value: Prometheus }
         mqtt-exporter:
           gnetId: 22666
           revision: 1
