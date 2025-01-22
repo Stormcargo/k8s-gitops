@@ -2,10 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-grafana
+  name: grafana
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/monitoring/grafana/app
+  targetNamespace: observability
+  path: ./kubernetes/apps/observability/grafana/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -13,3 +14,6 @@ spec:
   wait: false # no flux ks dependents
   interval: 30m
   timeout: 5m
+  dependsOn:
+    - name: external-secrets-stores
+    - name: ingress-nginx-internal

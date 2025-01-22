@@ -25,11 +25,6 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: local-path-provisioner
-      namespace: kube-system
-    - name: ingress-nginx
-      namespace: networking
   values:
     deploymentStrategy:
       type: Recreate
@@ -90,6 +85,14 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
+        smartctl:
+          gnetId: 22604
+          revision: 2
+          datasource: Prometheus
+        mqtt-exporter:
+          gnetId: 22666
+          revision: 1
+          datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
@@ -119,7 +122,6 @@ spec:
         - hosts:
             - *host
     persistence:
-      enabled: true
-      storageClassName: local-path
+      enabled: false
     testFramework:
       enabled: false
