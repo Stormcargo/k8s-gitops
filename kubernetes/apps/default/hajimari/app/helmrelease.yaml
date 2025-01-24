@@ -84,10 +84,10 @@ spec:
               url: "https://theverge.com/"
             - name: Arstechnica
               url: "https://www.arstechnica.com/"
-        - group: Games
+        - group: Home
           bookmarks:
-            - name: Metrodle
-              url: "https://metrodle.com/"
+            - name: PiKVM
+              url: "http://192.168.183.50"
     ingress:
       main:
         enabled: true
