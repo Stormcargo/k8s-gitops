@@ -8,8 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../templates/volsync
   dependsOn:
     - name: longhorn
     - name: volsync
