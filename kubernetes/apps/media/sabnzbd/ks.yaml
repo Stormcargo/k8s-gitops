@@ -12,9 +12,7 @@ spec:
     - ../../../templates/volsync
   dependsOn:
     - name: longhorn
-      namespace: storage
     - name: volsync
-      namespace: storage
   targetNamespace: media
   path: ./kubernetes/apps/media/sabnzbd/app
   prune: true
