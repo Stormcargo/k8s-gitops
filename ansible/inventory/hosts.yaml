@@ -1,6 +1,0 @@
----
-storage:
-  hosts:
-    rz-store:
-      ansible_user: ubuntu
-      ansible_host: 192.168.183.204
