@@ -6,15 +6,10 @@ metadata:
   namespace: media
 spec:
   interval: 15m
-  dependsOn:
-    - name: longhorn
-      namespace: storage
-    - name: volsync
-      namespace: storage
   chart:
     spec:
       chart: app-template
-      version: 3.3.2
+      version: 3.6.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -62,12 +57,17 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
                 memory: 100Mi
               limits:
                 memory: 12Gi
+
         pod:
           securityContext:
             runAsUser: 568
@@ -84,18 +84,11 @@ spec:
 
     ingress:
       app:
-        className: nginx
+        className: internal
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           hajimari.io/icon: "download"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/name: SABnzbd
-          gethomepage.dev/icon: sabnzbd.png
-          gethomepage.dev/description: NZB Download Client
-          gethomepage.dev/widget.type: sabnzbd
-          gethomepage.dev/widget.url: http://sabnzbd.downloads:8080
-
+          hajimari.io/group: "Media"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -104,15 +97,13 @@ spec:
                 service:
                   identifier: app
                   port: *port
-        tls:
-          - hosts:
-              - *host
+        # tls:
+        #   - hosts:
+        #       - *host
 
     persistence:
       config:
-        existingClaim: sabnzbd-config-0
-        globalMounts:
-          - path: /config
+        existingClaim: *app
       media:
         type: nfs
         server: ${NAS_ADDR}
@@ -121,4 +112,6 @@ spec:
           - path: /media
       incomplete:
         enabled: true
+        type: emptyDir
+      tmp:
         type: emptyDir
