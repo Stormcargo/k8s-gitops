@@ -83,7 +83,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: television-box
-          hajimari.io/group: "Media"
+          # hajimari.io/group: "Media"
         hosts:
           - host: "sonarr.${SECRET_DOMAIN}"
             paths:

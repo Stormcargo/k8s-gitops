@@ -3,7 +3,7 @@
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.7.7
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.30.3
+kubernetesVersion: v1.30.6
 
 clusterName: "home-k8s"
 endpoint: https://192.168.183.199:6443
@@ -27,7 +27,7 @@ nodes:
     talosImageURL: factory.talos.dev/installer/e570def3e711fa4d3fec3f1351e814d9d8cbc0a597f3d02f161bb34650ad82f7
     controlPlane: true
     machineDisks:
-      - device: /dev/disk/by-id/ata-SPCC_Solid_State_Disk_AA000000000000001842
+      - device: /dev/sda
         partitions:
           - mountpoint: /var/mnt/longhorn
     networkInterfaces:
@@ -107,18 +107,16 @@ patches:
               source: /var/mnt/longhorn
               options: ["bind", "rshared", "rw"]
 
-    - "@./patches/global/cluster-discovery.yaml"
-    - "@./patches/global/containerd.yaml"
-    - "@./patches/global/disable-search-domain.yaml"
-    - "@./patches/global/hostdns.yaml"
-    - "@./patches/global/kubelet.yaml"
-    - "@./patches/global/sysctl.yaml"
+    - "@./patches/global/machine-features.yaml"
+    - "@./patches/global/machine-files.yaml"
+    - "@./patches/global/machine-kubelet.yaml"
+    - "@./patches/global/machine-network.yaml"
+    - "@./patches/global/machine-sysctls.yaml"
+    - "@./patches/global/machine-time.yaml"
 
 # Controller patches
 controlPlane:
   patches:
     - "@./patches/controller/api-access.yaml"
     - "@./patches/controller/cluster.yaml"
-    - "@./patches/controller/disable-admission-controller.yaml"
-    - "@./patches/controller/etcd.yaml"
-
+    - "@./patches/controller/admission-controller-patch.yaml"
