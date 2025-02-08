@@ -22,3 +22,7 @@ Below is a general guide on trying to debug an issue with an resource or applica
 - `kubectl -n <namespace> logs <pod-name> -f`
 
 Note: If a resource exists, running `kubectl -n <namespace> describe <resource> <name>` might give you insight into what the problem(s) could be.
+
+## Debug pod
+
+`kubectl debug node/<node-name> -it --image=<debug-image> -n kube-system --profile=sysadmin`
