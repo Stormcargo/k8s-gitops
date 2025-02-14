@@ -28,7 +28,7 @@ spec:
         - host: &host goldpinger.${SECRET_DOMAIN}
           paths:
             - path: /
-              pathType: prefix
+              pathType: Prefix
       tls: 
         - hosts:
           - *host
