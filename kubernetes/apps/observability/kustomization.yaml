@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./botkube/ks.yaml
   - ./grafana/ks.yaml
+  - ./goldpinger/ks.yaml
   - ./namespace.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./prometheus-operator-crds/ks.yaml

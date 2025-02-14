@@ -1,10 +1,11 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1beta2.json
-apiVersion: source.toolkit.fluxcd.io/v1
+apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: hajimari
+  name: goldpinger
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://hajimari.io
+  url: https://bloomberg.github.io/goldpinger
+  timeout: 3m

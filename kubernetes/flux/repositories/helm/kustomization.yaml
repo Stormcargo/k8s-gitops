@@ -14,6 +14,7 @@ resources:
   - ./external-secrets.yaml
   - ./fairwinds.yaml
   - ./grafana.yaml
+  - ./goldpinger.yaml
   - ./hajimari.yaml
   - ./ingress-nginx.yaml
   - ./intel-charts.yaml
