@@ -60,6 +60,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_FRONTEND_URL: "https://zigbee.${SECRET_DOMAIN}"
 
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_ENABLED: "true"
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
 
@@ -75,7 +76,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
               ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.183.230:6638
-              
+
             probes:
               liveness:
                 enabled: true
