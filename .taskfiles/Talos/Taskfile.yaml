@@ -63,13 +63,13 @@ tasks:
   upgrade:
     desc: Upgrade Talos on a node
     cmds:
-      - talosctl --nodes {{.HOSTNAME}} upgrade --image="factory.talos.dev/installer{{if eq .TALOS_SECUREBOOT "true"}}-secureboot{{end}}/{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" --timeout=10m
+      - talosctl --nodes {{.HOSTNAME}} upgrade --image="factory.talos.dev/installer{{if eq .TALOS_SECUREBOOT "true"}}-secureboot{{end}}/{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" --timeout=20m
       - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
     vars:
       TALOS_SCHEMATIC_ID: e570def3e711fa4d3fec3f1351e814d9d8cbc0a597f3d02f161bb34650ad82f7
         # sh: talosctl get nodeannotationspecs --nodes {{.HOSTNAME}} -o jsonpath='{.spec.value}'
-      TALOS_VERSION: v1.8.1
-        # sh: yq '.talosVersion' {{.TALHELPER_CONFIG_FILE}}
+      TALOS_VERSION: 
+        sh: yq '.talosVersion' {{.TALHELPER_CONFIG_FILE}}
       TALOS_SECUREBOOT:
         sh: talosctl --nodes {{.HOSTNAME}} get securitystate --output=jsonpath='{.spec.secureBoot}'
     requires:
@@ -84,13 +84,11 @@ tasks:
   upgrade-cluster:
     desc: Upgrade Talos on the whole cluster
     cmds:
-      - task: down
       - for: { var: HOSTNAMES }
-        task: upgrade-node
+        task: upgrade
         vars:
           HOSTNAME: '{{.ITEM}}'
           ROLLOUT: true
-      - task: up
     vars:
       HOSTNAMES:
         sh: kubectl get nodes --output=jsonpath='{.items[*].metadata.name}'
