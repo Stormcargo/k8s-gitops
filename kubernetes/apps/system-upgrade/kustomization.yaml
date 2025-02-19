@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: system-upgrade
 resources:
   - ./system-upgrade-controller/ks.yaml
-  
+  - ./namespace.yaml
