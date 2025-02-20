@@ -3,37 +3,29 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app system-upgrade-controller
+  name: system-upgrade-controller
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
       version: 3.7.1
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     controllers:
       system-upgrade-controller:
         strategy: RollingUpdate
         replicas: 2
+
         pod:
           securityContext:
             runAsNonRoot: true
             runAsUser: 65534
             runAsGroup: 65534
-            seccompProfile: { type: RuntimeDefault }
-
           tolerations:
             - key: CriticalAddonsOnly
               operator: Exists
@@ -43,30 +35,34 @@ spec:
             - key: node-role.kubernetes.io/master
               operator: Exists
               effect: NoSchedule
+
         containers:
           app:
             image:
-              repository: rancher/system-upgrade-controller
-              tag: v0.14.2@sha256:3cdbfdd90f814702cefb832fc4bdb09ea93865a4d06c6bafd019d1dc6a9f34c9
+              repository: docker.io/rancher/system-upgrade-controller
+              tag: v0.15.0-rc2@sha256:d6faa9cb5123ae14cfbf0e9e22fa5302e1369649a6f1d117874c30a2a8df732b
             env:
-              SYSTEM_UPGRADE_CONTROLLER_DEBUG: false
-              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
-              SYSTEM_UPGRADE_JOB_IMAGE_PULL_POLICY: IfNotPresent
-              SYSTEM_UPGRADE_JOB_KUBECTL_IMAGE: registry.k8s.io/kubectl:v1.32.2
-              # SYSTEM_UPGRADE_JOB_POD_REPLACEMENT_POLICY: Failed # Required for Talos
-              SYSTEM_UPGRADE_JOB_PRIVILEGED: false
-              SYSTEM_UPGRADE_PLAN_POLLING_INTERVAL: 15m
-              SYSTEM_UPGRADE_CONTROLLER_NAME: *app
+              SYSTEM_UPGRADE_CONTROLLER_LEADER_ELECT: true
+              SYSTEM_UPGRADE_CONTROLLER_NAME: system-upgrade-controller
               SYSTEM_UPGRADE_CONTROLLER_NAMESPACE:
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.namespace
+              SYSTEM_UPGRADE_CONTROLLER_NODE_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
+              SYSTEM_UPGRADE_JOB_PRIVILEGED: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities:
+                drop:
+                  - ALL
               seccompProfile:
                 type: RuntimeDefault
+
     serviceAccount:
       create: true
-      name: system-upgrade
+      name: system-upgrade-controller
