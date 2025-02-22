@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.9.1
+talosVersion: v1.9.2
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.31.0
 
@@ -106,17 +106,87 @@ patches:
               type: bind
               source: /var/mnt/longhorn
               options: ["bind", "rshared", "rw"]
+    - |
+      machine:
+        time:
+          disabled: false
+          servers:
+            - "162.159.200.1"
+            - "162.159.200.123"
 
-    - "@./patches/global/machine-features.yaml"
-    - "@./patches/global/machine-files.yaml"
-    - "@./patches/global/machine-kubelet.yaml"
+    # Configure containerd
+    - |
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |-
+              [plugins."io.containerd.cri.v1.images"]
+                discard_unpacked_layers = false
+
+    # Enable host dns
+    - | 
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            forwardKubeDNSToHost: false
+            resolveMemberNames: true
+
+    # Configure kubelet
+    - |
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/openebs/local
+              type: bind
+              source: /var/openebs/local
+              options:
+                - bind
+                - rshared
+                - rw
+          nodeIP:
+            validSubnets:
+              - 192.168.183.0/24
+
     - "@./patches/global/machine-network.yaml"
     - "@./patches/global/machine-sysctls.yaml"
-    - "@./patches/global/machine-time.yaml"
 
 # Controller patches
 controlPlane:
   patches:
-    - "@./patches/controller/api-access.yaml"
-    - "@./patches/controller/cluster.yaml"
-    - "@./patches/controller/admission-controller-patch.yaml"
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - actions-runner-system
+              - system-upgrade
+
+    - |-
+      cluster:
+        allowSchedulingOnControlPlanes: true
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        coreDNS:
+          disabled: true
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+          advertisedSubnets:
+            - 192.168.183.0/24
+        proxy:
+          disabled: true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
