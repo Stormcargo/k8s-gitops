@@ -5,4 +5,5 @@ resources:
   - ./filebrowser/ks.yaml
   - ./freshrss/ks.yaml
   - ./hajimari/ks.yaml
+  - ./it-tools/ks.yaml
   - ./namespace.yaml
