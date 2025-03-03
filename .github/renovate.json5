@@ -38,6 +38,19 @@
   "commitMessageSuffix": "",
   // package rules
   "packageRules": [
+    {
+      "description": "Talos",
+      "groupName": "Talos",
+      "matchPackageNames": [
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/talosctl"
+      ],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group",
+        "commitMessageSuffix": ""
+      },
+    },
     // automerge
     {
       "description": ["Auto merge Github Actions"],
