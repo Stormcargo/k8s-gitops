@@ -15,23 +15,21 @@
   "schedule": ["every weekend"],
   "ignorePaths": ["**/*.sops.*"],
   "flux": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    "fileMatch": ["^kubernetes/.+\\.ya?ml$"],
   },
   "helm-values": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    "fileMatch": ["^kubernetes/.+\\.ya?ml$"]
   },
   "helmfile": {
     "fileMatch": ["(^|/)helmfile\\.ya?ml(?:\\.j2)?$"]
   },
   "kubernetes": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    "fileMatch": ["^kubernetes/.+\\.ya?ml$"]
   },
   "kustomize": {
     "fileMatch": ["(^|/)kustomization\\.ya?ml(?:\\.j2)?$"]
   },
-  "pip_requirements": {
-    "fileMatch": ["(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)(?:\\.j2)?$"]
-  },
+
   // commit message topics
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{newVersion}}",
