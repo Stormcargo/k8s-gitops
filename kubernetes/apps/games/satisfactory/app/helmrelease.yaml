@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app satisfactory
+  name: &name satisfactory
 spec:
   interval: 15m
   chart:
@@ -33,6 +33,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
+            nameOverride: *name
             image:
               repository: ghcr.io/wolveix/satisfactory-server
               tag: v1.9.5
@@ -74,7 +75,7 @@ spec:
     service:
       app:
         enabled: true
-        controller: *app
+        controller: *name
         type: LoadBalancer
         allocateLoadBalancerNodePorts: true
         annotations:
@@ -96,7 +97,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "${APP}"
+        existingClaim: *name
         globalMounts:
           - path: /config
       server-cache:
