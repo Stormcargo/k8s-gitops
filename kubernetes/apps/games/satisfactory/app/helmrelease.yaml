@@ -40,7 +40,7 @@ spec:
             env:
               TZ: "${TIMEZONE}"
               ROOTLESS: "true"
-              AUTOPAUSE: "false"
+              AUTOPAUSE: "true"
               MAXPLAYERS: "4"
               AUTOSAVEINTERVAL: "60"
               AUTOSAVENUM: "30"
@@ -64,42 +64,12 @@ spec:
                 enabled: false
               readiness:
                 enabled: false
+
             resources:
               requests:
-                memory: 4Gi
+                memory: 6Gi
               limits:
                 memory: 20Gi
-
-          main: &ct
-            image: &img
-              repository: docker.io/wolveix/satisfactory-server
-              tag: v1.9.5@sha256:88507d728a683714a4fac54d881a8f80db418509bc7db7bad660deda64b72247
-            securityContext:
-              runAsUser: ${APP_UID_SATISFACTORY:=1000}
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop: ["ALL"]
-
-            env:
-              TZ: "${CONFIG_TZ}"
-              ROOTLESS: "true"
-              AUTOPAUSE: "true"
-              AUTOSAVEINTERVAL: "60"
-              AUTOSAVENUM: "60"
-              AUTOSAVEONDISCONNECT: "true"
-              CRASHREPORT: "false"
-              MAXPLAYERS: "4"
-              MAXTICKRATE: "120" # default is a low 30
-              NETWORKQUALITY: "3" # 0-3, 3 is Ultra (default)
-              TIMEOUT: "300"
-            resources:
-              requests:
-                memory: "6Gi"
-              limits:
-                memory: "20Gi"
-
-
 
     service:
       app:
