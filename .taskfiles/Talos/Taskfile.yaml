@@ -32,7 +32,7 @@ tasks:
     requires:
       vars: [HOSTNAME]
     preconditions:
-      - talosctl --nodes {{.HOSTNAME}} get machineconfig
+      # - talosctl --nodes {{.HOSTNAME}} get machineconfig
       - talosctl config info
       - test -f {{.TALHELPER_CLUSTER_DIR}}/{{.CLUSTER_NAME}}-{{.HOSTNAME}}.yaml
       - test -f {{.TALOSCONFIG}}

@@ -1,0 +1,137 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &name satisfactory
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    replace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      strategy: rollback
+    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
+
+  values:
+    controllers:
+      satisfactory:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/wolveix/satisfactory-server
+              tag: v1.9.5
+
+            env:
+              TZ: "${TIMEZONE}"
+              ROOTLESS: "true"
+              AUTOPAUSE: "false"
+              MAXPLAYERS: "4"
+              AUTOSAVEINTERVAL: "60"
+              AUTOSAVENUM: "30"
+              MAXTICKRATE: "120" # default is a low 30
+              NETWORKQUALITY: "3" # 0-3, 3 is Ultra (default)
+              AUTOSAVEONDISCONNECT: "true"
+              CRASHREPORT: "false"
+              TIMEOUT: "300"
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+
+            probes:
+              startup:
+                enabled: false
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+            resources:
+              requests:
+                memory: 4Gi
+              limits:
+                memory: 20Gi
+
+          main: &ct
+            image: &img
+              repository: docker.io/wolveix/satisfactory-server
+              tag: v1.9.5@sha256:88507d728a683714a4fac54d881a8f80db418509bc7db7bad660deda64b72247
+            securityContext:
+              runAsUser: ${APP_UID_SATISFACTORY:=1000}
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+
+            env:
+              TZ: "${CONFIG_TZ}"
+              ROOTLESS: "true"
+              AUTOPAUSE: "true"
+              AUTOSAVEINTERVAL: "60"
+              AUTOSAVENUM: "60"
+              AUTOSAVEONDISCONNECT: "true"
+              CRASHREPORT: "false"
+              MAXPLAYERS: "4"
+              MAXTICKRATE: "120" # default is a low 30
+              NETWORKQUALITY: "3" # 0-3, 3 is Ultra (default)
+              TIMEOUT: "300"
+            resources:
+              requests:
+                cpu: "200m"
+              limits:
+#
+                memory: "20Gi"
+
+
+
+    service:
+      app:
+        enabled: true
+        controller: *app
+        type: LoadBalancer
+        allocateLoadBalancerNodePorts: true
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "satisfactory.${SECRET_DOMAIN}"
+          lbipam.cilium.io/ips: "${SVC_SATISFACTORY_ADDRESS}"
+        externalTrafficPolicy: Cluster
+        internalTrafficPolicy: Cluster
+        ports:
+          game-udp:
+            enabled: true
+            primary: true
+            port: 7777
+            protocol: UDP
+          game-tcp:
+            enabled: true
+            port: 7777
+            protocol: TCP
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "${APP}"
+        globalMounts:
+          - path: /config
+      server-cache:
+        enabled: true
+        existingClaim: "sf-gamedata"
+        globalMounts:
+          - path: /config/gamefiles
