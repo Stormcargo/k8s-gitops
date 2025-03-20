@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &name satisfactory
+  name: &app satisfactory
 spec:
   interval: 15m
   chart:
@@ -95,9 +95,8 @@ spec:
               TIMEOUT: "300"
             resources:
               requests:
-                cpu: "200m"
+                memory: "6Gi"
               limits:
-#
                 memory: "20Gi"
 
 
