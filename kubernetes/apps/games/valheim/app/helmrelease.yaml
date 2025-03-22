@@ -37,7 +37,7 @@ spec:
             nameOverride: *name
             image:
               repository: lloesche/valheim-server
-              tag: latest@sha256:b97da1038714e5156cf28d042422a1c5af41e03189572025e615bde61395c678
+              tag: latest@sha256:b0a69a47cab987c7583cbaa4eea5bc54a17f2e9c82999c2c8e53454d7fd073b1
               pullPolicy: IfNotPresent
 
             env:
