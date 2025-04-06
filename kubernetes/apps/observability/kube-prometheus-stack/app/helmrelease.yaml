@@ -38,6 +38,7 @@ spec:
     ## Components
     ##
     alertmanager:
+      enabled: true
       ingress:
         enabled: true
         ingressClassName: internal
