@@ -5,8 +5,9 @@ resources:
   - ./botkube/ks.yaml
   - ./grafana/ks.yaml
   - ./goldpinger/ks.yaml
-  - ./namespace.yaml
+  - ./karma/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
+  - ./namespace.yaml
   - ./prometheus-operator-crds/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./speedtest-exporter/ks.yaml
