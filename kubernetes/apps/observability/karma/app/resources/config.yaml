@@ -9,7 +9,7 @@ alertmanager:
         visible: false
         filters:
           network:
-            - alertname=Watchdog
+            - alertname="Watchdog"
 
 alertAcknowledgement:
   enabled: true
