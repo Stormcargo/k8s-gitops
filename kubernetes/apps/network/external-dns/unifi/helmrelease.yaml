@@ -1,0 +1,68 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app unifi-dns
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: unifi-dns
+    namespace: flux-system
+  install:
+    disableSchemaValidation: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    disableSchemaValidation: true
+    remediation:
+      strategy: rollback
+      retries: 3
+
+  values:
+    logLevel: debug
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/kashalls/external-dns-unifi-webhook
+          tag: v0.5.2@sha256:e1eef62e8d9f1966def6f2efc89ff42bcaba1060b0c2957d9cab57a11c900d5c
+        env:
+          - name: LOG_LEVEL
+            value: debug
+          - name: UNIFI_HOST
+            value: "https://192.168.1.1"
+          - name: UNIFI_EXTERNAL_CONTROLLER
+            value: "false"
+          - name: UNIFI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: external-dns-unifi-secret
+                key: UNIFI_API_KEY
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+    extraArgs:
+      - --ingress-class=internal
+    policy: sync
+    txtOwnerId: main
+    txtPrefix: k8s.
+    sources:
+      - ingress
+      - service
+    domainFilters:
+      - "${SECRET_DOMAIN}"
+    serviceMonitor:
+      enabled: true
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
