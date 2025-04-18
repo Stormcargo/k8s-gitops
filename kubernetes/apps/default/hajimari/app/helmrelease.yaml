@@ -87,8 +87,8 @@ spec:
               url: "https://www.arstechnica.com/"
         - group: Home
           bookmarks:
-            - name: PiKVM
-              url: "http://192.168.183.50"
+            - name: JetKVM
+              url: "http://jetkvm.${SECRET_DOMAIN}"
     ingress:
       main:
         enabled: true
