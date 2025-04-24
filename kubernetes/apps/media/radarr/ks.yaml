@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app sonarr
+  name: &app radarr
   namespace: flux-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   targetNamespace: media
-  path: ./kubernetes/apps/media/sonarr/app
+  path: ./kubernetes/apps/media/radarr/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,9 +21,9 @@ spec:
   dependsOn:
     - name: volsync
     - name: ingress-nginx-internal
-
+    - name: longhorn
   postBuild:
     substitute:
       APP: *app
-      CLAIM: sonarr-config
-      VOLSYNC_CAPACITY: 10Gi
+      CLAIM: radarr-config
+      VOLSYNC_CAPACITY: 15Gi
