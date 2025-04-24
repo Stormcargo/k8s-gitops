@@ -78,7 +78,6 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: movie-open
-          hajimari.io/group: "Media"
         hosts:
           - host: "radarr.${SECRET_DOMAIN}"
             paths:
