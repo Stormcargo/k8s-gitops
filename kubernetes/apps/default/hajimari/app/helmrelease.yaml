@@ -31,11 +31,9 @@ spec:
   values:
     hajimari:
       defaultEnable: true
-      showAppGroups: true
       namespaceSelector:
         matchNames:
           - default
-          - flux-system
           - games
           - home
           - kube-system
@@ -55,7 +53,7 @@ spec:
           bookmarks:
             - name: Home Infra Repo
               url: "https://github.com/Stormcargo/k8s-gitops/"
-            - name: K8S@Home Search
+            - name: Kubesearch
               url: "https://kubesearch.dev/"
             - name: Template Chart Docs
               url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
