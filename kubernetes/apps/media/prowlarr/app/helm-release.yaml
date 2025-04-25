@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      radarr:
+      prowlarr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -67,7 +67,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: radarr
+        controller: prowlarr
         ports:
           http:
             port: *port
@@ -80,7 +80,7 @@ spec:
           hajimari.io/icon: cloud-search
           hajimari.io/info: Media Search
         hosts:
-          - host: "radarr.${SECRET_DOMAIN}"
+          - host: "prowlarr.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -89,6 +89,6 @@ spec:
 
     persistence:
       config:
-        existingClaim: prowlarr
+        existingClaim: *app 
       tmp:
         type: emptyDir
