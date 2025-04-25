@@ -25,4 +25,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 2Gi
