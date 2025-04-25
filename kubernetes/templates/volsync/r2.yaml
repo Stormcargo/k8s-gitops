@@ -32,6 +32,8 @@ spec:
     repository: "${APP}-volsync"
     copyMethod: Snapshot
     cleanupCachePVC: true
+    # Longhorn can't handle this setting and will cause sync issues
+    # PVCs hung at random spots for random reasons
     # cleanupTempPVC: true
     enableFileDeletion: true
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapclass}"
