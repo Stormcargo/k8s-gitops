@@ -67,7 +67,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: prowlarr
+        controller: *app
         ports:
           http:
             port: *port
@@ -89,6 +89,6 @@ spec:
 
     persistence:
       config:
-        existingClaim: prowlarr-config 
+        existingClaim: *app
       tmp:
         type: emptyDir
