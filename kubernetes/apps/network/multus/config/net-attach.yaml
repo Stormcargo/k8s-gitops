@@ -19,7 +19,10 @@ spec:
             "ips": true
           },
           "ipam": {
-            "type": "static"
+            "type": "static",
+            "routes": [
+              { "dst": "0.0.0.0/0", "gw": "192.168.1.1" }
+            ]
           }
         },
         {
