@@ -32,7 +32,7 @@ spec:
               [{
                 "name":"hass-homekit-static",
                 "namespace": "network",
-                "ips": ["192.168.183.249/24"],
+                "ips": ["192.168.1.249/24"],
                 "mac": "3e:59:e4:f7:43:08"
               }]
         containers:
@@ -45,6 +45,7 @@ spec:
               TZ: ${TIMEZONE}
               HASS_HTTP_TRUSTED_PROXY_1: 192.168.183.0/24
               HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
+              HASS_HTTP_TRUSTED_PROXY_3: 192.168.1.0/24
               HASS_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
             securityContext:
               allowPrivilegeEscalation: false
