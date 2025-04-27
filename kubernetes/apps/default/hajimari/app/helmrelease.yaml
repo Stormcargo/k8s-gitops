@@ -61,6 +61,15 @@ spec:
               url: "https://fluxcd.io/flux/"
             - name: Material Design Icons
               url: "https://pictogrammers.com/library/mdi/"
+
+        - group: Home
+          bookmarks:
+            - name: UniFi UI
+              urlL: https://unifi.ui.com/
+            - name: JetKVM
+              url: "http://jetkvm.${SECRET_DOMAIN}"
+            - name: SLZB
+              url: "http://slzb-06.${SECRET_DOMAIN}"
         - group: Dev
           bookmarks:
             - name: Devdocs
@@ -69,26 +78,7 @@ spec:
               url: "https://devhints.io"
             - name: ChatGPT
               url: "https://chat.openai.com/"
-        - group: Media
-          bookmarks:
-            - name: YouTube
-              url: "https://youtube.com/"
-            - name: Guardian
-              url: "https://guardian.co.uk/"
-        - group: Tech
-          bookmarks:
-            - name: Hacker News
-              url: "https://news.ycombinator.com/"
-            - name: The Verge
-              url: "https://theverge.com/"
-            - name: Arstechnica
-              url: "https://www.arstechnica.com/"
-        - group: Home
-          bookmarks:
-            - name: JetKVM
-              url: "http://jetkvm.${SECRET_DOMAIN}"
-            - name: SLZB
-              url: "http://slzb-06.${SECRET_DOMAIN}"
+
     ingress:
       main:
         enabled: true
