@@ -87,6 +87,8 @@ spec:
           bookmarks:
             - name: JetKVM
               url: "http://jetkvm.${SECRET_DOMAIN}"
+            - name: SLZB
+              url: "http://slzb-06.${SECRET_DOMAIN}"
     ingress:
       main:
         enabled: true
