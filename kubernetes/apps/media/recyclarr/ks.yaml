@@ -17,7 +17,6 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   interval: 30m
-  wait: true
   postBuild:
     substitute:
       APP: *app
