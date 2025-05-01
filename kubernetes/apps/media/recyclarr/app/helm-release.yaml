@@ -22,7 +22,7 @@ spec:
       recyclarr:
         type: cronjob
         cronjob:
-          schedule: 0 0 * * *
+          schedule: 42 * * * *
           backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
