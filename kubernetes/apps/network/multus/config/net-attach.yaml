@@ -13,7 +13,7 @@ spec:
       "plugins": [
         {
           "type": "macvlan",
-          "master": "bond0.10",
+          "master": "bond0",
           "mode": "bridge",
           "capabilities": {
             "ips": true
@@ -26,8 +26,7 @@ spec:
           }
         },
         {
-          "capabilities": { "mac": true },
-          "type": "tuning"
+          "type": "sbr"
         }
       ]
     }
