@@ -68,6 +68,8 @@ spec:
         controller: *name
         type: LoadBalancer
         loadBalancerIP: ${SVC_VALHEIM_ADDRESS}
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "valheim.${SECRET_DOMAIN}"
         ports:
           steam1:
             port: 2456
