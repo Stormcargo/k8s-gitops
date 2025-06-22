@@ -41,6 +41,8 @@ spec:
               BASE_URL: https://mealie.${SECRET_DOMAIN}
               TZ: ${TIMEZONE}
               API_DOCS: false
+              PUID: 65534
+              PGID: 65534
             envFrom:
               - secretRef:
                   name: mealie-secrets
@@ -54,6 +56,15 @@ spec:
                 memory: 400Mi
               limits:
                 memory: 600Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
