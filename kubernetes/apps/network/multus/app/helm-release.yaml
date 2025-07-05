@@ -15,7 +15,6 @@ spec:
     controllers:
       multus:
         type: daemonset
-
         pod:
           hostNetwork: true
 
