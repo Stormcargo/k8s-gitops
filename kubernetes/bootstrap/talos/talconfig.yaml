@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.9.5
+talosVersion: v1.9.6
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.32.3
 
@@ -34,19 +34,15 @@ nodes:
       - interface: bond0
         bond:
           mode: active-backup
-          miimon: 100
           deviceSelectors:
             - hardwareAddr: "1c:fd:08:7b:b4:5d"
         dhcp: true
         vip:
           ip: "192.168.183.199"
-        vlans:
-          - &vlan10
-            vlanId: 10
-            mtu: 1500
-            dhcp: false
-            dhcpOptions:
-              routeMetric: 4096
+        # vlans:
+        #   - vlanId: 10
+        #     mtu: 1500
+        #     dhcp: false
 
   - hostname: "rzmini-02"
     ipAddress: "192.168.183.201"
@@ -205,4 +201,3 @@ controlPlane:
           extraKernelArgs:
             - intel_iommu=on # PCI Passthrough
             - iommu=pt # PCI Passthrough
-            - net.iframes=-1
