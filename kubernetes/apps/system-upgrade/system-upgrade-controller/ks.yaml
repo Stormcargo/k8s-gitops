@@ -13,7 +13,7 @@ spec:
   interval: 30m
   timeout: 5m
   path: "./kubernetes/apps/system-upgrade/system-upgrade-controller/app"
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -33,7 +33,7 @@ spec:
   interval: 30m
   timeout: 5m
   path: "./kubernetes/apps/system-upgrade/system-upgrade-controller/plans"
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

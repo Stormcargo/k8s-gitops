@@ -9,7 +9,7 @@ metadata:
 spec:
   targetNamespace: home
   path: ./kubernetes/apps/home/mosquitto/app
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

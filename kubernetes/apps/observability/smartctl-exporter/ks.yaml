@@ -9,7 +9,7 @@ metadata:
 spec:
   targetNamespace: observability
   path: ./kubernetes/apps/observability/smartctl-exporter/app
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

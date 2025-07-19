@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: default
   path: ./kubernetes/apps/default/it-tools/app
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

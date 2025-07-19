@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   targetNamespace: media
   path: ./kubernetes/apps/media/sonarr/app
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

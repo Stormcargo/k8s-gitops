@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: default
   path: ./kubernetes/apps/default/freshrss/app
-  prune: true
+  prune: false # revert
   dependsOn:
     - name: longhorn
     - name: ingress-nginx-internal

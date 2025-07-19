@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: games
   path: ./kubernetes/apps/games/satisfactory/app
-  prune: true
+  prune: false # revert
   dependsOn:
     - name: longhorn
   sourceRef:

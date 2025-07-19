@@ -11,7 +11,7 @@ spec:
     - name: ingress-nginx-internal
     # - name: external-secrets-stores
   path: ./kubernetes/apps/storage/longhorn/app
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

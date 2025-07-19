@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   path: ./kubernetes/apps/home/home-assistant/app
-  prune: true
+  prune: false # revert
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
