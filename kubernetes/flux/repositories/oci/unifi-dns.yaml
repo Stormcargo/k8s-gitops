@@ -5,6 +5,8 @@ kind: OCIRepository
 metadata:
   name: unifi-dns
   namespace: flux-system
+  annotations:
+    api.fluxcd.io/upgrade: "v2.6.0"
 spec:
   interval: 1h
   layerSelector:

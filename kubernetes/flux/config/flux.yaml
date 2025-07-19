@@ -4,6 +4,8 @@ kind: OCIRepository
 metadata:
   name: flux-manifests
   namespace: flux-system
+  annotations:
+    api.fluxcd.io/upgrade: "v2.6.0"
 spec:
   interval: 10m
   url: oci://ghcr.io/fluxcd/flux-manifests

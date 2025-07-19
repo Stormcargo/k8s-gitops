@@ -18,6 +18,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: reloader
+  annotations:
+    api.fluxcd.io/upgrade: "v2.6.0"
 spec:
   interval: 1h
   chartRef:
