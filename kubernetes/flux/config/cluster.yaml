@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  path: ./kubernetes/shared/repos
+  path: ./kubernetes/shared
   prune: false # revert to true
   wait: true
   sourceRef:
