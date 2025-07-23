@@ -10,6 +10,7 @@ spec:
   path: ./kubernetes/shared
   prune: false # revert to true
   wait: true
+  timeout: 10m
   sourceRef:
     kind: GitRepository
     name: flux-system
