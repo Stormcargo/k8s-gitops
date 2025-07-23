@@ -9,7 +9,6 @@ spec:
     kind: OCIRepository
     name: app-template
     namespace: flux-system
-    version: 4.1.2
   dependsOn:
     - name: longhorn
       namespace: storage
