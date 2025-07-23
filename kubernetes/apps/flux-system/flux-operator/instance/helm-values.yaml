@@ -10,7 +10,7 @@ instance:
   sync:
     kind: GitRepository
     name: home-kubernetes
-    url: ssh://git@github.com/Stormcargo/k8s-gitops
+    url: https://github.com/Stormcargo/k8s-gitops
     ref: refs/heads/main
     path: kubernetes/flux/config
     pullSecret: github-deploy-key
