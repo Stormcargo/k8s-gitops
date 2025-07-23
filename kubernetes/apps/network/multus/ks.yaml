@@ -16,7 +16,7 @@ spec:
   prune: false # revert
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   wait: true
 
 ---
@@ -37,7 +37,7 @@ spec:
   prune: false # revert
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   wait: true
   dependsOn:
     - name: multus

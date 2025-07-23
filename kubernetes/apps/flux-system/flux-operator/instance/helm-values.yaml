@@ -9,7 +9,6 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    name: home-kubernetes
     url: https://github.com/Stormcargo/k8s-gitops
     ref: refs/heads/main
     path: kubernetes/flux/config
