@@ -12,7 +12,6 @@ instance:
     url: https://github.com/Stormcargo/k8s-gitops
     ref: refs/heads/main
     path: kubernetes/flux/config
-    pullSecret: github-deploy-key
   kustomize:
     patches:
       # Increase the number of workers and limits
