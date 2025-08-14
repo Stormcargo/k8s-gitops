@@ -3,7 +3,7 @@ apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
   name: hass-homekit-static
-  namespace: home
+  namespace: network
 spec:
   config: |-
     {
@@ -13,7 +13,7 @@ spec:
       "plugins": [
         {
           "type": "macvlan",
-          "master": "bond0",
+          "master": "bond0.10",
           "mode": "bridge",
           "capabilities": {
             "ips": true
@@ -21,7 +21,7 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "0.0.0.0/0", "gw": "192.168.183.1" }
+              { "dst": "0.0.0.0/0", "gw": "192.168.10.1" }
             ]
           }
         },
