@@ -30,8 +30,8 @@ spec:
       # createDefaultDiskLabeledNodes: false
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 1
-      storageMinimalAvailablePercentage: 10
-      StorageOverProvisioningPercentage: 120
+      storageMinimalAvailablePercentage: "10"
+      StorageOverProvisioningPercentage: "120"
     ingress:
       enabled: true
       ingressClassName: internal
