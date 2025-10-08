@@ -78,10 +78,15 @@ nodes:
         bond:
           mode: active-backup
           deviceSelectors:
-            - hardwareAddr: "1c:fd:08:79:bb:ca"
+            - hardwareAddr: "6c:3c:8c:08:fb:5d"
         dhcp: true
         vip:
           ip: "192.168.183.199"
+        vlans:
+          - vlanId: 10
+            mtu: 1500
+            dhcp: false
+            addresses: []
 
 # Global patches
 patches:
