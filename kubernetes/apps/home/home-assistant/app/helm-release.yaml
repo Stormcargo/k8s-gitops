@@ -22,6 +22,17 @@ spec:
     remediation:
       retries: 5
   values:
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: interface
+                operator: In
+                values:
+                - enp3s0
+
     controllers:
       home-assistant:
         annotations:

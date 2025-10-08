@@ -31,11 +31,7 @@ nodes:
         partitions:
           - mountpoint: /var/mnt/longhorn
     networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: "1c:fd:08:7b:b4:5d"
+      - interface: enp3s0
         dhcp: true
         vip:
           ip: "192.168.183.199"
@@ -43,7 +39,10 @@ nodes:
           - vlanId: 10
             mtu: 1500
             dhcp: false
-            addresses: []
+            addresses:
+              - 192.168.10.254/32
+    nodeLabels:
+      interface: enp3s0
 
   - hostname: "rzmini-02"
     ipAddress: "192.168.183.201"
@@ -55,14 +54,18 @@ nodes:
         partitions:
           - mountpoint: /var/mnt/longhorn
     networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: "1c:fd:08:7b:b4:3e"
+      - interface: enp3s0
         dhcp: true
         vip:
           ip: "192.168.183.199"
+        vlans:
+          - vlanId: 10
+            mtu: 1500
+            dhcp: false
+            addresses:
+              - 192.168.10.254/32
+    nodeLabels:
+      interface: enp3s0
 
   - hostname: "rzmini-03"
     ipAddress: "192.168.183.202"
@@ -74,19 +77,18 @@ nodes:
         partitions:
           - mountpoint: /var/mnt/longhorn
     networkInterfaces:
-      - interface: enp1s0
+      - interface: enp2s0
         dhcp: true
         vip:
           ip: "192.168.183.199"
         vlans:
-          # - vlanId: 183
-          #   mtu: 1500
-          #   dhcp: true
           - vlanId: 10
             mtu: 1500
             dhcp: false
             addresses:
               - 192.168.10.254/32
+    nodeLabels:
+      interface: enp2s0
 
 # Global patches
 patches:
