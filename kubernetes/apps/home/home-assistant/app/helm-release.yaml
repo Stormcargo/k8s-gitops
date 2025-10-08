@@ -33,9 +33,9 @@ spec:
               [{
                 "name":"hass-homekit-static",
                 "namespace": "network",
-                "ips": ["192.168.10.249/24"],
-                "mac": "3e:59:e4:f7:43:08"
+                "ips": ["192.168.10.249/24"]
               }]
+            # "mac": "3e:59:e4:f7:43:08"
         containers:
           app:
             image:

@@ -74,19 +74,19 @@ nodes:
         partitions:
           - mountpoint: /var/mnt/longhorn
     networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: "6c:3c:8c:08:fb:5d"
+      - interface: enp1s0
         dhcp: true
         vip:
           ip: "192.168.183.199"
         vlans:
+          # - vlanId: 183
+          #   mtu: 1500
+          #   dhcp: true
           - vlanId: 10
             mtu: 1500
             dhcp: false
-            addresses: []
+            addresses:
+              - 192.168.10.254/32
 
 # Global patches
 patches:
