@@ -6,12 +6,16 @@ metadata:
   name: &app freshrss
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   targetNamespace: default
   path: ./kubernetes/apps/default/freshrss/app
-  prune: false # revert
+  prune: true
   dependsOn:
     - name: longhorn
     - name: ingress-nginx-internal
+    - name: volsync
   sourceRef:
     kind: GitRepository
     name: flux-system
