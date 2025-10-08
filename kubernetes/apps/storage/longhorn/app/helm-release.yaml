@@ -25,11 +25,11 @@ spec:
       # backupTarget: s3://longhorn@weur/
       backupTargetCredentialSecret: longhorn-backup-secret
       defaultDataLocality: best-effort
-      defaultReplicaCount: 3
+      defaultReplicaCount: "3"
       defaultLonghornStaticStorageClass: longhorn
       # createDefaultDiskLabeledNodes: false
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      concurrentAutomaticEngineUpgradePerNodeLimit: 1
+      concurrentAutomaticEngineUpgradePerNodeLimit: "1"
       storageMinimalAvailablePercentage: "10"
       StorageOverProvisioningPercentage: "120"
     ingress:
