@@ -6,13 +6,18 @@ metadata:
   name: &app filebrowser
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   targetNamespace: default
   path: ./kubernetes/apps/default/filebrowser/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: false # no flux ks dependents
   interval: 30m
   timeout: 5m
-
+  dependsOn:
+    - name: longhorn
+    - name: ingress-nginx-internal
