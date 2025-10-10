@@ -3,15 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname home-assistant
+  name: &app home-assistant
   namespace: flux-system
 spec:
   targetNamespace: home
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/home/home-assistant/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,8 +23,6 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      APP: *appname
-      # APP_UID: "0"
-      # APP_GID: "0"
+      APP: *app
       CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 2Gi
