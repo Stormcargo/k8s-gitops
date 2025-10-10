@@ -9,7 +9,7 @@ metadata:
 spec:
   targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/node-feature-discovery/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -29,7 +29,7 @@ spec:
   dependsOn:
     - name: node-feature-discovery
   path: ./kubernetes/apps/kube-system/node-feature-discovery/rules
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

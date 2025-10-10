@@ -9,7 +9,7 @@ metadata:
 spec:
   targetNamespace: observability
   path: ./kubernetes/apps/observability/goldpinger/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

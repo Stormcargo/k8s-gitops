@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: media
   path: ./kubernetes/apps/media/recyclarr/app
-  prune: false # revert
+  prune: true
   dependsOn:
     - name: longhorn
     - name: volsync
