@@ -9,7 +9,7 @@ metadata:
 spec:
   targetNamespace: observability
   path: ./kubernetes/apps/observability/smartctl-exporter/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

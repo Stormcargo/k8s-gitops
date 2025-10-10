@@ -9,9 +9,8 @@ metadata:
 spec:
   dependsOn:
     - name: ingress-nginx-internal
-    # - name: external-secrets-stores
   path: ./kubernetes/apps/storage/longhorn/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
