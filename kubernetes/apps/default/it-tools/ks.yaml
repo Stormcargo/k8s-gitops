@@ -6,13 +6,17 @@ metadata:
   name: &app it-tools
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   targetNamespace: default
   path: ./kubernetes/apps/default/it-tools/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: false # no flux ks dependents
   interval: 30m
   timeout: 5m
-
+  dependsOn:
+    - name: ingress-nginx-internal

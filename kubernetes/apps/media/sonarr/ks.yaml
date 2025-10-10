@@ -11,11 +11,11 @@ spec:
       app.kubernetes.io/name: *app
   targetNamespace: media
   path: ./kubernetes/apps/media/sonarr/app
-  prune: false # revert
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false # no flux ks dependents
+  wait: false
   interval: 30m
   timeout: 5m
   dependsOn:
