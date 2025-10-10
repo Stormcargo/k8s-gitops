@@ -6,17 +6,22 @@ metadata:
   name: &app valheim
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   targetNamespace: games
   path: ./kubernetes/apps/games/valheim/app
-  prune: false # revert
+  prune: true
   dependsOn:
     - name: longhorn
+    - name: volsync
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: false # no flux ks dependents
   interval: 30m
   timeout: 5m
+
   postBuild:
     substitute:
       APP: *app

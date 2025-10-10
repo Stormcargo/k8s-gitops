@@ -6,9 +6,12 @@ metadata:
   name: &app mealie
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   targetNamespace: default
   path: ./kubernetes/apps/default/mealie/app
-  prune: false # revert
+  prune: true
   dependsOn:
     - name: longhorn
     - name: volsync
@@ -16,9 +19,10 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false # no flux ks dependents
+  wait: false
   interval: 30m
   timeout: 5m
+
   postBuild:
     substitute:
       APP: *app
