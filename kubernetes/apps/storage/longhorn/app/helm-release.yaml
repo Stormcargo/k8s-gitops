@@ -32,6 +32,8 @@ spec:
       concurrentAutomaticEngineUpgradePerNodeLimit: "1"
       storageMinimalAvailablePercentage: "10"
       StorageOverProvisioningPercentage: "120"
+      storageReservedPercentageForDefaultDisk: 20
+
       v1DataEngine: true
       v2DataEngine: false
     ingress:
