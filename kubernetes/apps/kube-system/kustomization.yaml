@@ -8,6 +8,7 @@ resources:
   - ./coredns/ks.yaml
   # - ./descheduler/ks.yaml
   - ./external-secrets/ks.yaml
+  - ./intel-device-plugin/ks.yaml
   - ./metrics-server/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
