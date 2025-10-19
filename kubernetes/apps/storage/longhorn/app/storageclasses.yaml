@@ -10,6 +10,8 @@ parameters:
   numberOfReplicas: "1"
   replicaAutoBalance: best-effort
   staleReplicaTimeout: "30"
+  # This is required for Longhorn 1.10, csi storage capacities are not created without it
+  # https://github.com/longhorn/longhorn/issues/11906
   dataEngine: "v1"
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
@@ -26,6 +28,8 @@ parameters:
   numberOfReplicas: "1"
   replicaAutoBalance: best-effort
   staleReplicaTimeout: "30"
+  # This is required for Longhorn 1.10, csi storage capacities are not created without it
+  # https://github.com/longhorn/longhorn/issues/11906
   dataEngine: "v1"
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
@@ -44,6 +48,8 @@ allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 parameters:
+  # This is required for Longhorn 1.10, csi storage capacities are not created without it
+  # https://github.com/longhorn/longhorn/issues/11906
   dataEngine: "v1"
   numberOfReplicas: "1"
   staleReplicaTimeout: "1440" # 1 day
