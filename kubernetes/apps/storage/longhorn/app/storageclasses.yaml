@@ -10,6 +10,7 @@ parameters:
   numberOfReplicas: "1"
   replicaAutoBalance: best-effort
   staleReplicaTimeout: "30"
+  dataEngine: "v1"
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
 metadata:
@@ -25,6 +26,7 @@ parameters:
   numberOfReplicas: "1"
   replicaAutoBalance: best-effort
   staleReplicaTimeout: "30"
+  dataEngine: "v1"
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
 metadata:
@@ -42,6 +44,7 @@ allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 parameters:
+  dataEngine: "v1"
   numberOfReplicas: "1"
   staleReplicaTimeout: "1440" # 1 day
   fsType: "ext4"
