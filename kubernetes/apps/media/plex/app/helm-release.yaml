@@ -94,10 +94,8 @@ spec:
     persistence:
       config:
         existingClaim: "plex-config"
-        advancedMounts:
-          plex:
-            app:
-              - path: /config
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server
       # Separate PVC for cache to avoid backing up cache files
       # This must be commented on initial install in order to avoid permission issues in '/config/Library/Application Support/Plex Media Server'
       # plex-cache:
