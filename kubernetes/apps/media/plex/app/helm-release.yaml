@@ -100,12 +100,12 @@ spec:
               - path: /config
       # Separate PVC for cache to avoid backing up cache files
       # This must be commented on initial install in order to avoid permission issues in '/config/Library/Application Support/Plex Media Server'
-      plex-cache:
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 50Gi
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
+      # plex-cache:
+      #   storageClass: longhorn
+      #   accessMode: ReadWriteOnce
+      #   size: 50Gi
+      #   globalMounts:
+      #     - path: /config/Library/Application Support/Plex Media Server/Cache
       # This must be commented on initial install in order to avoid permission issues in '/config/Library/Application Support/Plex Media Server'
       media:
         type: nfs
