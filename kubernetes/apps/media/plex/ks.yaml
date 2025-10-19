@@ -26,5 +26,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      CLAIM: plex-config
       VOLSYNC_CAPACITY: 30Gi
-      VOLSYNC_CLAIM: plex-config
