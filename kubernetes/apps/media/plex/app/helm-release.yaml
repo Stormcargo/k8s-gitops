@@ -136,7 +136,7 @@ spec:
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
           # External DNS for public access
-          external-dns.alpha.kubernetes.io/target: "plex.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         hosts:
           - host: &host plex.${SECRET_DOMAIN}
             paths:
