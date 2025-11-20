@@ -85,9 +85,9 @@ spec:
       app:
         controller: plex
         type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.183.224
-        # loadBalancerIP: ${SVC_PLEX_ADDR}
+        # annotations:
+        #   lbipam.cilium.io/ips: 192.168.183.224
+        loadBalancerIP: ${SVC_PLEX_ADDR}
         externalTrafficPolicy: Local
         ports:
           http:
