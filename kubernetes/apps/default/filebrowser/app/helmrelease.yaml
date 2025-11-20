@@ -76,6 +76,9 @@ spec:
       app:
         className: internal
         annotations:
+          glance/icon: di:filebrowser
+          glance/description: File Manager
+          glance/id: Internal Apps
           hajimari.io/enable: "true"
           hajimari.io/icon: folder-table
         hosts:

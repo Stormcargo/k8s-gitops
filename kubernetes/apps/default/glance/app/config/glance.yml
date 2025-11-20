@@ -47,6 +47,10 @@ pages:
             url: http://glance-k8s-extension:8080/extension/apps
             allow-potentially-dangerous-html: true
             cache: 1s
+            parameters:
+              # namespace, name annotations
+              show-if: |
+                "glance/hide" not in annotations || annotations["glance/hide"] != "true"
           - type: hacker-news
 
       - size: small
