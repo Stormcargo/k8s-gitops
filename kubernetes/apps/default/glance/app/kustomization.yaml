@@ -4,4 +4,7 @@ kind: Kustomization
 namespace: default
 resources:
   - ./helmrelease.yaml
-  - ./config
+configMapGenerator:
+  - name: glance-configmap
+    files:
+      - glance.yml=./config/glance.yml
