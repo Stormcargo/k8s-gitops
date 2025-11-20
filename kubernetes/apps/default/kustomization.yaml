@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./filebrowser/ks.yaml
   - ./freshrss/ks.yaml
+  - ./glance/ks.yaml
   - ./hajimari/ks.yaml
   - ./it-tools/ks.yaml
   - ./mealie/ks.yaml
