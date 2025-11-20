@@ -51,7 +51,8 @@ pages:
             units: metric
             location:  London, United Kingdom
           - type: repository
-            repository: waifulabs/infrastructure
+            repository: Stormcargo/k8s-gitops
+            display: Home Infra
             pull-requests-limit: 5
             issues-limit: 3
           - type: monitor
