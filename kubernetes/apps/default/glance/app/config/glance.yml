@@ -43,6 +43,10 @@ pages:
               show-if: |
                 namespace != kube-system &&
                 ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+          - type: extension
+            url: http://glance-k8s/extension/apps
+            allow-potentially-dangerous-html: true
+            cache: 1s
           - type: hacker-news
 
       - size: small
