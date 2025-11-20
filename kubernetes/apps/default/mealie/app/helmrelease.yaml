@@ -76,7 +76,7 @@ spec:
         annotations:
           glance/icon: sh:mealie
           glance/description: Recipe Manager
-          glacne/id: Apps
+          glance/id: Apps
           hajimari.io/icon: mdi:silverware-variant
           hajimari.io/info: Recipe Manager
         hosts:
