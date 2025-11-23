@@ -93,16 +93,19 @@ spec:
         enabled: true
         className: internal
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hajimari.io/icon: "home-assistant"
+          glance/internal: "true"
+          glance/icon: di:home-assistant
+          glance/description: Home Automation
         hosts:
-          - host: "hass.${SECRET_DOMAIN}"
+          - host: &host "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-
+        tls:
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true

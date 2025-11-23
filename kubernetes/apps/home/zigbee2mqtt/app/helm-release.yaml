@@ -109,8 +109,9 @@ spec:
       app:
         className: internal
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hajimari.io/icon: mdi:zigbee
+          glance/internal: "true"
+          glance/icon: di:zigbee2mqtt
+          glance/description: Zigbee Dashboard
         hosts:
           - host: &host "zigbee.${SECRET_DOMAIN}"
             paths:

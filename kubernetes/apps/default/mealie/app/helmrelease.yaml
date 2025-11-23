@@ -78,8 +78,6 @@ spec:
           glance/icon: di:mealie
           glance/description: Recipe Manager
           glance/id: Internal Apps
-          hajimari.io/icon: mdi:silverware-variant
-          hajimari.io/info: Recipe Manager
         hosts:
           - host: &host "mealie.${SECRET_DOMAIN}"
             paths:
