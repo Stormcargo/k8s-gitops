@@ -84,7 +84,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           glance/internal: "true"
-          glance/icon: di:sabznbd
+          glance/icon: di:sabnzbd
           glance/description: Usenet Downloader
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
