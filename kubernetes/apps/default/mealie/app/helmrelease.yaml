@@ -74,6 +74,7 @@ spec:
         enabled: true
         className: internal
         annotations:
+          glance/internal: "true"
           glance/icon: di:mealie
           glance/description: Recipe Manager
           glance/id: Internal Apps
