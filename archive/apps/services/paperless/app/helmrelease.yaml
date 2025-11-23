@@ -103,7 +103,9 @@ spec:
       app:
         className: nginx
         annotations:
-          hajimari.io/icon: file-multiple
+          glance/internal: "true"
+          glance/icon: di:paperless-ngx
+          glance/description: Document Library
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

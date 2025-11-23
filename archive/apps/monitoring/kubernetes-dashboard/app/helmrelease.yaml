@@ -47,8 +47,7 @@ spec:
         name: letsencrypt-production
         scope: cluster
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-staging
-        hajimari.io/icon: mdi:kubernetes
+        glance/icon: di:kubernetes
     metricsScraper:
       enabled: true
     metrics-server:

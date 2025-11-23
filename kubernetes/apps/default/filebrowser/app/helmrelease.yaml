@@ -79,8 +79,6 @@ spec:
           glance/internal: "true"
           glance/icon: di:filebrowser
           glance/description: File Manager
-          hajimari.io/enable: "true"
-          hajimari.io/icon: folder-table
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
