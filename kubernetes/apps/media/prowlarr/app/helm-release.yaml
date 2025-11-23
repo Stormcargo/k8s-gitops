@@ -76,9 +76,9 @@ spec:
       app:
         className: internal
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: cloud-search
-          hajimari.io/info: Media Search
+          glance/internal: "true"
+          glance/icon: di:prowlarr
+          glance/description: Media Indexer Manager
         hosts:
           - host: "prowlarr.${SECRET_DOMAIN}"
             paths:

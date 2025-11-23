@@ -83,7 +83,9 @@ spec:
         className: internal
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hajimari.io/icon: "download"
+          glance/internal: "true"
+          glance/icon: "download"
+          glance/description: Usenet Downloader
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

@@ -131,9 +131,11 @@ spec:
         enabled: true
         className: external
         annotations:
-          hajimari.io/icon: "plex"
-          hajimari.io/targetBlank: "true"
-          hajimari.io/url: "https://plex.${SECRET_DOMAIN}/web/index.html"
+          glance/internal: "true"
+          glance/icon: di:plex
+          glance/same-tab: "false"
+          glance/description: Plex Media Player
+          glance/url: "https://plex.${SECRET_DOMAIN}/web/index.html"
           # Extended timeouts for Plex streaming
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
