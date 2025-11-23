@@ -30,8 +30,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/sonarr-develop
-              tag: 4.0.14.2938@sha256:75da01d2da78d226cd89352fbab919f2eb26ea9a8d6c592bf812dde5f8949243
+              repository: ghcr.io/home-operations/sonarr
+              tag: 4.0.16.2943@sha256:0a1b8f5cb5b072f7ad8c6ff64a25dc512115d1a114ecf19a58a3b4f870207ddd
             env:
               TZ: "Europe/London"
               SONARR__APPLICATION_URL: "https://sonarr.${SECRET_DOMAIN}"
@@ -77,9 +77,9 @@ spec:
       app:
         className: internal
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: television-box
-          # hajimari.io/group: "Media"
+          glance/internal: "true"
+          glance/icon: di:sonarr
+          glance/description: TV Media Manager
         hosts:
           - host: "sonarr.${SECRET_DOMAIN}"
             paths:

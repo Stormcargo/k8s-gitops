@@ -126,7 +126,9 @@ spec:
       enabled: true
       ingressClassName: internal
       annotations:
-        hajimari.io/icon: simple-icons:grafana
+          glance/internal: "true"
+          glance/icon: di:grafana
+          glance/description: Dashboards & Metrics
       hosts:
         - &host "grafana.${SECRET_DOMAIN}"
       tls:

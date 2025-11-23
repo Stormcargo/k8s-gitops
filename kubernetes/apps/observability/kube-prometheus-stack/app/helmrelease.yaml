@@ -30,7 +30,7 @@ spec:
     - name: ingress-nginx-internal
       namespace: network
   values:
-    crds: 
+    crds:
       enabled: false
     cleanPrometheusOperatorObjectNames: true
 
@@ -42,11 +42,11 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal
-        hosts: 
+        hosts:
           - "alertmanager.${SECRET_DOMAIN}"
         pathType: Prefix
         annotations:
-          hajimari.io/enabled: "false"
+          glance/hide: "true"
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
@@ -135,8 +135,9 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          hajimari.io/appName: Prometheus
-          hajimari.io/icon: simple-icons:prometheus
+          glance/internal: "true"
+          glance/icon: di:prometheus
+          glance/description: Metrics
         pathType: Prefix
         hosts:
           - &host "prometheus.${SECRET_DOMAIN}"
