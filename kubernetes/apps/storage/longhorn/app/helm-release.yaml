@@ -47,7 +47,7 @@ spec:
         cert-manager.io/cluster-issuer: "letsencrypt-production"
         nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         glance/internal: "true"
-        glance/icon: longhorn
+        glance/icon: di:longhorn
         glance/description: Cluster Storage
     metrics:
       serviceMonitor:
