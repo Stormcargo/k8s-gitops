@@ -50,7 +50,8 @@ pages:
             parameters:
               # namespace, name annotations
               show-if: |
-                "glance/hide" not in annotations || annotations["glance/hide"] != "true"
+                ("glance/internal" in annotations && annotations["glance/internal"] == "true") &&
+                ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
           - type: hacker-news
 
       - size: small
