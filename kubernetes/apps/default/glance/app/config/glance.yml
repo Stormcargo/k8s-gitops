@@ -19,18 +19,22 @@ pages:
                 label: Time
           - type: calendar
 
-          # - type: rss
-          #   limit: 10
-          #   collapse-after: 3
-          #   cache: 3h
-          #   feeds:
-          #     - url: https://ciechanow.ski/atom.xml
-          #     - url: https://www.joshwcomeau.com/rss.xml
-          #       title: Josh Comeau
-          #     - url: https://samwho.dev/rss.xml
-          #     - url: https://awesomekling.github.io/feed.xml
-          #     - url: https://ishadeed.com/feed.xml
-          #       title: Ahmad Shadeed
+          - type: bookmarks
+            groups:
+              - links:
+                  - title: Gmail
+                    url: https://mail.google.com/mail/u/0/
+              - title: Home Infra Links
+                color: 10 70 50
+                links:
+                - title: Home Infra Repo
+                  url: "https://github.com/Stormcargo/k8s-gitops/"
+                - title: UniFi UI
+                  url: https://unifi.ui.com/
+                - title: JetKVM
+                  url: "http://jetkvm.${SECRET_DOMAIN}"
+                - title: SLZB
+                  url: "http://slzb-06.${SECRET_DOMAIN}"
 
       - size: full
         widgets:
