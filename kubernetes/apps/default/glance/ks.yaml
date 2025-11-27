@@ -14,6 +14,10 @@ spec:
   wait: false # no flux ks dependents
   interval: 30m
   timeout: 5m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
   postBuild:
     substituteFrom:
       - kind: ConfigMap
