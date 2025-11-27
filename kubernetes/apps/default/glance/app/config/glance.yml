@@ -29,9 +29,9 @@ pages:
                   - title: UniFi UI
                     url: https://unifi.ui.com/
                   - title: JetKVM
-                    url: "http://jetkvm.${SECRET_DOMAIN}"
+                    url: "http://jetkvm.relayone.website"
                   - title: SLZB
-                    url: "http://slzb-06.${SECRET_DOMAIN}"
+                    url: "http://slzb-06.relayone.website"
 
       - size: full
         widgets:
