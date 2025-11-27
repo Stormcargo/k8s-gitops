@@ -24,8 +24,9 @@ pages:
               - title: Home Infra Links
                 color: 10 70 50
                 links:
-                  - title: Home Infra Repo
+                  - title: GitOps Repo
                     url: "https://github.com/Stormcargo/k8s-gitops/"
+                    icon: sh:kubernetes
                   - title: UniFi UI
                     url: https://unifi.ui.com/
                   - title: JetKVM
