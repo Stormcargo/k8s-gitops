@@ -21,20 +21,17 @@ pages:
 
           - type: bookmarks
             groups:
-              - links:
-                  - title: Gmail
-                    url: https://mail.google.com/mail/u/0/
               - title: Home Infra Links
                 color: 10 70 50
                 links:
-                - title: Home Infra Repo
-                  url: "https://github.com/Stormcargo/k8s-gitops/"
-                - title: UniFi UI
-                  url: https://unifi.ui.com/
-                - title: JetKVM
-                  url: "http://jetkvm.${SECRET_DOMAIN}"
-                - title: SLZB
-                  url: "http://slzb-06.${SECRET_DOMAIN}"
+                  - title: Home Infra Repo
+                    url: "https://github.com/Stormcargo/k8s-gitops/"
+                  - title: UniFi UI
+                    url: https://unifi.ui.com/
+                  - title: JetKVM
+                    url: "http://jetkvm.${SECRET_DOMAIN}"
+                  - title: SLZB
+                    url: "http://slzb-06.${SECRET_DOMAIN}"
 
       - size: full
         widgets:
