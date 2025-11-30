@@ -21,18 +21,35 @@ pages:
 
           - type: bookmarks
             groups:
-              - title: Home Infra Links
-                color: 10 70 50
+              - title: Local Infra Links
+                color: 96 44 68
                 links:
                   - title: GitOps Repo
                     url: "https://github.com/Stormcargo/k8s-gitops/"
                     icon: sh:kubernetes
                   - title: UniFi UI
                     url: https://unifi.ui.com/
+                    icon: di:unifi
                   - title: JetKVM
                     url: "http://jetkvm.relayone.website"
+                    icon: di:jetkvm
                   - title: SLZB
                     url: "http://slzb-06.relayone.website"
+                    icon: di:smlight
+
+              - title: Home-ops links
+                color: 96 44 68
+                links:
+                  - title: Kubesearch
+                    url: "https://kubesearch.dev/"
+                    icon: di:searxng
+                  - name: Template Chart Docs
+                    url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
+                    icon: si:googledocs
+                  - name: Flux Docs
+                    url: "https://fluxcd.io/flux/"
+                    icon: di:flux-cd
+
 
       - size: full
         widgets:
