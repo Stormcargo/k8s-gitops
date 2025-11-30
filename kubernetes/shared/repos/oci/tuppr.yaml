@@ -13,5 +13,3 @@ spec:
   ref:
     tag: 0.0.43
   url: oci://ghcr.io/home-operations/charts/tuppr
-  verify:
-    provider: cosign
