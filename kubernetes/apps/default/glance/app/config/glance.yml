@@ -16,7 +16,11 @@ pages:
             hour-format: 12h
             timezones:
               - timezone: Europe/London
-                label: Time
+                label: London
+              - timezone: Australia/Melbourne
+                label: Melbs
+              - timezone: Europe/Berlin
+                label: Germany
 
           - type: bookmarks
             groups:
