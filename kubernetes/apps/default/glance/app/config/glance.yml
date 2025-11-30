@@ -56,24 +56,48 @@ pages:
 
       - size: full
         widgets:
-          - type: extension
-            url: http://glance-k8s-extension:8080/extension/nodes
-            allow-potentially-dangerous-html: true
-            cache: 1s
-            parameters:
-              # namespace, name annotations
-              show-if: |
-                namespace != kube-system &&
-                ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
-          - type: extension
-            url: http://glance-k8s-extension:8080/extension/apps
-            allow-potentially-dangerous-html: true
-            cache: 1s
-            parameters:
-              # namespace, name annotations
-              show-if: |
-                ("glance/internal" in annotations && annotations["glance/internal"] == "true") &&
-                ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+          - type: split-column
+            widgets:
+            - type: extension
+              url: http://glance-k8s-extension:8080/extension/nodes
+              allow-potentially-dangerous-html: true
+              cache: 1s
+              parameters:
+                # namespace, name annotations
+                show-if: |
+                  namespace != kube-system &&
+                  ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+            - type: extension
+              url: http://glance-k8s-extension:8080/extension/apps
+              allow-potentially-dangerous-html: true
+              cache: 1s
+              parameters:
+                # namespace, name annotations
+                show-if: |
+                  ("glance/internal" in annotations && annotations["glance/internal"] == "true") &&
+                  ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+
+          # - type: extension
+          #   url: http://glance-k8s-extension:8080/extension/nodes
+          #   allow-potentially-dangerous-html: true
+          #   cache: 1s
+          #   parameters:
+          #     # namespace, name annotations
+          #     show-if: |
+          #       namespace != kube-system &&
+          #       ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+          # - type: extension
+          #   url: http://glance-k8s-extension:8080/extension/apps
+          #   allow-potentially-dangerous-html: true
+          #   cache: 1s
+          #   parameters:
+          #     # namespace, name annotations
+          #     show-if: |
+          #       ("glance/internal" in annotations && annotations["glance/internal"] == "true") &&
+          #       ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+
+
+
 
       - size: small
         widgets:
