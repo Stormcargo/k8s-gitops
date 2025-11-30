@@ -12,16 +12,6 @@ pages:
     columns:
       - size: small
         widgets:
-          - type: clock
-            hour-format: 12h
-            timezones:
-              - timezone: Europe/London
-                label: London
-              - timezone: Australia/Melbourne
-                label: Melbs
-              - timezone: Europe/Berlin
-                label: Germany
-
           - type: bookmarks
             groups:
               - title: Local Infra Links
@@ -53,7 +43,7 @@ pages:
                     url: "https://fluxcd.io/flux/"
                     icon: di:flux-cd
 
-
+      # Middle Wide Column
       - size: full
         widgets:
           - type: split-column
@@ -95,26 +85,27 @@ pages:
           #     show-if: |
           #       ("glance/internal" in annotations && annotations["glance/internal"] == "true") &&
           #       ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+      # End Middle Column
 
 
-
-
+      # Right Column
       - size: small
         widgets:
+          - type: clock
+            hour-format: 12h
+            timezones:
+              - timezone: Europe/London
+                label: London
+              - timezone: Australia/Melbourne
+                label: Melbs
+              - timezone: Europe/Berlin
+                label: Germany
           - type: weather
             units: metric
             location:  London, United Kingdom
           - type: repository
             repository: Stormcargo/k8s-gitops
             display: Home Infra
-            pull-requests-limit: 5
+            pull-requests-limit: 3
             issues-limit: 3
-          - type: extension
-            url: http://glance-k8s-extension:8080/extension/nodes
-            allow-potentially-dangerous-html: true
-            cache: 1s
-            parameters:
-              # namespace, name annotations
-              show-if: |
-                namespace != kube-system &&
-                ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+      # End Right Column
