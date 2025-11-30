@@ -109,10 +109,12 @@ pages:
             display: Home Infra
             pull-requests-limit: 5
             issues-limit: 3
-          - type: monitor
-            cache: 1m
-            title: Services
-            style: compact
-            sites:
-              - title: Home Assistant
-                url: https://hass.relayone.website
+          - type: extension
+            url: http://glance-k8s-extension:8080/extension/nodes
+            allow-potentially-dangerous-html: true
+            cache: 1s
+            parameters:
+              # namespace, name annotations
+              show-if: |
+                namespace != kube-system &&
+                ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
