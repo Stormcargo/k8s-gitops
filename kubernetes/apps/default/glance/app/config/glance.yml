@@ -17,7 +17,6 @@ pages:
             timezones:
               - timezone: Europe/London
                 label: Time
-          - type: calendar
 
           - type: bookmarks
             groups:
