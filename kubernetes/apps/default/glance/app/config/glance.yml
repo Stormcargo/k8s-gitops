@@ -70,7 +70,6 @@ pages:
               show-if: |
                 ("glance/internal" in annotations && annotations["glance/internal"] == "true") &&
                 ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
-          - type: hacker-news
 
       - size: small
         widgets:
