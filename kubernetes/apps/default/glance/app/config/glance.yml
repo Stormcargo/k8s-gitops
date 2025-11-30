@@ -43,10 +43,10 @@ pages:
                   - title: Kubesearch
                     url: "https://kubesearch.dev/"
                     icon: di:searxng
-                  - name: Template Chart Docs
+                  - title: Template Chart Docs
                     url: "https://github.com/bjw-s/helm-charts/tree/main/charts/library/common"
                     icon: si:googledocs
-                  - name: Flux Docs
+                  - title: Flux Docs
                     url: "https://fluxcd.io/flux/"
                     icon: di:flux-cd
 
