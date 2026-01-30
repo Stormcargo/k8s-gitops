@@ -1,0 +1,59 @@
+---
+version: "3"
+
+tasks:
+  sync:
+    desc: Trigger a sync for an ExternalSecret
+    silent: true
+    summary: |
+      Forces a sync/reconciliation of an ExternalSecret by adding or updating the force-sync annotation.
+
+      Usage:
+        task es:sync -- <secret-name> [namespace]
+    cmds:
+      - |
+        SECRET_NAME="{{.CLI_ARGS}}"
+        NAMESPACE="default"
+
+        # Parse arguments
+        if [ -z "$SECRET_NAME" ]; then
+          echo "Error: Secret name is required"
+          echo "Usage: task es:sync -- <secret-name> [namespace]"
+          exit 1
+        fi
+
+        # If CLI_ARGS contains space, split into name and namespace
+        if echo "$SECRET_NAME" | grep -q ' '; then
+          NAMESPACE=$(echo "$SECRET_NAME" | awk '{print $2}')
+          SECRET_NAME=$(echo "$SECRET_NAME" | awk '{print $1}')
+        fi
+
+        echo "Triggering sync for ExternalSecret: $SECRET_NAME in namespace: $NAMESPACE"
+        kubectl annotate externalsecret $SECRET_NAME \
+          -n $NAMESPACE \
+          force-sync=$(date +%s) \
+          --overwrite
+
+        echo "Sync triggered! Checking status..."
+        sleep 2
+        kubectl get externalsecret $SECRET_NAME -n $NAMESPACE
+    preconditions:
+      - sh: command -v kubectl
+        msg: "kubectl is not installed"
+
+  sync-all:
+    desc: Sync all ExternalSecrets for a cluster
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+    cmds:
+      - for: { var: secrets, split: '' }
+        task: sync
+        vars:
+          ns: '{{$a := split "|" .ITEM}}{{$a._0}}'
+          secret: '{{$a := split "|" .ITEM}}{{$a._1}}'
+    env:
+      KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
+    vars:
+      secrets:
+        sh: kubectl get externalsecret --all-namespaces --no-headers -A | awk '{print $1 "|" $2}'

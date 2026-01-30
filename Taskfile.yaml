@@ -29,6 +29,7 @@ includes:
   talos: .taskfiles/Talos
   sops: .taskfiles/Sops
   workstation: .taskfiles/Workstation
+  es: .taskfiles/ExternalSecrets
   user:
     taskfile: .taskfiles/User
     optional: true
