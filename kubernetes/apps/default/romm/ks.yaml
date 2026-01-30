@@ -3,14 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app mealie
+  name: &app romm
   namespace: flux-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   targetNamespace: default
-  path: ./kubernetes/apps/default/mealie/app
+  path: ./kubernetes/apps/default/romm/app
   prune: true
   dependsOn:
     - name: longhorn
