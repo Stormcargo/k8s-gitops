@@ -7,7 +7,6 @@ metadata:
   namespace: databases
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
-
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
