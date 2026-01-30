@@ -5,6 +5,8 @@ kind: Cluster
 metadata:
   name: postgres17
   namespace: databases
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
