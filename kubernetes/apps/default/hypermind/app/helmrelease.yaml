@@ -50,7 +50,6 @@ spec:
                 cpu: 100m
                 memory: 200Mi
               limits:
-                cpu: 300m
                 memory: 400Mi
 
         pod:
