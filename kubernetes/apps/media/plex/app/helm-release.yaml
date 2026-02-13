@@ -32,7 +32,7 @@ spec:
               tag: 1.43.0.10467
             env:
               TZ: "Europe/London"
-              PLEX_ADVERTISE_URL: https://192.168.183.224:32400,https://plex.${SECRET_DOMAIN}:443
+              PLEX_ADVERTISE_URL: http://192.168.183.224:32400,https://plex.${SECRET_DOMAIN}:443
               PLEX_NO_AUTH_NETWORKS: "10.69.0.0/16,192.168.183.0/24,192.168.10.0/24"
     #         envFrom:
     #           - secretRef:
