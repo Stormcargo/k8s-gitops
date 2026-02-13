@@ -1,0 +1,35 @@
+version: "3"
+
+vars:
+  VOLSYNC_SCRIPTS_DIR: "{{.ROOT_DIR}}/.taskfiles/VolSync/scripts"
+
+tasks:
+  snapshot:
+    desc: Snapshot a PVC for an application
+    summary: |
+      Args:
+        ns: Namespace the PVC is in (default: default)
+        app: Application to snapshot (required)
+    cmds:
+      - kubectl -n {{.ns}} patch replicationsources {{.app}} --type merge -p '{"spec":{"trigger":{"manual":"{{.now}}"}}}'
+      - bash {{.VOLSYNC_SCRIPTS_DIR}}/wait-for-job.sh {{.job}} {{.ns}}
+      - kubectl -n {{.ns}} wait job/{{.job}} --for condition=complete --timeout=120m
+    requires:
+      vars: ["app"]
+    vars:
+      now: '{{now | date "150405"}}'
+      ns: '{{.ns | default "default"}}'
+      job: volsync-src-{{.app}}
+    preconditions:
+      - which kubectl
+
+  unlock:
+    desc: Unlock restic repo for a ReplicationSource (runs before next sync)
+    cmds:
+      - kubectl -n {{.ns}} patch replicationsources {{.app}} --field-manager=flux-client-side-apply --type merge -p '{"spec":{"restic":{"unlock":"{{ now | unixEpoch }}"}}}'
+    requires:
+      vars: ["app"]
+    vars:
+      ns: '{{.ns | default "default"}}'
+    preconditions:
+      - which kubectl
