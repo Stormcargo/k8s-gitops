@@ -67,6 +67,7 @@ spec:
         proxy-body-size: 0
         proxy-buffer-size: 16k
         proxy-busy-buffers-size: 16k
+        real-ip-header: CF-Connecting-IP
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
       metrics:
