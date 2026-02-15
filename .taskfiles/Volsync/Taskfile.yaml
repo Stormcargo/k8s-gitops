@@ -1,7 +1,8 @@
 version: "3"
 
 vars:
-  VOLSYNC_SCRIPTS_DIR: "{{.ROOT_DIR}}/.taskfiles/VolSync/scripts"
+  VOLSYNC_SCRIPTS_DIR: "{{.ROOT_DIR}}/.taskfiles/Volsync/scripts"
+  VOLSYNC_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/Volsync/templates"
 
 tasks:
   snapshot:
@@ -33,3 +34,193 @@ tasks:
       ns: '{{.ns | default "default"}}'
     preconditions:
       - which kubectl
+
+  # restore:
+  #   desc: Restore an app [NS=default] [APP=required] [PREVIOUS=required]
+  #   cmds:
+  #     # Suspend GitOps + stop workload
+  #     - flux --namespace {{.NS}} suspend kustomization {{.APP}}
+  #     - flux --namespace {{.NS}} suspend helmrelease {{.APP}}
+  #     - kubectl --namespace {{.NS}} scale {{.CONTROLLER}}/{{.APP}} --replicas 0
+  #     - kubectl --namespace {{.NS}} wait pod --for=delete --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+
+  #     # Render + apply ReplicationDestination (expects it to be named: {{.APP}}-manual)
+  #     - minijinja-cli {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2 | kubectl apply --server-side --filename -
+
+  #     # Wait for the VolSync job to appear (supports optional random suffix)
+  #     - |
+  #       set -euo pipefail
+  #       NS="{{.NS}}"
+  #       PREFIX="volsync-dst-{{.APP}}-manual"
+  #       echo "Waiting for restore job matching ${PREFIX}* to appear in ${NS}..."
+  #       JOB=""
+  #       for i in $(seq 1 90); do
+  #         JOB="$(kubectl -n "${NS}" get jobs -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' \
+  #           | grep -E "^${PREFIX}" \
+  #           | head -n 1 || true)"
+  #         [ -n "${JOB}" ] && break
+  #         sleep 2
+  #       done
+  #       [ -n "${JOB}" ] || (echo "ERROR: restore job not found" && kubectl -n "${NS}" get jobs | grep -i volsync || true && exit 1)
+  #       echo "Found job: ${JOB}"
+  #       echo "${JOB}" > /tmp/volsync_restore_job_{{.APP}}.txt
+
+  #     # Use your wait-for-job script once we know the exact job name
+  #     - bash {{.VOLSYNC_SCRIPTS_DIR}}/wait-for-job.sh "$(cat /tmp/volsync_restore_job_{{.APP}}.txt)" {{.NS}}
+
+  #     # Wait for completion
+  #     - kubectl --namespace {{.NS}} wait job/"$(cat /tmp/volsync_restore_job_{{.APP}}.txt)" --for=condition=complete --timeout=120m
+
+  #     # Cleanup ReplicationDestination
+  #     - kubectl --namespace {{.NS}} delete replicationdestination {{.APP}}-manual
+
+  #     # Resume GitOps + reconcile
+  #     - flux --namespace {{.NS}} resume kustomization {{.APP}}
+  #     - flux --namespace {{.NS}} resume helmrelease {{.APP}}
+  #     - flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
+  #     - kubectl --namespace {{.NS}} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+
+  #   vars:
+  #     NS: '{{.NS | default "default"}}'
+  #     CONTROLLER:
+  #       sh: kubectl --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
+
+  #   env:
+  #     NS: "{{.NS}}"
+  #     APP: "{{.APP}}"
+  #     PREVIOUS: "{{.PREVIOUS}}"
+  #     CLAIM:
+  #       sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.sourcePVC}'
+  #     ACCESS_MODES:
+  #       sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.restic.accessModes}'
+  #     STORAGE_CLASS_NAME:
+  #       sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.restic.storageClassName}'
+  #     PUID:
+  #       sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.restic.moverSecurityContext.runAsUser}'
+  #     PGID:
+  #       sh: kubectl --namespace {{.NS}} get replicationsources/{{.APP}} --output=jsonpath='{.spec.restic.moverSecurityContext.runAsGroup}'
+
+  #   requires:
+  #     vars: [APP, PREVIOUS]
+
+  #   preconditions:
+  #     - test -f {{.VOLSYNC_RESOURCES_DIR}}/replicationdestination.yaml.j2
+  #     - test -f {{.VOLSYNC_SCRIPTS_DIR}}/wait-for-job.sh
+  #     - which flux kubectl minijinja-cli
+
+  restore:
+    desc: Restore an app [NS=default] [APP=required] [PREVIOUS=required]
+    cmds:
+      # Suspend (kustomization optional; helmrelease required)
+      - |
+        set -euo pipefail
+        if flux -n {{.NS}} get kustomizations 2>/dev/null | awk '{print $1}' | grep -qx "{{.APP}}"; then
+          flux -n {{.NS}} suspend kustomization {{.APP}}
+        else
+          echo "Kustomization {{.APP}} not found in {{.NS}}; skipping suspend"
+        fi
+      - flux --namespace {{.NS}} suspend helmrelease {{.APP}}
+
+      # Stop workload
+      - kubectl --namespace {{.NS}} scale {{.CONTROLLER}}/{{.APP}} --replicas 0
+      - kubectl --namespace {{.NS}} wait pod --for=delete --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m || true
+
+      # Restore: create ReplicationDestination and trigger it
+      - |
+        set -euo pipefail
+        NS="{{.NS}}"
+        APP="{{.APP}}"
+        PREV="{{.PREVIOUS}}"
+        RD="${APP}-manual"
+
+        # Pull required info from ReplicationSource
+        CLAIM="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.sourcePVC}')"
+        REPO="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.repository}')"
+        STORAGE_CLASS_NAME="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.storageClassName}')"
+        COPY_METHOD="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.copyMethod}')"
+        PUID="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.moverSecurityContext.runAsUser}')"
+        PGID="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.moverSecurityContext.runAsGroup}')"
+        FSG="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.moverSecurityContext.fsGroup}')"
+
+        echo "Using CLAIM=${CLAIM} REPO=${REPO} STORAGE_CLASS_NAME=${STORAGE_CLASS_NAME} COPY_METHOD=${COPY_METHOD}"
+
+        ACCESS_MODE="$(kubectl -n "${NS}" get replicationsource "${APP}" -o jsonpath='{.spec.restic.accessModes[0]}')"
+
+        cat <<EOF | kubectl apply --server-side -f -
+        apiVersion: volsync.backube/v1alpha1
+        kind: ReplicationDestination
+        metadata:
+          name: ${RD}
+          namespace: ${NS}
+        spec:
+          trigger:
+            manual: restore-once
+          restic:
+            repository: ${REPO}
+            destinationPVC: ${CLAIM}
+            copyMethod: ${COPY_METHOD}
+            storageClassName: ${STORAGE_CLASS_NAME}
+            accessModes:
+              - ${ACCESS_MODE}
+            previous: ${PREV}
+            moverSecurityContext:
+              runAsUser: ${PUID}
+              runAsGroup: ${PGID}
+              fsGroup: ${FSG}
+            enableFileDeletion: true
+            cleanupCachePVC: true
+            cleanupTempPVC: true
+        EOF
+
+
+        echo "Triggering restore..."
+        kubectl -n "${NS}" patch replicationdestination "${RD}" --type merge \
+          -p "{\"spec\":{\"trigger\":{\"manual\":\"$(date +%s)\"}}}"
+
+      # Wait for job to appear + complete
+      - |
+        set -euo pipefail
+        NS="{{.NS}}"
+        PREFIX="volsync-dst-{{.APP}}-manual"
+        echo "Waiting for restore job matching ${PREFIX}*..."
+        JOB=""
+        for i in $(seq 1 90); do
+          JOB="$(kubectl -n "${NS}" get jobs -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' \
+            | grep -E "^${PREFIX}" \
+            | head -n 1 || true)"
+          [ -n "${JOB}" ] && break
+          sleep 2
+        done
+        [ -n "${JOB}" ] || (echo "ERROR: restore job not found" && kubectl -n "${NS}" get jobs | grep -i volsync || true && exit 1)
+
+        echo "Found job: ${JOB}"
+        bash {{.VOLSYNC_SCRIPTS_DIR}}/wait-for-job.sh "${JOB}" "${NS}"
+        kubectl -n "${NS}" wait "job/${JOB}" --for=condition=complete --timeout=120m
+
+      # Cleanup RD
+      - kubectl --namespace {{.NS}} delete replicationdestination {{.APP}}-manual --ignore-not-found=true
+
+      # Resume
+      - flux --namespace {{.NS}} resume helmrelease {{.APP}}
+      - |
+        set -euo pipefail
+        if flux -n {{.NS}} get kustomizations 2>/dev/null | awk '{print $1}' | grep -qx "{{.APP}}"; then
+          flux -n {{.NS}} resume kustomization {{.APP}}
+        else
+          echo "Kustomization {{.APP}} not found in {{.NS}}; skipping resume"
+        fi
+      - flux --namespace {{.NS}} reconcile helmrelease {{.APP}} --force
+      - kubectl --namespace {{.NS}} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{.APP}}" --timeout=5m
+
+    vars:
+      NS: '{{.NS | default "default"}}'
+      CONTROLLER:
+        sh: kubectl --namespace {{.NS}} get deployment {{.APP}} &>/dev/null && echo deployment || echo statefulset
+
+    requires:
+      vars: [APP, PREVIOUS]
+
+    preconditions:
+      - test -f {{.VOLSYNC_SCRIPTS_DIR}}/wait-for-job.sh
+      - which flux kubectl
+

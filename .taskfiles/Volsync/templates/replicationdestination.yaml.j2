@@ -1,0 +1,23 @@
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: {{ app }}-manual
+  namespace: {{ ns }}
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: {{ repository }}
+    destinationPVC: {{ claim }}
+    copyMethod: Snapshot
+    storageClassName: {{ storage_class_name }}
+    accessModes:
+{{ access_modes_yaml }}
+    previous: {{ previous }}
+    moverSecurityContext:
+      runAsUser: {{ puid }}
+      runAsGroup: {{ pgid }}
+      fsGroup: {{ pgid }}
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true
