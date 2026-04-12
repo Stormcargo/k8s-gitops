@@ -4,7 +4,6 @@ sonarr:
     api_key: !env_var SONARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
     media_management:
       propers_and_repacks: do_not_prefer
@@ -60,8 +59,9 @@ sonarr:
           - ed27ebfef2f323e964fb1f61391bcb35 # BR-DISK
         assign_scores_to:
           - name: WEB-1080p
+            score: -100
           - name: WEB-2160p
-        score: -100
+            score: -100
 
 radarr:
   movies:
@@ -69,7 +69,6 @@ radarr:
     api_key: !env_var RADARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
     media_management:
       propers_and_repacks: do_not_prefer
@@ -105,24 +104,24 @@ radarr:
           - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
         assign_scores_to:
           - name: SQP-2160p
-        score: 0
+            score: 0
 
       - trash_ids:
           - 9b64dff695c2115facf1b6ea59c9bd07 # h265 (HD)
           - ed38b889b31be83fda192888e2286d83 # h265 (4K)
         assign_scores_to:
           - name: SQP-2160p
-        score: 25
+            score: 25
 
       - trash_ids:
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # Remux
           - ed27ebfef2f323e964fb1f61391bcb35 # BR-DISK
         assign_scores_to:
           - name: SQP-2160p
-        score: -100
+            score: -100
 
       - trash_ids:
           - 3e5f05d9d1a3f0b2a2e7f3a6f1b3f8e5 # h264
         assign_scores_to:
           - name: SQP-2160p
-        score: -10
+            score: -10
