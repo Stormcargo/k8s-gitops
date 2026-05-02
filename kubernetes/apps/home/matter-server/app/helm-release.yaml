@@ -20,7 +20,7 @@ spec:
               "namespace": "network",
               "ips": ["192.168.10.248/24"]
             }]
-      hostUsers: false
+      # hostUsers: false
       securityContext:
         runAsNonRoot: false # Must be run as root user
         runAsUser: 0        # Must be run as root user
@@ -51,7 +51,7 @@ spec:
             - --log-level-sdk=info
             resources:
               limits:
-                memory: 100Mi
+                memory: 300Mi
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
