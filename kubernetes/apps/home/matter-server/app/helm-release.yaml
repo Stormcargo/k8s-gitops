@@ -13,6 +13,16 @@ spec:
   dependsOn: []
   values:
     defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: interface
+                operator: In
+                values:
+                - enp3s0
+
       annotations:
         k8s.v1.cni.cncf.io/networks: |
             [{
