@@ -67,7 +67,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: zstack
               ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
               ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.183.230:7638
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://192.168.10.230:7638
 
             probes:
               liveness:
