@@ -6,18 +6,13 @@ sonarr:
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
 
-    include:
-      - template: sonarr-quality-definition-series
-      # 1080p
-      - template: sonarr-v4-quality-profile-web-1080p
-      - template: sonarr-v4-custom-formats-web-1080p
-      # 2160p
-      - template: sonarr-v4-quality-profile-web-2160p
-      - template: sonarr-v4-custom-formats-web-2160p
-
     quality_profiles:
-      - name: WEB-1080p
-      - name: WEB-2160p
+      - trash_id: 9d142234e45d6143785ac55f5a9e8dc9 # WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: e6258996055b9fbab7e9cb2f75819294 # WEB-2160p
+        reset_unmatched_scores:
+          enabled: true
 
     custom_formats:
       - trash_ids:
@@ -29,6 +24,7 @@ sonarr:
         assign_scores_to:
           - name: WEB-1080p
           - name: WEB-2160p
+
 
 radarr:
   movies:
