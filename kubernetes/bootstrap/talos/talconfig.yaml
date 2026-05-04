@@ -145,6 +145,13 @@ patches:
             forwardKubeDNSToHost: false
             resolveMemberNames: true
 
+    # Allow ipv6 for matter
+    - |
+      machine:
+        kubelet:
+          extraArgs:
+            allowed-unsafe-sysctls: net.ipv6.*
+
     # Configure kubelet
     - |
       machine:

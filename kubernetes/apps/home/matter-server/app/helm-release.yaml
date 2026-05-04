@@ -31,13 +31,35 @@ spec:
               "ips": ["192.168.10.248/24"]
             }]
       # hostUsers: false
+      # securityContext:
+      #   runAsNonRoot: false # Must be run as root user
+      #   runAsUser: 0        # Must be run as root user
+      #   runAsGroup: 0
+      #   fsGroup: 0
+      #   fsGroupChangePolicy: OnRootMismatch
+      #   supplementalGroups: [34]
       securityContext:
-        runAsNonRoot: false # Must be run as root user
-        runAsUser: 0        # Must be run as root user
+        runAsNonRoot: false
+        runAsUser: 0
         runAsGroup: 0
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [34]
+        # IPV6 Nonsense
+        sysctls:
+        - name: net.ipv6.conf.eth0.accept_ra
+          value: "2"
+        - name: net.ipv6.conf.eth0.accept_ra_rt_info_max_plen
+          value: "64"
+        - name: net.ipv6.conf.eth0.forwarding
+          value: "1"
+        - name: net.ipv6.conf.net1.accept_ra
+          value: "2"
+        - name: net.ipv6.conf.net1.accept_ra_rt_info_max_plen
+          value: "64"
+        - name: net.ipv6.conf.net1.forwarding
+          value: "1"
+
     controllers:
       matter-server:
         annotations:
