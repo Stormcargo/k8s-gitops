@@ -7,10 +7,10 @@ sonarr:
     replace_existing_custom_formats: true
 
     quality_profiles:
-      - trash_id: 9d142234e45d6143785ac55f5a9e8dc9 # WEB-1080p
+      - name: WEB-1080p
         reset_unmatched_scores:
           enabled: true
-      - trash_id: e6258996055b9fbab7e9cb2f75819294 # WEB-2160p
+      - name: WEB-2160p
         reset_unmatched_scores:
           enabled: true
 
@@ -28,10 +28,11 @@ sonarr:
 
 radarr:
   movies:
-    base_url: http://radarr.media.svc.cluster.local
+    base_url: http://radarr:7878
     api_key: !env_var RADARR_API_KEY
 
     delete_old_custom_formats: true
+    replace_existing_custom_formats: true
 
     media_management:
       propers_and_repacks: do_not_prefer
@@ -46,8 +47,7 @@ radarr:
       type: movie
 
     quality_profiles:
-      - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # SQP-1 (2160p)
-        name: SQP-2160p
+      - name: SQP-2160p
         reset_unmatched_scores:
           enabled: true
 
@@ -82,9 +82,3 @@ radarr:
         assign_scores_to:
           - name: SQP-2160p
             score: -100
-
-      - trash_ids:
-          - 3e5f05d9d1a3f0b2a2e7f3a6f1b3f8e5 # h264
-        assign_scores_to:
-          - name: SQP-2160p
-            score: -10
