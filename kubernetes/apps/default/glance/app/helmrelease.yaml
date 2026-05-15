@@ -22,6 +22,9 @@ spec:
     - name: ingress-nginx-internal
       namespace: network
   values:
+    global:
+      createDefaultServiceAccount: false
+
     controllers:
       glance:
         annotations:
@@ -72,6 +75,7 @@ spec:
         serviceAccount:
           identifier: *app
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000

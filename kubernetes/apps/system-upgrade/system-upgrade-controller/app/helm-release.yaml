@@ -11,12 +11,16 @@ spec:
     name: app-template
     namespace: flux-system
   values:
+    global:
+      createDefaultServiceAccount: false
+
     controllers:
       system-upgrade-controller:
         strategy: RollingUpdate
         replicas: 2
 
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsNonRoot: true
             runAsUser: 65534

@@ -11,10 +11,14 @@ spec:
     name: app-template
     namespace: flux-system
   values:
+    global:
+      createDefaultServiceAccount: false
+
     controllers:
       multus:
         type: daemonset
         pod:
+          automountServiceAccountToken: true
           hostNetwork: true
 
         initContainers:
