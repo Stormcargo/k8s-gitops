@@ -68,7 +68,6 @@ radarr:
             score: 0
 
       - trash_ids:
-          - 9b64dff695c2115facf1b6ea59c9bd07 # h265 (HD)
           - ed38b889b31be83fda192888e2286d83 # h265 (4K)
         assign_scores_to:
           - name: SQP-2160p
