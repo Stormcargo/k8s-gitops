@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: toolhive-operator-crds
+  namespace: flux-system
+spec:
+  targetNamespace: ai-slop
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: toolhive-operator
+  path: ./kubernetes/apps/ai-slop/toolhive-operator/crds
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 1h
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app toolhive-operator
+  namespace: flux-system
+spec:
+  targetNamespace: ai-slop
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: toolhive-operator-crds
+  path: ./kubernetes/apps/ai-slop/toolhive-operator/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 1h
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: toolhive-config
+  namespace: flux-system
+spec:
+  targetNamespace: ai-slop
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: toolhive-operator
+  dependsOn:
+    - name: toolhive-operator
+  path: ./kubernetes/apps/ai-slop/toolhive-operator/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+  interval: 1h
+  timeout: 5m
