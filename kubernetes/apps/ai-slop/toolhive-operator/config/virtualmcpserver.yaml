@@ -4,12 +4,11 @@ kind: VirtualMCPServer
 metadata:
   name: tools-gateway
 spec:
-  config:
-    groupRef: mcp-tools
-    aggregation:
-      conflictResolution: prefix
-      conflictResolutionConfig:
-        prefixFormat: "{workload}_"
+  groupRef: mcp-tools
+  aggregation:
+    conflictResolution: prefix
+    conflictResolutionConfig:
+      prefixFormat: "{workload}_"
   incomingAuth:
     type: anonymous
   outgoingAuth:
