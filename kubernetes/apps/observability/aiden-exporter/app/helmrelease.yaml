@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stormcargo/aiden-exporter
-              tag: latest@sha256:002b127a34c309f784682ac88667e444e672619fb400eff8077bdb15f0127a28
+              tag: v0.1.0
             envFrom:
               - secretRef:
                   name: aiden-exporter-secret
