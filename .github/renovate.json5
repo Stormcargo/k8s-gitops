@@ -74,6 +74,7 @@
       ],
       automerge: true,
       automergeType: 'branch',
+      ignoreTests: true,
       schedule: [
         'at any time',
       ],
