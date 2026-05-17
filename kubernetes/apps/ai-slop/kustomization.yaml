@@ -5,3 +5,4 @@ resources:
   - ./namespace.yaml
   - ./toolhive-operator/ks.yaml
   - ./grafana-mcp/ks.yaml
+  - ./ha-mcp/ks.yaml
