@@ -10,7 +10,7 @@ spec:
     name: mcp-tools
   env:
     - name: HOMEASSISTANT_URL
-      value: https://hass.${SECRET_DOMAIN}
+      value: http://home-assistant.home.svc.cluster.local:8123
   secrets:
     - name: ha-mcp
       key: token
