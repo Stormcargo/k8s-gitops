@@ -67,6 +67,8 @@ jobs:
 
       - name: Install Flate
         uses: home-operations/flate/action@1109b9ff85a55dcc47576d73e3ffc92336ad4513 # 0.2.10
+        with:
+          base: ""
 
       - name: Run Flate Test
         run: flate test all --path ./kubernetes/flux/config
