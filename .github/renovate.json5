@@ -51,21 +51,6 @@
   commitMessageSuffix: '',
   packageRules: [
     {
-      description: 'Talos',
-      groupName: 'Talos',
-      matchPackageNames: [
-        'ghcr.io/siderolabs/installer',
-        'ghcr.io/siderolabs/talosctl',
-      ],
-      matchDatasources: [
-        'docker',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-        commitMessageSuffix: '',
-      },
-    },
-    {
       description: [
         'Auto merge aiden-exporter',
       ],
@@ -284,7 +269,7 @@
       matchUpdateTypes: [
         'major',
       ],
-      labels: [
+      addLabels: [
         'type/major',
       ],
     },
@@ -292,7 +277,7 @@
       matchUpdateTypes: [
         'minor',
       ],
-      labels: [
+      addLabels: [
         'type/minor',
       ],
     },
@@ -300,7 +285,7 @@
       matchUpdateTypes: [
         'patch',
       ],
-      labels: [
+      addLabels: [
         'type/patch',
       ],
     },
