@@ -48,10 +48,10 @@ jobs:
           flate diff ${{ matrix.resource }} \
             --path ./pull/kubernetes/flux/config \
             --path-orig ./default/kubernetes/flux/config \
-            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
-            --limit-bytes 10000 \
-            --all-namespaces \
-            --sources "flux-system" >> $GITHUB_OUTPUT
+            --strip-attr "helm.sh/chart" \
+            --strip-attr "checksum/config" \
+            --strip-attr "app.kubernetes.io/version" \
+            --strip-attr "chart" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Add PR Comment
@@ -76,7 +76,7 @@ jobs:
         uses: home-operations/flate/action@1109b9ff85a55dcc47576d73e3ffc92336ad4513 # 0.2.10
 
       - name: Run Flate Test
-        run: flate test all --path ./kubernetes/flux/config --all-namespaces
+        run: flate test all --path ./kubernetes/flux/config
 
   flate-success:
     needs: ["flate", "flux-test"]
