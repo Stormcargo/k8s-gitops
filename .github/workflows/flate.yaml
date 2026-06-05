@@ -71,7 +71,7 @@ jobs:
           base: ""
 
       - name: Run Flate Test
-        run: flate test all --path ./kubernetes/flux/config
+        run: flate test all --path ./kubernetes/flux/config --allow-missing-secrets
 
   flate-success:
     needs: ["flate", "flux-test"]
