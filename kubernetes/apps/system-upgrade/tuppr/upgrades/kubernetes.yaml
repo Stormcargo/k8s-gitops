@@ -1,0 +1,9 @@
+---
+apiVersion: tuppr.home-operations.com/v1alpha1
+kind: KubernetesUpgrade
+metadata:
+  name: kubernetes
+spec:
+  kubernetes:
+    # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+    version: v1.34.1
