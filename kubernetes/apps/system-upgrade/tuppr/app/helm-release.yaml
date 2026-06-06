@@ -22,5 +22,4 @@ spec:
         # grafanaOperator:
         #   enabled: false
         labels:
-          grafana_dashboard: "1"
           grafana_folder: "System"
