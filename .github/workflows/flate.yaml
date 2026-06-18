@@ -41,6 +41,7 @@ jobs:
           echo 'diff<<EOF' >> $GITHUB_OUTPUT
           flate diff ${{ matrix.resource }} \
             --path ./kubernetes/flux/config \
+            --allow-missing-secrets \
             --strip-attr "helm.sh/chart" \
             --strip-attr "checksum/config" \
             --strip-attr "app.kubernetes.io/version" \
