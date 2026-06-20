@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Flate
-        uses: home-operations/flate/action@dfa3992ed14feb4b04df25fe3397606345f87374 # v0.4.7
+        uses: home-operations/flate/action@a13598d5cb2faa79c2638e7bfe61711b1a1c1a5f # v0.4.9
 
       - name: Run Flate Diff
         id: diff
@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install Flate
-        uses: home-operations/flate/action@dfa3992ed14feb4b04df25fe3397606345f87374 # v0.4.7
+        uses: home-operations/flate/action@a13598d5cb2faa79c2638e7bfe61711b1a1c1a5f # v0.4.9
         with:
           base: ""
 
