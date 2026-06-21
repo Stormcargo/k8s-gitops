@@ -5,3 +5,5 @@ resources:
   - ./gatewayclass.yaml
   - ./internal.yaml
   - ./external.yaml
+  - ./http-redirect.yaml
+  - ./hsts.yaml
