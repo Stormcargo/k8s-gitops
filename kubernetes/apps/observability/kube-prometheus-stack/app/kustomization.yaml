@@ -5,3 +5,4 @@ namespace: observability
 resources:
   - ./alertmanagerconfig.yaml
   - ./helmrelease.yaml
+  - ./httproutes.yaml

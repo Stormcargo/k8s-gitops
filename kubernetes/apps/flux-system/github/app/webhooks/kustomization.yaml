@@ -6,3 +6,4 @@ resources:
   - ./externalsecret.yaml
   - ./ingress.yaml
   - ./receiver.yaml
+  - ./httproute.yaml

@@ -6,3 +6,4 @@ resources:
   - ./mcpgroup.yaml
   - ./virtualmcpserver.yaml
   - ./ingress.yaml
+  - ./httproute.yaml
