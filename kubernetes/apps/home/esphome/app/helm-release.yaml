@@ -87,6 +87,23 @@ spec:
             hosts:
               - *host
 
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:esphome
+          glance/description: ESPHome Dashboard
+        hostnames:
+          - *host
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
     persistence:
       config:
         existingClaim: *app

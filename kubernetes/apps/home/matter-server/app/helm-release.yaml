@@ -89,16 +89,21 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
-    # route:
-    #   app:
-    #     hostnames: [*host]
-    #     parentRefs:
-    #     - name:
-    #       namespace:
-    #     rules:
-    #     - backendRefs:
-    #       - name: "{{ .Release.Name }}"
-    #         port: *port
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:matter-light
+          glance/description: Matter Server
+        hostnames: [*host]
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *port
 
     ingress:
       app:

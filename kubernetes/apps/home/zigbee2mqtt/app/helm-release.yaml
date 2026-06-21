@@ -124,6 +124,23 @@ spec:
             hosts:
               - *host
 
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:zigbee2mqtt
+          glance/description: Zigbee Dashboard
+        hostnames:
+          - *host
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
 
     persistence:
       config:

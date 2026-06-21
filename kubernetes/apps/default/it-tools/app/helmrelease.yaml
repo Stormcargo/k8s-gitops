@@ -75,6 +75,23 @@ spec:
                   identifier: app
                   port: http
 
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:it-tools
+          glance/description: Useful tools
+        hostnames:
+          - it-tools.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
     persistence:
       tmp:
         type: emptyDir
