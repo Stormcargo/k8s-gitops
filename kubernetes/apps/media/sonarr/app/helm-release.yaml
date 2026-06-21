@@ -88,6 +88,23 @@ spec:
                   identifier: app
                   port: http
 
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:sonarr
+          glance/description: TV Media Manager
+        hostnames:
+          - "sonarr.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
     persistence:
       config:
         existingClaim: sonarr-config

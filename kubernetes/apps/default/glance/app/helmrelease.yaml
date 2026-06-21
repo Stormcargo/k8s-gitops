@@ -107,18 +107,18 @@ spec:
         tls:
           - hosts:
               - *host
-    # route:
-    #   glance:
-    #     hostnames:
-    #       - glance.${SECRET_DOMAIN}
-    #     parentRefs:
-    #       - name: internal
-    #         namespace: network
-    #         sectionName: https
-    #     rules:
-    #       - backendRefs:
-    #           - name: *app
-    #             port: *port
+    route:
+      glance:
+        hostnames:
+          - glance.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config-file:
         type: configMap

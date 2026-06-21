@@ -85,6 +85,23 @@ spec:
                   identifier: app
                   port: http
 
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:google-alerts
+          glance/description: Alertmanager Dashboard
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
     persistence:
       config:
         type: emptyDir

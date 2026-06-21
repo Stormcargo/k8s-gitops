@@ -88,6 +88,23 @@ spec:
         tls:
           - hosts:
               - *host
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:mealie
+          glance/description: Recipe Manager
+          glance/id: Internal Apps
+        hostnames:
+          - *host
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
     persistence:
       config:
         enabled: true

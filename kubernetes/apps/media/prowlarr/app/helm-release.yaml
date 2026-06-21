@@ -87,6 +87,23 @@ spec:
                   identifier: app
                   port: http
 
+    route:
+      app:
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:prowlarr
+          glance/description: Media Indexer Manager
+        hostnames:
+          - "prowlarr.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+
     persistence:
       config:
         existingClaim: *app
