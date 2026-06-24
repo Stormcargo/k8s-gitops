@@ -53,12 +53,13 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 5
     extraArgs:
-      - --ingress-class=internal
+      - --gateway-namespace=network
+      - --gateway-name=internal
     policy: sync
     txtOwnerId: main
     txtPrefix: k8s.
     sources:
-      - ingress
+      - gateway-httproute
       - service
     domainFilters:
       - "${SECRET_DOMAIN}"

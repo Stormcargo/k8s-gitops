@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: longhorn
     - name: volsync
-    - name: ingress-nginx-internal
+    - name: gateway
 
   interval: 30m
   timeout: 5m

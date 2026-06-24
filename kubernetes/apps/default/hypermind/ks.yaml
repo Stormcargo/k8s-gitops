@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/default/hypermind/app
   prune: true
   dependsOn:
-    - name: ingress-nginx-internal
+    - name: gateway
   sourceRef:
     kind: GitRepository
     name: flux-system

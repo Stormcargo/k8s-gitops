@@ -48,7 +48,7 @@ spec:
             port: 80
     ingress:
       app:
-        enabled: true
+        enabled: false
         className: internal
         annotations:
           glance/internal: "true"

@@ -118,6 +118,7 @@ spec:
             port: *apiPort
     ingress:
       app:
+        enabled: false
         className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
@@ -128,6 +129,18 @@ spec:
                   port: http
         tls:
           - hosts: [*host]
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
     persistence:
       config:
         type: emptyDir

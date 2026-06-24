@@ -27,8 +27,6 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: storage
-    - name: ingress-nginx-internal
-      namespace: network
   values:
     crds:
       enabled: false
@@ -40,7 +38,7 @@ spec:
     alertmanager:
       enabled: true
       ingress:
-        enabled: true
+        enabled: false
         ingressClassName: internal
         hosts:
           - "alertmanager.${SECRET_DOMAIN}"
@@ -132,7 +130,7 @@ spec:
 
     prometheus:
       ingress:
-        enabled: true
+        enabled: false
         ingressClassName: internal
         annotations:
           glance/internal: "true"

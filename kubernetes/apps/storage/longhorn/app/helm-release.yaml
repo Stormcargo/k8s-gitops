@@ -37,15 +37,13 @@ spec:
       v1DataEngine: true
       v2DataEngine: false
     ingress:
-      enabled: true
+      enabled: false
       ingressClassName: internal
       host: "longhorn.${SECRET_DOMAIN}"
       tls: true
       tlsSecret: "longhorn-tls"
       path: /
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
-        nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         glance/internal: "true"
         glance/name: Longhorn
         glance/icon: di:longhorn

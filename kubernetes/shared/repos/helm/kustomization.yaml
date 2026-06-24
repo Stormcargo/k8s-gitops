@@ -18,10 +18,8 @@ resources:
   - ./fairwinds.yaml
   - ./grafana.yaml
   - ./goldpinger.yaml
-  - ./ingress-nginx.yaml
   - ./intel-charts.yaml
   - ./jetstack.yaml
-  - ./k8s-gateway.yaml
   # - ./kubernetes-dashboard.yaml
   - ./longhorn-charts.yaml
   - ./metrics-server.yaml

@@ -123,7 +123,7 @@ spec:
     serviceMonitor:
       enabled: true
     ingress:
-      enabled: true
+      enabled: false
       ingressClassName: internal
       annotations:
           glance/internal: "true"

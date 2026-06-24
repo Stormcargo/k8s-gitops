@@ -70,6 +70,7 @@ spec:
 
     ingress:
       app:
+        enabled: false
         className: internal
         annotations:
           glance/internal: "true"

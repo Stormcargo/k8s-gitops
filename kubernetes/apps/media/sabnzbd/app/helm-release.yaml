@@ -80,9 +80,9 @@ spec:
 
     ingress:
       app:
+        enabled: false
         className: internal
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
           glance/internal: "true"
           glance/icon: di:sabnzbd
           glance/description: Usenet Downloader
