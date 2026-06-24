@@ -116,19 +116,6 @@ spec:
         ports:
           http:
             port: *apiPort
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts: [*host]
     route:
       app:
         hostnames:

@@ -73,22 +73,6 @@ spec:
           http:
             port: *port
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:sonarr
-          glance/description: TV Media Manager
-        hosts:
-          - host: "sonarr.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-
     route:
       app:
         annotations:

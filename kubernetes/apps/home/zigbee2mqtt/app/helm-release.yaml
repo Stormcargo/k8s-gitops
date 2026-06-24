@@ -105,26 +105,6 @@ spec:
             port: 8080
           metrics:
             port: 9000
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:zigbee2mqtt
-          glance/description: Zigbee Dashboard
-        hosts:
-          - host: &host "zigbee.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - secretName: zigbee-tls
-            hosts:
-              - *host
-
     route:
       app:
         annotations:
@@ -132,7 +112,7 @@ spec:
           glance/icon: di:zigbee2mqtt
           glance/description: Zigbee Dashboard
         hostnames:
-          - *host
+          - "zigbee.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
             namespace: network

@@ -90,21 +90,6 @@ spec:
         ports:
           http:
             port: 8080
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        # annotations:
-        hosts:
-          - host: &host "glance.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: glance
-                  port: http
-        tls:
-          - hosts:
-              - *host
     route:
       glance:
         hostnames:

@@ -60,22 +60,6 @@ spec:
           http:
             port: 8080
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:it-tools
-          glance/description: Useful tools
-        hosts:
-          - host: it-tools.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-
     route:
       app:
         annotations:

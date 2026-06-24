@@ -68,26 +68,6 @@ spec:
             primary: true
             port: 6052
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:esphome
-          glance/description: ESPHome Dashboard
-        hosts:
-          - host: &host "esphome.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - secretName: esphome-tls
-            hosts:
-              - *host
-
     route:
       app:
         annotations:
@@ -95,7 +75,7 @@ spec:
           glance/icon: di:esphome
           glance/description: ESPHome Dashboard
         hostnames:
-          - *host
+          - "esphome.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
             namespace: network

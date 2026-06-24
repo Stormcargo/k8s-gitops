@@ -72,22 +72,6 @@ spec:
           http:
             port: *port
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:radarr
-          glance/description: Movie Library Manager
-        hosts:
-          - host: "radarr.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-
     route:
       app:
         annotations:

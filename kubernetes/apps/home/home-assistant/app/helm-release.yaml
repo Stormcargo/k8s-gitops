@@ -88,24 +88,6 @@ spec:
           http:
             port: 8123
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:home-assistant
-          glance/description: Home Automation
-        hosts:
-          - host: &host "hass.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
     route:
       app:
         annotations:
@@ -113,7 +95,7 @@ spec:
           glance/icon: di:home-assistant
           glance/description: Home Automation
         hostnames:
-          - *host
+          - "hass.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
             namespace: network

@@ -105,26 +105,6 @@ spec:
               - name: "{{ .Release.Name }}"
                 port: *port
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:matter-light
-          glance/description: Matter Server
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - secretName: matter-tls
-            hosts:
-              - *host
-
     service:
       app:
         ports:

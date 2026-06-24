@@ -70,22 +70,6 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:google-alerts
-          glance/description: Alertmanager Dashboard
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-
     route:
       app:
         annotations:

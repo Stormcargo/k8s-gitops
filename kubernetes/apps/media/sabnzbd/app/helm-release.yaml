@@ -78,26 +78,6 @@ spec:
           http:
             port: *port
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:sabnzbd
-          glance/description: Usenet Downloader
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: *port
-        # tls:
-        #   - hosts:
-        #       - *host
-
     route:
       app:
         annotations:
@@ -105,7 +85,7 @@ spec:
           glance/icon: di:sabnzbd
           glance/description: Usenet Downloader
         hostnames:
-          - *host
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
             namespace: network

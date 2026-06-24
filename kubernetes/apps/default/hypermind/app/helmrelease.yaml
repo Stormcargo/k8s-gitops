@@ -77,26 +77,6 @@ spec:
           http:
             port: *port
 
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:salad
-          glance/description: P2P Counter
-          glance/id: Internal Apps
-        hosts:
-          - host: &host "hypermind.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-
     route:
       app:
         annotations:
@@ -105,7 +85,7 @@ spec:
           glance/description: P2P Counter
           glance/id: Internal Apps
         hostnames:
-          - *host
+          - "hypermind.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
             namespace: network

@@ -46,24 +46,6 @@ spec:
         ports:
           http:
             port: 80
-    ingress:
-      app:
-        enabled: false
-        className: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:freshrss
-          glance/description: RSS Feeds
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
     route:
       app:
         annotations:
@@ -71,7 +53,7 @@ spec:
           glance/icon: di:freshrss
           glance/description: RSS Feeds
         hostnames:
-          - *host
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
             namespace: network
