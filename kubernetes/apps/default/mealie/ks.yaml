@@ -15,7 +15,7 @@ spec:
   dependsOn:
     - name: longhorn
     - name: volsync
-    - name: ingress-nginx-internal
+    - name: gateway
   sourceRef:
     kind: GitRepository
     name: flux-system

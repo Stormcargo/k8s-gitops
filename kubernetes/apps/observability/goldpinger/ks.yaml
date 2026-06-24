@@ -10,6 +10,8 @@ spec:
   targetNamespace: observability
   path: ./kubernetes/apps/observability/goldpinger/app
   prune: true
+  dependsOn:
+    - name: gateway
   sourceRef:
     kind: GitRepository
     name: flux-system

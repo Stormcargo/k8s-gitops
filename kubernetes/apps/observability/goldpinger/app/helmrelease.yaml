@@ -20,7 +20,7 @@ spec:
       tag: 3.10.2
 
     ingress:
-      enabled: true
+      enabled: false
       className: internal
       annotations:
         glance/internal: "true"

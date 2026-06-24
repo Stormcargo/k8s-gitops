@@ -20,7 +20,7 @@ spec:
   timeout: 5m
   dependsOn:
     - name: volsync
-    - name: ingress-nginx-internal
+    - name: gateway
     - name: longhorn
   postBuild:
     substitute:

@@ -52,7 +52,7 @@ spec:
         enabled: true
         rollOutPods: true
         ingress:
-          enabled: true
+          enabled: false
           className: internal
           annotations:
             glance/internal: "true"

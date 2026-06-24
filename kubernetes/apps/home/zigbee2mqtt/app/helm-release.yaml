@@ -107,6 +107,7 @@ spec:
             port: 9000
     ingress:
       app:
+        enabled: false
         className: internal
         annotations:
           glance/internal: "true"

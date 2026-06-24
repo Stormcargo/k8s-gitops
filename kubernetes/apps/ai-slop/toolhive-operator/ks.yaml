@@ -54,6 +54,7 @@ spec:
       app.kubernetes.io/name: toolhive-operator
   dependsOn:
     - name: toolhive-operator
+    - name: gateway
   path: ./kubernetes/apps/ai-slop/toolhive-operator/config
   prune: true
   sourceRef:

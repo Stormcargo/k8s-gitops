@@ -20,4 +20,4 @@ spec:
   interval: 30m
   timeout: 5m
   dependsOn:
-    - name: ingress-nginx-internal
+    - name: gateway

@@ -8,6 +8,8 @@ spec:
   targetNamespace: default
   path: ./kubernetes/apps/default/glance/app
   prune: true
+  dependsOn:
+    - name: gateway
   sourceRef:
     kind: GitRepository
     name: flux-system

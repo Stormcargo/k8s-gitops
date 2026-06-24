@@ -8,7 +8,7 @@ metadata:
     substitution.flux.home.arpa/enabled: "true"
 spec:
   dependsOn:
-    - name: ingress-nginx-internal
+    - name: gateway
   path: ./kubernetes/apps/storage/longhorn/app
   prune: true
   sourceRef:
