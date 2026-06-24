@@ -128,7 +128,6 @@ spec:
           glance/same-tab: "false"
           glance/description: Plex Media Player
           glance/url: "https://plex.${SECRET_DOMAIN}/web/index.html"
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         hostnames:
           - *host
         parentRefs:
