@@ -37,14 +37,6 @@ spec:
     ##
     alertmanager:
       enabled: true
-      ingress:
-        enabled: false
-        ingressClassName: internal
-        hosts:
-          - "alertmanager.${SECRET_DOMAIN}"
-        pathType: Prefix
-        annotations:
-          glance/hide: "true"
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
@@ -129,20 +121,6 @@ spec:
             memory: 32M
 
     prometheus:
-      ingress:
-        enabled: false
-        ingressClassName: internal
-        annotations:
-          glance/internal: "true"
-          glance/icon: di:prometheus
-          glance/description: Metrics
-        pathType: Prefix
-        hosts:
-          - &host "prometheus.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - *host
-
       prometheusSpec:
         alertingEndpoints:
           - namespace: monitoring
