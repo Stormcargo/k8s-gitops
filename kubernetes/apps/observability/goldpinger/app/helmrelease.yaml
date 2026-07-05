@@ -19,22 +19,6 @@ spec:
     image:
       tag: 3.10.2
 
-    ingress:
-      enabled: false
-      className: internal
-      annotations:
-        glance/internal: "true"
-        glance/icon: di:flightradar24
-        glance/description: Internal Connectivity Checker
-      hosts:
-        - host: &host goldpinger.${SECRET_DOMAIN}
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-          - *host
-
     resources: {}
       # limits:
       #  cpu: 100m

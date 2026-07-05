@@ -51,14 +51,6 @@ spec:
       ui:
         enabled: true
         rollOutPods: true
-        ingress:
-          enabled: false
-          className: internal
-          annotations:
-            glance/internal: "true"
-            glance/icon: di:cilium
-            glance/description: Cluster Network UI
-          hosts: ["hubble.${SECRET_DOMAIN}"]
     operator:
       prometheus:
         enabled: true

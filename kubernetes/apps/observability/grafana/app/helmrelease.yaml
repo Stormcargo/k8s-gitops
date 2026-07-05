@@ -122,18 +122,6 @@ spec:
         searchNamespace: ALL
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: false
-      ingressClassName: internal
-      annotations:
-          glance/internal: "true"
-          glance/icon: di:grafana
-          glance/description: Dashboards & Metrics
-      hosts:
-        - &host "grafana.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
     persistence:
       enabled: false
     testFramework:

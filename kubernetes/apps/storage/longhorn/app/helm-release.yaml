@@ -36,18 +36,6 @@ spec:
 
       v1DataEngine: true
       v2DataEngine: false
-    ingress:
-      enabled: false
-      ingressClassName: internal
-      host: "longhorn.${SECRET_DOMAIN}"
-      tls: true
-      tlsSecret: "longhorn-tls"
-      path: /
-      annotations:
-        glance/internal: "true"
-        glance/name: Longhorn
-        glance/icon: di:longhorn
-        glance/description: Cluster Storage
     metrics:
       serviceMonitor:
         enabled: true
