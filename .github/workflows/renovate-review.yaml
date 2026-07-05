@@ -156,6 +156,7 @@ jobs:
             ## Constraints
 
             - NEVER modify repository files; you are read-only
+            - NEVER link to PRs or Issues in another repo directly
             - Check git history for context: `git log --oneline --grep="<package>" -n 10`
             - If unclear, research more rather than guess
             - When stuck (private repo, ambiguous package, no changelog anywhere), report what you
