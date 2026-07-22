@@ -4,7 +4,7 @@ kind: MCPServer
 metadata:
   name: ha
 spec:
-  image: ghcr.io/homeassistant-ai/ha-mcp:7.14.0
+  image: ghcr.io/homeassistant-ai/ha-mcp:7.14.2
   transport: stdio
   groupRef:
     name: mcp-tools
