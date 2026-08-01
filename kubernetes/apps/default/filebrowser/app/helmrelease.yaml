@@ -26,14 +26,11 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/filebrowser/filebrowser
-              tag: v2.63.19
+              repository: ghcr.io/gtsteffaniak/filebrowser
+              tag: 1.5.0-stable
             env:
-              TZ: Europe/London
-              FB_DATABASE: /config/filebrowser.db
-              FB_ROOT: /srv
-              FB_LOG: stdout
-              FB_NOAUTH: true
+              TZ: ${TIMEZONE}
+              FILEBROWSER_CONFIG: /config/config.yaml
             probes:
               liveness: &probes
                 enabled: true
@@ -48,16 +45,26 @@ spec:
                   failureThreshold: 3
               readiness: *probes
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 30
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
+                memory: 256Mi
               limits:
-                memory: 512Mi
+                memory: 2Gi
         pod:
           securityContext:
             runAsUser: 568
@@ -76,7 +83,7 @@ spec:
       app:
         annotations:
           glance/internal: "true"
-          glance/icon: di:filebrowser
+          glance/icon: di:filebrowser-quantum
           glance/description: File Manager
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
@@ -88,12 +95,50 @@ spec:
           - backendRefs:
               - identifier: app
                 port: http
+    configMaps:
+      config:
+        enabled: true
+        data:
+          config.yaml: |
+            server:
+              port: 80
+              baseURL: "/"
+              database: "/home/filebrowser/data/database.db"
+              cacheDir: "/home/filebrowser/data/tmp"
+              cacheDirCleanup: true
+              logging:
+                - levels: "info|warning|error"
+              sources:
+                - path: "/srv"
+                  name: "nas"
+                  config:
+                    defaultEnabled: true
+                    rules:
+                      - includeRootItem: "Documents"
+                      - includeRootItem: "Media"
+                      - includeRootItem: "downloads"
+                      - includeRootItem: "consume"
+            auth:
+              methods:
+                noauth: true
     persistence:
       config:
         existingClaim: filebrowser
+        globalMounts:
+          - path: /home/filebrowser/data
+      fbconfig:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config
+            readOnly: true
       data:
         type: nfs
         server: ${NAS_ADDR}
         path: /mnt/external
         globalMounts:
           - path: /srv
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
