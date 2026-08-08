@@ -34,9 +34,19 @@ spec:
       # every single-replica volsync *-cache volume, blocking Talos upgrades.
       # Volumes still attached (e.g. postgres17-1) continue to block until they detach.
       nodeDrainPolicy: allow-if-replica-is-stopped
+      # Reclaim orphaned replica directories automatically. Without this, replicas
+      # orphaned by a node upgrade linger forever: the 2026-07-05 Talos run left 139
+      # on rzmini-03 holding ~759GB, taking it to 13% free (unschedulable at 10%).
+      orphanResourceAutoDeletion: replica-data
       concurrentAutomaticEngineUpgradePerNodeLimit: "1"
       storageMinimalAvailablePercentage: "10"
-      StorageOverProvisioningPercentage: "120"
+      # NOTE: this was "StorageOverProvisioningPercentage" (capital S), a key the chart
+      # does not have, so it was silently dropped -- the generated longhorn-default-setting
+      # ConfigMap has never contained storage-over-provisioning-percentage, and the
+      # effective value has always been Longhorn's default of 100. Uncommenting the line
+      # below would be a real behaviour change (more replica scheduling per disk), so it
+      # is left off to preserve the behaviour the cluster has actually been running.
+      # storageOverProvisioningPercentage: "120"
       storageReservedPercentageForDefaultDisk: "20"
 
       v1DataEngine: true
