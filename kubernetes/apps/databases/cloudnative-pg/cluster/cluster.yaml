@@ -8,12 +8,25 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 1
+  # 3 instances (1 primary + 2 streaming standbys). longhorn-cnpg is deliberately
+  # numberOfReplicas=1 + strict-local, so redundancy lives at the Postgres layer,
+  # not the storage layer. With instances: 1 there were no standbys, so the
+  # PDB (minAvailable=1) refused every eviction and node drains deadlocked.
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.7
   primaryUpdateStrategy: unsupervised
   storage:
     size: 40Gi
     storageClass: longhorn-cnpg
+
+  # One instance per node. Required (not preferred) so two instances can never
+  # share a node -- with strict-local volumes that would put two copies on one
+  # disk. On a 3-node cluster this means a drained node's instance stays Pending
+  # until it returns, which is intended: the other two keep serving.
+  affinity:
+    enablePodAntiAffinity: true
+    podAntiAffinityType: required
+    topologyKey: kubernetes.io/hostname
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
