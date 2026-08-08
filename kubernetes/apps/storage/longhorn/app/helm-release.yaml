@@ -29,6 +29,11 @@ spec:
       defaultLonghornStaticStorageClass: longhorn
       # createDefaultDiskLabeledNodes: false
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      # Allow node drains once a replica is stopped (i.e. its volume is detached).
+      # The default block-if-contains-last-replica pins the instance-manager PDB for
+      # every single-replica volsync *-cache volume, blocking Talos upgrades.
+      # Volumes still attached (e.g. postgres17-1) continue to block until they detach.
+      nodeDrainPolicy: allow-if-replica-is-stopped
       concurrentAutomaticEngineUpgradePerNodeLimit: "1"
       storageMinimalAvailablePercentage: "10"
       StorageOverProvisioningPercentage: "120"
