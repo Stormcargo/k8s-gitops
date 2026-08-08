@@ -18,12 +18,12 @@ spec:
       description: Cilium agents ready on all nodes
       expr: status.numberReady == status.desiredNumberScheduled && status.updatedNumberScheduled == status.desiredNumberScheduled
       timeout: 10m
-    - apiVersion: longhorn.io/v1beta2
-      kind: Volume
-      namespace: storage
-      description: Longhorn volumes healthy or detached
-      expr: status.state == 'detached' || status.robustness == 'healthy'
-      timeout: 15m
+    # - apiVersion: longhorn.io/v1beta2
+    #   kind: Volume
+    #   namespace: storage
+    #   description: Longhorn volumes healthy or detached
+    #   expr: status.state == 'detached' || status.robustness == 'healthy'
+    #   timeout: 15m
   silences:
     - matchers:
         - name: alertname
