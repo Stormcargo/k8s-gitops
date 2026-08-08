@@ -12,6 +12,10 @@ spec:
     namespace: flux-system
   values:
     replicaCount: 1
+    silences:
+      enabled: true
+      alertmanager:
+        address: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
     monitoring:
       serviceMonitor:
         enabled: true
