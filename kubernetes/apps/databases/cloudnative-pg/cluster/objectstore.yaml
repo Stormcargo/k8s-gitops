@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://cloudnative-pg.io/schemas/objectstore.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: postgres17-v1
+  namespace: databases
+spec:
+  # Translated verbatim from Cluster .spec.backup.barmanObjectStore so archiving
+  # continues on the same R2 path -- no new backup baseline is created.
+  #
+  # NOTE: serverName is deliberately absent. The ObjectStore API keeps the field
+  # only for compatibility with the in-tree barmanObjectStore and it must be left
+  # empty; the server name is supplied via the Cluster's plugin parameters
+  # instead. Setting it here would silently break archive continuity.
+  configuration:
+    destinationPath: s3://cloudnative-pg/cnpg
+    endpointURL: https://8107775533e1b38958f2bfea727bdef2.r2.cloudflarestorage.com
+
+    wal:
+      compression: bzip2
+      maxParallel: 4
+    data:
+      compression: bzip2
+
+    s3Credentials:
+      accessKeyId:
+        name: cloudnative-pg-secret
+        key: aws-access-key-id
+      secretAccessKey:
+        name: cloudnative-pg-secret
+        key: aws-secret-access-key
