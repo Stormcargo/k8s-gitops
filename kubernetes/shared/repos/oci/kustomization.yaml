@@ -8,3 +8,4 @@ resources:
   - ./toolhive-operator.yaml
   - ./tuppr.yaml
   - ./unifi-dns.yaml
+  - ./victoria-metrics-k8s-stack.yaml
