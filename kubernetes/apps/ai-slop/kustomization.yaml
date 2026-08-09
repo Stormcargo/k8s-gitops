@@ -6,3 +6,4 @@ resources:
   - ./toolhive-operator/ks.yaml
   - ./grafana-mcp/ks.yaml
   - ./ha-mcp/ks.yaml
+  - ./kubesearch-mcp/ks.yaml
