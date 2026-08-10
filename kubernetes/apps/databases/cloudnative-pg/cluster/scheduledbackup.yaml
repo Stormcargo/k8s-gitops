@@ -7,7 +7,10 @@ metadata:
   namespace: databases
 spec:
   backupOwnerReference: self
-  schedule: "0 2 * * *"  # 2 AM daily
+  # CNPG cron takes SIX fields, seconds first -- "0 2 * * *" is only five, so it
+  # parsed as "every hour at HH:02:00" and produced 722 Backup objects instead of
+  # ~30. Six fields below is genuinely 02:00 once a day.
+  schedule: "0 0 2 * * *"  # 2 AM daily
   cluster:
     name: postgres17
   method: barmanObjectStore

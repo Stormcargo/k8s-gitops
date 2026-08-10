@@ -27,6 +27,20 @@ spec:
     enablePodAntiAffinity: true
     podAntiAffinityType: required
     topologyKey: kubernetes.io/hostname
+  # The operator defaults probes.liveness.isolationCheck to enabled with a 1s
+  # connect+request budget. That check kills the primary if it cannot reach its
+  # peers in time -- and at instances: 1 it was dormant, so going to 3 armed it.
+  # On this cluster 1s is far too tight (etcd latency, and multus was resolving
+  # the apiserver through the 10.96.0.1 ClusterIP), so the primary was declaring
+  # itself isolated and restarting. Each restart bumped the timeline, standbys
+  # then failed pg_rewind with "could not find common ancestor" and could never
+  # rejoin, which kept the peers unreachable -- a self-sustaining failover storm
+  # (109 restarts on one instance). Pinned off so the webhook cannot re-enable it.
+  probes:
+    liveness:
+      isolationCheck:
+        enabled: false
+
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
