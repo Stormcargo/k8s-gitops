@@ -34,6 +34,18 @@ spec:
               tag: v4.3.0
             args:
               - --cleanup-config-on-exit=true
+            # Reach the apiserver via Talos KubePrism instead of the 10.96.0.1
+            # ClusterIP. multus generates /host/etc/cni/net.d/multus.kubeconfig
+            # from these vars, and the ClusterIP is served by Cilium's socket-LB
+            # -- so on a freshly rebooted node multus cannot create ANY pod
+            # sandbox until Cilium's datapath converges (FailedCreatePodSandBox,
+            # "context deadline exceeded" against 10.96.0.1:443, minutes long
+            # after every Talos upgrade reboot). KubePrism is CNI-independent;
+            # the pods are hostNetwork so 127.0.0.1 is the host's listener.
+            # Cilium already does exactly this for the same reason.
+            env:
+              KUBERNETES_SERVICE_HOST: "127.0.0.1"
+              KUBERNETES_SERVICE_PORT: "7445"
             resources:
               requests:
                 cpu: "10m"

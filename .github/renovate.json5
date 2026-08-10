@@ -125,6 +125,19 @@
       },
     },
     {
+      description: [
+        'VictoriaMetrics group — consolidates helm chart + OCI image detections into one PR',
+      ],
+      groupName: 'VictoriaMetrics',
+      matchPackageNames: [
+        'victoria-metrics-k8s-stack',
+        'ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+    },
+    {
       matchDatasources: [
         'helm',
       ],
