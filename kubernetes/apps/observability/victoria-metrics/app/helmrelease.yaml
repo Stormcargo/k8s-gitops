@@ -335,6 +335,13 @@ spec:
                   sourceLabels:
                     - __name__
                   regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+                # Further high-cardinality buckets measured post-cutover:
+                # request_body_size 19.3k + watch_list_duration 15.0k +
+                # watch_cache_read_wait 10.4k = ~44.7k series (~13% of cluster).
+                - action: drop
+                  sourceLabels:
+                    - __name__
+                  regex: (apiserver_request_body_size_bytes_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_watch_cache_read_wait_seconds_bucket)
 
     coreDns:
       enabled: true

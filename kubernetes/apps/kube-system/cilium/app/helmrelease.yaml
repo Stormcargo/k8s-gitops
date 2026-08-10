@@ -38,6 +38,15 @@ spec:
           - http
         serviceMonitor:
           enabled: true
+          metricRelabelings:
+            # hubble_port_distribution_total carries an ephemeral `port` label
+            # (63k+ distinct values) -- ~128k series, 36% of all series in the
+            # cluster, scraped every 10s. Dropped at scrape rather than removing
+            # `port-distribution` from metrics.enabled above, so cilium-config is
+            # untouched and the agents do not need a rollout.
+            - action: drop
+              sourceLabels: ["__name__"]
+              regex: hubble_port_distribution_total
         dashboards:
           enabled: true
           annotations:
