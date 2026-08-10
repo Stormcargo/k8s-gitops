@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app victoria-metrics
+  namespace: flux-system
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  targetNamespace: observability
+  path: ./kubernetes/apps/observability/victoria-metrics/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false # no flux ks dependents
+  interval: 30m
+  # Longer than the usual 5m: the install pulls ~25 CRDs, starts the operator, then
+  # blocks on the sync-job hook which fetches dashboards and rules from GitHub.
+  timeout: 20m
+  dependsOn:
+    - name: longhorn # 3 PVCs: vmsingle-metrics, vlsingle-logs, vmalertmanager-alerts
+    - name: gateway # HTTPRoutes for vmsingle / vmagent / vlsingle / alertmanager

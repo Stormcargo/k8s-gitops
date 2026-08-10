@@ -53,12 +53,27 @@ spec:
       datasources.yaml:
         apiVersion: 1
         datasources:
+          # Name and uid are deliberately kept as Prometheus/prometheus even though
+          # this now points at VictoriaMetrics: the 11 dashboards below resolve the
+          # datasource by name, and the VM stack's sync-job dashboards are patched to
+          # datasourceUID=prometheus. Renaming would mean editing all of them.
           - name: Prometheus
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+            url: http://vmsingle-metrics.observability.svc.cluster.local:8428
             isDefault: true
+            jsonData:
+              timeInterval: 60s # must match vmagent.spec.scrapeInterval
+              httpMethod: POST
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://vmalertmanager-alerts.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
+              handleGrafanaManagedAlerts: false
     dashboards:
       default:
         kubernetes-global:

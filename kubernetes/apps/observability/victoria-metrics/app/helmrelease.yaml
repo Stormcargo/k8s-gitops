@@ -1,0 +1,421 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-metrics
+spec:
+  interval: 30m
+  timeout: 20m
+  chartRef:
+    kind: OCIRepository
+    name: victoria-metrics-k8s-stack
+    namespace: flux-system
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      # NEVER `uninstall` -- that fires the operator's pre-delete CRD-cleanup hook,
+      # which runs `kubectl delete vmsingle,vmagent,vmservicescrape,... --all`.
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+  values:
+    fullnameOverride: victoria-metrics
+
+    global:
+      clusterLabel: cluster
+
+    ##
+    ## Operator
+    ##
+    victoria-metrics-operator:
+      enabled: true
+      operator:
+        # Converts ServiceMonitor/PodMonitor/PrometheusRule/Probe/ScrapeConfig into
+        # their VM* equivalents. ~31 ServiceMonitors and 3 PodMonitors rely on this,
+        # so prometheus-operator-crds must stay installed.
+        disable_prometheus_converter: false
+        # Chart default is false, which orphans a VMServiceScrape when its source
+        # ServiceMonitor is deleted.
+        enable_converter_ownership: true
+
+    external:
+      grafana:
+        host: https://grafana.${SECRET_DOMAIN}
+        datasource: Prometheus
+
+    ##
+    ## Metrics storage
+    ##
+    vmsingle:
+      enabled: true
+      name: metrics # -> vmsingle-metrics:8428
+      spec:
+        # Measured fit for 30Gi: 9.9k samples/s at 0.4-0.7 B/sample.
+        # Prometheus was 14d on 55Gi (fully allocated at ~60GB x3 replicas).
+        retentionPeriod: "45d"
+        replicaCount: 1
+        # RWO Longhorn volume on a Deployment: RollingUpdate would deadlock on
+        # multi-attach during every chart upgrade / node reboot.
+        updateStrategy: Recreate
+        storage: # NOTE: a bare PersistentVolumeClaimSpec
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 30Gi
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1Gi
+          limits:
+            memory: 4Gi
+      route:
+        enabled: true
+        annotations:
+          glance/internal: "true"
+          glance/icon: di:prometheus
+          glance/description: Metrics
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - victoriametrics.${SECRET_DOMAIN}
+          - prometheus.${SECRET_DOMAIN} # legacy, keeps bookmarks and Glance working
+
+    ##
+    ## Scraping
+    ##
+    vmagent:
+      enabled: true
+      name: metrics # -> vmagent-metrics:8429
+      spec:
+        selectAllByDefault: true
+        scrapeInterval: 60s # chart default is 20s == 3x the ingest and disk growth
+        externalLabels:
+          cluster: home
+        extraArgs:
+          promscrape.streamParse: "true"
+          # Default is 16MiB and a target that exceeds it fails the scrape outright.
+          # kube-state-metrics (newly enabled here) and cadvisor are the usual offenders.
+          promscrape.maxScrapeSize: 50MiB
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 1Gi
+      route:
+        enabled: true
+        annotations:
+          glance/hide: "true"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - vmagent.${SECRET_DOMAIN} # replaces the old Prometheus /targets page
+
+    ##
+    ## Rule evaluation
+    ##
+    vmalert:
+      enabled: true
+      name: metrics # -> vmalert-metrics:8080
+      spec:
+        evaluationInterval: 60s
+        selectAllByDefault: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+
+    ##
+    ## Logs -- staged but OFF until PR 3.
+    ##
+    ## vlagent's k8sCollector has almost no prior art (1 repo in the kubesearch
+    ## index; everyone else collects into VictoriaLogs with fluent-bit or alloy).
+    ## Landing metrics first keeps the cutover attributable. Flip both `enabled`
+    ## flags below to turn logs on -- the rest of the config is ready.
+    ##
+    vlsingle:
+      enabled: false
+      name: logs # -> vlsingle-logs:9428
+      spec:
+        retentionPeriod: "14d"
+        replicaCount: 1
+        updateStrategy: Recreate # RWO volume, same reason as vmsingle
+        storage:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
+      route:
+        enabled: true
+        annotations:
+          glance/internal: "true"
+          glance/description: Logs
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - logs.${SECRET_DOMAIN}
+
+    vlagent:
+      enabled: false
+      name: logs
+      spec:
+        k8sCollector:
+          enabled: true # DaemonSet tailing /var/log/pods on every node
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+
+    ##
+    ## Alerting
+    ##
+    alertmanager:
+      enabled: true
+      name: alerts # -> vmalertmanager-alerts:9093
+      # Plain upstream Alertmanager syntax rendered into a Secret. Deliberately NOT
+      # VMAlertmanagerConfig, which grafts routes under an operator-generated root and
+      # injects a `namespace=` matcher -- Watchdog and InfoInhibitor carry no namespace
+      # label, so they would never match.
+      useManagedConfig: false
+      monzoTemplate:
+        enabled: false # Slack-specific templates, unused here
+      spec:
+        replicaCount: 1
+        externalURL: https://alertmanager.${SECRET_DOMAIN}
+        # NOTE: a StorageSpec, unlike the bare PVC specs on vmsingle/vlsingle above
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          group_by:
+            - alertname
+            - job
+          group_wait: 1m
+          group_interval: 10m
+          repeat_interval: 12h
+          receiver: "null"
+          routes:
+            - receiver: "null"
+              matchers:
+                - alertname = "InfoInhibitor"
+            - receiver: heartbeat
+              matchers:
+                - alertname = "Watchdog"
+              group_wait: 0s
+              group_interval: 15s
+              repeat_interval: 5m
+        inhibit_rules:
+          # NOT sourceMatch/targetMatch -- that map form was removed in Alertmanager 0.28+
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+            equal:
+              - alertname
+              - namespace
+        receivers:
+          - name: "null"
+          - name: heartbeat
+            webhook_configs:
+              - url: http://example.invalid
+      route:
+        enabled: true
+        annotations:
+          glance/hide: "true"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - alertmanager.${SECRET_DOMAIN}
+
+    ##
+    ## Exporters
+    ##
+    kube-state-metrics:
+      enabled: true # was disabled under kube-prometheus-stack
+
+    prometheus-node-exporter:
+      enabled: true
+
+    ##
+    ## Control-plane scrape targets
+    ##
+    kubelet:
+      enabled: true
+      vmScrape:
+        spec:
+          # Lists REPLACE, so the chart defaults are restated here. The labeldrops are
+          # additions: VMNodeScrape labelmaps every node label onto every kubelet and
+          # cadvisor series, and this cluster runs node-feature-discovery + Talos.
+          # These must live in relabelConfigs (not metricRelabelConfigs) so they also
+          # apply to the synthetic `up` metric, which otherwise exceeds
+          # maxLabelsPerTimeseries (default 30) and is rejected outright.
+          relabelConfigs:
+            - action: labelmap
+              regex: __meta_kubernetes_node_label_(.+)
+            - action: labeldrop
+              regex: (uid)
+            - action: labeldrop
+              regex: (id|name)
+            - action: labeldrop
+              regex: (beta_kubernetes_io_.*)
+            - action: labeldrop
+              regex: (feature_node_kubernetes_io_.*)
+            - action: labeldrop
+              regex: (extensions_talos_dev_.*)
+            - sourceLabels:
+                - __metrics_path__
+              targetLabel: metrics_path
+            - targetLabel: job
+              replacement: kubelet
+      # The chart's default kubelet metricRelabelConfigs are already byte-identical to
+      # the kube-prometheus-stack overrides being replaced -- do not restate them.
+
+    kubeApiServer:
+      enabled: true
+      vmScrape:
+        spec:
+          endpoints:
+            - port: https
+              scheme: https
+              bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              tlsConfig:
+                caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                serverName: kubernetes
+              metricRelabelConfigs:
+                # Drop high cardinality metrics, carried over from kube-prometheus-stack
+                - action: drop
+                  sourceLabels:
+                    - __name__
+                  regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+                - action: drop
+                  sourceLabels:
+                    - __name__
+                  regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+
+    coreDns:
+      enabled: true
+
+    # This chart defaults controllerManager/etcd/scheduler to TRUE, unlike kube-prometheus-stack
+    kubeControllerManager:
+      enabled: false
+
+    kubeEtcd:
+      enabled: false
+
+    kubeScheduler:
+      enabled: false
+
+    kubeProxy:
+      enabled: false # Disabled because eBPF
+
+    kubeDns:
+      enabled: false
+
+    ##
+    ## Dashboards and rules
+    ##
+    ## NOTE: these render NOTHING at template time. A post-install/post-upgrade Helm
+    ## hook Job fetches them from raw.githubusercontent.com (pinned to main/master),
+    ## so they are invisible to `flate diff` and to Renovate.
+    ##
+    defaultDatasources:
+      # Drives the sync-job's dashboard datasourceUID patching. Keeping uid `prometheus`
+      # means the 11 dashboards in the grafana HelmRelease need zero edits.
+      victoriametrics:
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            uid: prometheus
+            isDefault: true
+
+    defaultDashboards:
+      enabled: true
+      sources:
+        # These four are the same dotdc dashboards already pinned in the grafana
+        # HelmRelease as gnetId 15757/15758/15759/15760 -- but from master, unpinned.
+        # Keep the Renovate-tracked copies there; drop the unpinned duplicates here.
+        kubernetes-views-global:
+          enabled: false
+        kubernetes-views-namespaces:
+          enabled: false
+        kubernetes-views-nodes:
+          enabled: false
+        kubernetes-views-pods:
+          enabled: false
+      # grafana-overview / controller-manager / scheduler / proxy / etcd auto-disable
+      # from the component flags above -- no explicit entries needed.
+
+    defaultRules:
+      enabled: true
+      groups:
+        etcd:
+          enabled: false
+        kube-scheduler.rules:
+          enabled: false
+        kubernetes-system-scheduler:
+          enabled: false
+        kubernetes-system-controller-manager:
+          enabled: false
+        # These three consume apiserver_request_duration_seconds_bucket, which the
+        # kubeApiServer metricRelabelConfigs above drop. Leaving them enabled produces
+        # permanently-broken recording rules and phantom SLO burn alerts.
+        kube-apiserver-burnrate.rules:
+          enabled: false
+        kube-apiserver-histogram.rules:
+          enabled: false
+        kube-apiserver-slos:
+          enabled: false
+
+    syncJob:
+      enabled: true
+
+    grafana:
+      enabled: false # deployed separately at apps/observability/grafana
+      forceDeployDatasource: false # datasources are hand-written in that HelmRelease
