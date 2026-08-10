@@ -8,25 +8,41 @@ metadata:
 spec:
   groups:
     - name: flux.rules
+      # flux-operator exports flux_resource_info / flux_instance_info covering every
+      # Flux object it manages, so these rules build on those rather than the gotk_*
+      # metrics from the individual controllers: nothing scrapes the controllers'
+      # http-prom ports in this cluster, so gotk_* has never actually existed here.
       rules:
-        - alert: FluxComponentAbsent
+        - alert: FluxOperatorAbsent
           annotations:
-            summary: Flux component has disappeared from Prometheus target discovery.
+            summary: >-
+              flux-operator has disappeared from target discovery -- Flux state is
+              no longer observable.
           expr: |
-            absent(up{job=~".*flux-system.*"} == 1)
+            absent(up{job="flux-operator"} == 1)
+          for: 15m
+          labels:
+            severity: critical
+        - alert: FluxInstanceNotReady
+          annotations:
+            summary: >-
+              FluxInstance {{ $labels.name }} is not ready ({{ $labels.reason }}).
+              The Flux controllers themselves may be degraded.
+          expr: |
+            flux_instance_info{ready="False"} == 1
           for: 15m
           labels:
             severity: critical
         - alert: FluxReconciliationFailure
           annotations:
             summary: >-
-              {{ $labels.kind }} {{ $labels.namespace }}/{{ $labels.name }} reconciliation
-              has been failing for more than 15 minutes.
+              {{ $labels.kind }} {{ $labels.exported_namespace }}/{{ $labels.name }}
+              reconciliation has been failing for more than 15 minutes
+              ({{ $labels.reason }}).
+          # Suspended resources are excluded deliberately -- they are not-ready by
+          # intent. Deleted resources drop the series entirely, so no stale firing.
           expr: |
-            max(gotk_reconcile_condition{status="False",type="Ready"}) by (namespace, name, kind)
-              +
-            on(namespace, name, kind) (max(gotk_reconcile_condition{status="Deleted"})
-              by (namespace, name, kind)) * 2 == 1
+            flux_resource_info{ready="False", suspended="False"} == 1
           for: 15m
           labels:
             severity: critical
