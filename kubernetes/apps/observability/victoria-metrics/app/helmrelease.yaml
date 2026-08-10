@@ -63,9 +63,8 @@ spec:
         # Prometheus was 14d on 55Gi (fully allocated at ~60GB x3 replicas).
         retentionPeriod: "45d"
         replicaCount: 1
-        # RWO Longhorn volume on a Deployment: RollingUpdate would deadlock on
-        # multi-attach during every chart upgrade / node reboot.
-        updateStrategy: Recreate
+        # NOTE: VMSingle has no spec.updateStrategy -- the operator forces Recreate
+        # itself because the volume is RWO. Setting it is rejected by the CRD schema.
         storage: # NOTE: a bare PersistentVolumeClaimSpec
           storageClassName: longhorn
           accessModes:
@@ -156,7 +155,6 @@ spec:
       spec:
         retentionPeriod: "14d"
         replicaCount: 1
-        updateStrategy: Recreate # RWO volume, same reason as vmsingle
         storage:
           storageClassName: longhorn
           accessModes:
