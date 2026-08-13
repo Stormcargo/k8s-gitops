@@ -59,9 +59,10 @@ spec:
       enabled: true
       name: metrics # -> vmsingle-metrics:8428
       spec:
-        # Measured fit for 30Gi: 9.9k samples/s at 0.4-0.7 B/sample.
-        # Prometheus was 14d on 55Gi (fully allocated at ~60GB x3 replicas).
-        retentionPeriod: "45d"
+        # Measured after 3d in production: 4.6k rows/s at 0.537 B/sample,
+        # ~160 MB/day (trending toward ~90). 120d projects to ~19GB of the
+        # 30Gi volume (60%). Prometheus managed 14d on 55Gi for comparison.
+        retentionPeriod: "120d"
         replicaCount: 1
         # NOTE: VMSingle has no spec.updateStrategy -- the operator forces Recreate
         # itself because the volume is RWO. Setting it is rejected by the CRD schema.
@@ -399,6 +400,13 @@ spec:
 
     defaultRules:
       enabled: true
+      rules:
+        # Upstream expr is `count without(...) (up == 0)`, which returns EMPTY when
+        # every target is healthy -- so RecordingRulesNoData fires precisely because
+        # nothing is wrong. The vector(0) fallback makes it emit 0 instead.
+        "count:up0":
+          spec:
+            expr: count(up == 0) without(instance,pod,node) OR on() vector(0)
       groups:
         etcd:
           enabled: false
@@ -416,6 +424,11 @@ spec:
         kube-apiserver-histogram.rules:
           enabled: false
         kube-apiserver-slos:
+          enabled: false
+        # Depends on the recording rules produced by the three groups above, so its
+        # 16 rules can never evaluate. Not in the chart's default groups map, but the
+        # key is passed through to the sync-job config verbatim (verified).
+        kube-apiserver-availability.rules:
           enabled: false
 
     syncJob:

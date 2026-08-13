@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: volsync-rules
+spec:
+  groups:
+    - name: volsync.rules
+      rules:
+        #
+        # A ReplicationSource can sit broken indefinitely while its
+        # `latestMoverStatus.result` still reads `Successful` — that field is the
+        # last mover's verdict, not the current one, so it goes stale rather than
+        # failing. mealie held `Successful` from 2026-05-14 while its reconcile
+        # errored nightly for 89 days, undetected. `volsync_volume_out_of_sync`
+        # was correctly `1` that whole time, so alert on it, not on the status.
+        #
+        # role="source" is required: the `*-bootstrap` ReplicationDestinations
+        # are restore-only (trigger: manual) and never sync, so they would
+        # otherwise fire permanently.
+        #
+        - alert: VolSyncVolumeOutOfSync
+          annotations:
+            summary: |
+              VolSync {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has not
+              completed a sync within its schedule and is out of sync.
+              Check: kubectl get replicationsource -n {{ $labels.obj_namespace }} {{ $labels.obj_name }} -o yaml
+              Look at status.lastSyncTime (NOT latestMoverStatus.result) and the
+              volsync controller logs for reconcile errors.
+          expr: volsync_volume_out_of_sync{role="source"} == 1
+          for: 6h
+          labels:
+            severity: critical
+        #
+        # Backstop for the case above: catches a source that stops recording
+        # successful syncs even if out_of_sync somehow does not latch. The
+        # counter resets when the volsync controller restarts, which only makes
+        # this less sensitive, never falsely positive.
+        #
+        - alert: VolSyncNoSuccessfulSync
+          annotations:
+            summary: |
+              VolSync {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has
+              recorded no successful sync in 48h (schedule is nightly).
+          expr: |
+            increase(volsync_sync_duration_seconds_count{role="source"}[48h]) == 0
+          for: 1h
+          labels:
+            severity: warning
