@@ -1,3 +1,7 @@
 ---
+web:
+  enabled: true
+  networkPolicy:
+    create: true
 serviceMonitor:
   create: true
