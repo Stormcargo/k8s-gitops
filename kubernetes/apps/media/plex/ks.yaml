@@ -28,3 +28,5 @@ spec:
       APP: *app
       CLAIM: plex-config
       VOLSYNC_CAPACITY: 30Gi
+      # Largest volume in the cluster; gets the first slot to itself.
+      VOLSYNC_SCHEDULE: "0 1 * * *"

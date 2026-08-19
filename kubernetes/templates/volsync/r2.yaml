@@ -46,6 +46,8 @@ spec:
       runAsUser: "${VOLSYNC_UID:-568}"
       runAsGroup: "${VOLSYNC_GID:-568}"
       fsGroup: "${VOLSYNC_GID:-568}"
+      # Skip the recursive chown on restore too — see the ReplicationSource below.
+      fsGroupChangePolicy: OnRootMismatch
     capacity: "${VOLSYNC_CAPACITY}"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -55,7 +57,10 @@ metadata:
 spec:
   sourcePVC: "${CLAIM:-${APP}}"
   trigger:
-    schedule: "0 1 * * *"
+    # Longhorn clones are full-copy, so every source firing at the same minute
+    # means all of them contend for the same disk/network and the largest ones
+    # get starved out. Stagger via VOLSYNC_SCHEDULE in the app's ks.yaml.
+    schedule: "${VOLSYNC_SCHEDULE:-0 1 * * *}"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
     pruneIntervalDays: 10
@@ -70,5 +75,9 @@ spec:
       runAsUser: "${VOLSYNC_UID:-568}"
       runAsGroup: "${VOLSYNC_GID:-568}"
       fsGroup: "${VOLSYNC_GID:-568}"
+      # Without this the kubelet recursively chowns every file on the cloned
+      # volume before the mover starts — on file-heavy PVCs (plex config) that
+      # is hundreds of thousands of files at ~50/sec, i.e. hours per sync.
+      fsGroupChangePolicy: OnRootMismatch
     retain:
       daily: 7

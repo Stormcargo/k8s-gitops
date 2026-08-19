@@ -27,3 +27,4 @@ spec:
       APP: *app
       CLAIM: sonarr-config
       VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_SCHEDULE: "30 2 * * *"

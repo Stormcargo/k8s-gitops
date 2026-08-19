@@ -4,10 +4,18 @@ version: '3'
 
 vars:
   TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig'
-  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml'
+  # Plaintext, gitignored, materialized from 1Password only for the duration of
+  # a task and removed by a defer. Never committed.
+  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.yaml'
   TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml'
   HELMFILE_FILE: '{{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml'
   TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
+  OP_TALSECRET_ITEM: talsecret
+  OP_TALSECRET_VAULT: kubernetes
+  # The Windows 1Password CLI reached through WSL interop, so it can use the
+  # desktop app for biometric unlock. `op` is only a zsh alias and does not
+  # exist in the `sh` that Task shells out to. Override for a native Linux op.
+  OP: '{{.OP | default "op.exe"}}'
 
 
 env:
@@ -21,16 +29,52 @@ tasks:
       - echo {{.KUBERNETES_DIR}}
       - echo {{.TALHELPER_CONFIG_FILE}}
 
+  _talsecret-fetch:
+    internal: true
+    desc: Materialize the Talos secret bundle from 1Password
+    cmds:
+      # Shell redirect rather than --out-file: op.exe is a Windows binary and
+      # would read an absolute Linux path as a Windows one.
+      # Pre-create at 0600 first — `>` truncates without changing the mode of an
+      # existing file, so the PKI is never briefly world-readable. (Task's shell
+      # is mvdan/sh, which has no `umask` builtin.)
+      - install -m 600 /dev/null {{.TALHELPER_SECRET_FILE}}
+      - '{{.OP}} document get {{.OP_TALSECRET_ITEM}} --vault {{.OP_TALSECRET_VAULT}} > {{.TALHELPER_SECRET_FILE}}'
+      - test -s {{.TALHELPER_SECRET_FILE}}
+    preconditions:
+      - msg: Not signed in to 1Password (run `op signin`)
+        sh: '{{.OP}} user get --me'
+      - command -v {{.OP}}
+
+  _talsecret-clean:
+    internal: true
+    cmd: rm -f {{.TALHELPER_SECRET_FILE}}
+
+  gen-secret:
+    desc: Generate a NEW Talos secret bundle and store it in 1Password
+    prompt: This creates a NEW cluster PKI. Existing nodes will no longer trust it. Continue?
+    cmds:
+      # Piped straight to 1Password so the new PKI never lands on disk.
+      - talhelper gensecret | {{.OP}} document create - --title {{.OP_TALSECRET_ITEM}} --vault {{.OP_TALSECRET_VAULT}} --file-name talsecret.yaml
+    preconditions:
+      - msg: Not signed in to 1Password (run `op signin`)
+        sh: '{{.OP}} user get --me'
+      - command -v talhelper
+      - command -v {{.OP}}
+
   gen-config:
     desc: Generate Talos configuration files
     dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
     cmds:
-      - |
-        if [ ! -f "{{.TALHELPER_SECRET_FILE}}" ]; then
-            talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
-            sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
-        fi
+      # Registered before the fetch: a defer only fires if the task reached the
+      # line that registers it, so a failing fetch would otherwise strand the file.
+      - defer: { task: _talsecret-clean }
+      - task: _talsecret-fetch
       - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+    preconditions:
+      - test -f {{.TALHELPER_CONFIG_FILE}}
+      - command -v talhelper
+      - command -v {{.OP}}
 
   apply:
     desc: Apply Talos configuration to a node
@@ -54,11 +98,10 @@ tasks:
     desc: Bootstrap the Talos cluster
     dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
     cmds:
-      - |
-        if [ ! -f "{{.TALHELPER_SECRET_FILE}}" ]; then
-            talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
-            sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
-        fi
+      # Registered before the fetch: a defer only fires if the task reached the
+      # line that registers it, so a failing fetch would otherwise strand the file.
+      - defer: { task: _talsecret-clean }
+      - task: _talsecret-fetch
       - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
       - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
       - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
@@ -67,9 +110,10 @@ tasks:
       - talosctl health --server=false
     preconditions:
       - test -f {{.TALHELPER_CONFIG_FILE}}
-      - test -f {{.SOPS_CONFIG_FILE}}
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - which talhelper sops
+      - msg: Not signed in to 1Password (run `op signin`)
+        sh: '{{.OP}} user get --me'
+      - command -v talhelper
+      - command -v {{.OP}}
 
   upgrade:
     desc: Upgrade Talos on a node

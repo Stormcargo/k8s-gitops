@@ -26,3 +26,6 @@ wiki
 /config.yaml
 # Plans
 docs/plans/
+
+# Plaintext Talos secret bundle, fetched from 1Password at task runtime
+kubernetes/bootstrap/talos/talsecret.yaml
