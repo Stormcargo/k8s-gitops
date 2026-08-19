@@ -79,12 +79,48 @@ spec:
           # NOTE: this MUST live under `config:` — a bare `resources:` here is
           # silently ignored and the chart defaults apply instead.
           config:
+            # Volume churn is wanted signal, but only the failures. Every
+            # scheduled volsync sync creates a mover pod plus a `-src` clone
+            # PVC and then tears both down — ~16 create/delete pairs a day of
+            # pure noise. A mover stuck on FailedAttachVolume, though, means a
+            # Longhorn clone is wedged. So pods and clone PVCs are each split
+            # into a quiet routine rule and a loud error-only rule.
+            #
+            # Two non-obvious things encoded below:
+            #   - `exclude` without `include` matches NOTHING — IsAllowed()
+            #     returns false when include is empty — hence `include: [".*"]`
+            #     on the routine rules.
+            #   - a per-resource `event.types` REPLACES the chart's global
+            #     [create, delete, error]; it does not merge with it.
             resources:
               - type: v1/pods
-              # Volume churn is wanted signal: a volsync clone PVC that lingers
-              # instead of being cleaned up means the controller is wedged.
+                name:
+                  include: [".*"]
+                  exclude: ["^volsync-(src|dst)-"]
+              - type: v1/pods
+                name:
+                  include: ["^volsync-(src|dst)-"]
+                event:
+                  types: [error]
+
+              # PV names are random `pvc-<uuid>`, so there is no pattern to
+              # filter on and every clone churns one. Errors only.
               - type: v1/persistentvolumes
+                event:
+                  types: [error]
+
+              # Only `volsync-<app>-src` is per-run; the `-cache` and
+              # `-bootstrap-dest` claims are long-lived and worth watching.
               - type: v1/persistentvolumeclaims
+                name:
+                  include: [".*"]
+                  exclude: ["^volsync-.*-src$"]
+              - type: v1/persistentvolumeclaims
+                name:
+                  include: ["^volsync-.*-src$"]
+                event:
+                  types: [error]
+
               - type: v1/services
               - type: networking.k8s.io/v1/ingresses
               - type: v1/nodes
