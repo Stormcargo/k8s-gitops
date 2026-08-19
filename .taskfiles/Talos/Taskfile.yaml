@@ -6,7 +6,7 @@ vars:
   TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig'
   TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml'
   TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml'
-  HELMFILE_FILE: '{{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml'
+  HELMFILE_FILE: '{{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml'
   TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
 
 
@@ -139,11 +139,11 @@ tasks:
     dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
     cmds:
       - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --file {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile --file {{.HELMFILE_FILE}} apply --skip-diff-on-install --suppress-diff
       - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
     preconditions:
       - test -f {{.KUBECONFIG}}
-      - test -f {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml
+      - test -f {{.HELMFILE_FILE}}
       - which helmfile kubectl talosctl
 
   # Ref: https://github.com/go-task/task/issues/608
