@@ -31,14 +31,6 @@ spec:
           postgres: "true"
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -52,7 +44,9 @@ spec:
               ROMM_DB_DRIVER: postgresql
               ROMM_PORT: &port 8080
               HASHEOUS_API_ENABLED: true
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
 
             securityContext:
               allowPrivilegeEscalation: false
