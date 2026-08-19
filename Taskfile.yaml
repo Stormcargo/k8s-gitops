@@ -8,24 +8,17 @@ shopt: [globstar]
 
 vars:
   # Directories
-  BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
   KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
-  SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
   # Files
-  BOOTSTRAP_CONFIG_FILE: '{{.ROOT_DIR}}/config.yaml'
-  MAKEJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/makejinja.toml'
   SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
 
 env:
   KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
-  PYTHONDONTWRITEBYTECODE: '1'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-  VIRTUAL_ENV: '{{.ROOT_DIR}}/.venv'
 
 includes:
   k: .taskfiles/Kubernetes
   f: .taskfiles/Flux
-  repository: .taskfiles/Repository
   talos: .taskfiles/Talos
   sops: .taskfiles/Sops
   workstation: .taskfiles/Workstation
@@ -38,43 +31,3 @@ includes:
 tasks:
 
   default: task --list
-
-  init:
-    desc: Initialize configuration files
-    cmds:
-      - cp -n {{.BOOTSTRAP_CONFIG_FILE | replace ".yaml" ".sample.yaml"}} {{.BOOTSTRAP_CONFIG_FILE}}
-      - cmd: echo === Configuration file copied ===
-      - cmd: echo Proceed with updating the configuration files...
-      - cmd: echo {{.BOOTSTRAP_CONFIG_FILE}}
-    status:
-      - test -f {{.BOOTSTRAP_CONFIG_FILE}}
-    silent: true
-
-  configure:
-    desc: Configure repository from bootstrap vars
-    prompt: Any conflicting config in the kubernetes directory will be overwritten... continue?
-    deps: ['workstation:direnv', 'workstation:venv', 'sops:age-keygen', 'init']
-    cmds:
-      - task: template
-      - task: sops:encrypt
-      - task: validate
-
-  template:
-    internal: true
-    cmd: '{{.VIRTUAL_ENV}}/bin/makejinja'
-    preconditions:
-    - test -d {{.VIRTUAL_ENV}}
-    - test -f {{.MAKEJINJA_CONFIG_FILE}}
-    - test -f {{.BOOTSTRAP_DIR}}/scripts/plugin.py
-    - test -f {{.BOOTSTRAP_CONFIG_FILE}}
-
-  validate:
-    internal: true
-    cmds:
-      - task: kubernetes:kubeconform
-      - cmd: echo === Done rendering and validating YAML ===
-      - cmd: |
-          if test -f ~/.config/sops/age/keys.txt; then
-            echo WARNING: SOPS Age key found in home directory, this may cause conflicts.
-          fi
-    silent: true

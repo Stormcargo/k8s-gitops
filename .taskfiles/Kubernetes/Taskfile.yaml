@@ -2,10 +2,18 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
-vars:
-  KUBECONFORM_SCRIPT: "{{.SCRIPTS_DIR}}/kubeconform.sh"
-
 tasks:
+
+  test:
+    desc: Render and validate every Kustomization and HelmRelease offline
+    # Same invocation as the flux-test job in .github/workflows/flate.yaml, so a
+    # local pass means the same thing CI's does. Renders from the working tree
+    # with no cluster contact; --allow-missing-secrets covers the SOPS and
+    # ExternalSecret values that only exist in-cluster.
+    cmd: flate test all --path {{.KUBERNETES_DIR}}/flux/config --allow-missing-secrets {{.CLI_ARGS}}
+    preconditions:
+      - msg: Missing flate (task workstation:generic-linux)
+        sh: command -v flate
 
   resources:
     desc: Gather common resources in your cluster, useful when asking for support
@@ -23,14 +31,3 @@ tasks:
         certificaterequests
         ingresses
         pods
-
-  kubeconform:
-    desc: Validate Kubernetes manifests with kubeconform
-    cmd: bash {{.KUBECONFORM_SCRIPT}} {{.KUBERNETES_DIR}}
-    preconditions:
-      - msg: Missing kubeconform script
-        sh: test -f {{.KUBECONFORM_SCRIPT}}
-
-  reset:
-    internal: true
-    cmd: rm -rf {{.KUBERNETES_DIR}}
