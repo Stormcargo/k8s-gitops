@@ -1,0 +1,57 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: romm-db
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: romm-db-secret
+    creationPolicy: Owner
+    template:
+      # CNPG requires basic-auth with a `username` matching the role name; it
+      # refuses to reconcile on a mismatch before issuing any SQL. The reload
+      # label lets the operator pick up password rotations immediately.
+      type: kubernetes.io/basic-auth
+      engineVersion: v2
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: romm
+        password: "{{ .ROMM_POSTGRES_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: romm
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: romm
+spec:
+  cluster:
+    name: postgres17
+  name: romm
+  # Adopting an existing role rewrites every attribute, so this must spell out
+  # the role as it already is: login, inherit (CRD default true), connection
+  # limit -1 (CRD default), and nothing else.
+  login: true
+  databaseRoleReclaimPolicy: retain
+  passwordSecret:
+    name: romm-db-secret
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: rommdb
+spec:
+  cluster:
+    name: postgres17
+  name: rommdb
+  owner: romm
+  # retain so a Flux prune or an accidental CR delete can never DROP DATABASE
+  databaseReclaimPolicy: retain
