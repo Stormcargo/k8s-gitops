@@ -31,14 +31,16 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 4.0.19.3001@sha256:2fef93accb445aeb1773e454825ac903f7d66d9addfe045d56fff69ba8181c82
+              tag: 4.0.19.3009@sha256:67815effd2ea18398ffc2011d974b8b1cd3939eec5aa74688ffbf371ff65dd84
             env:
               TZ: "Europe/London"
               SONARR__APPLICATION_URL: "https://sonarr.${SECRET_DOMAIN}"
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
+              SONARR__SERVER__ALLOWEDHOSTS: "sonarr.${SECRET_DOMAIN}"
               SONARR__SERVER__PORT: &port 8989
+              SONARR__SERVER__TRUSTEDNETWORKS: "10.69.0.0/16"
               SONARR__UPDATE__BRANCH: develop
             probes:
               liveness: &probes
