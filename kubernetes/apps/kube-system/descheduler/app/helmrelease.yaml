@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: descheduler
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: descheduler
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    kind: Deployment
+    replicas: 1
+    deschedulingInterval: 1h
+
+    resources:
+      requests:
+        cpu: 25m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+
+    cmdOptions:
+      v: 3
+      dry-run: true # delete to go live; key must stay hyphenated
+
+    deschedulerPolicyAPIVersion: descheduler/v1alpha2
+    deschedulerPolicy:
+      maxNoOfPodsToEvictPerNode: 3
+      profiles:
+        - name: default
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                nodeFit: true
+                labelSelector:
+                  matchExpressions:
+                    # never evict a VolSync mover mid-sync
+                    - key: app.kubernetes.io/created-by
+                      operator: NotIn
+                      values:
+                        - volsync
+            - name: LowNodeUtilization
+              args:
+                # under = ALL below thresholds, over = ANY above targetThresholds
+                thresholds:
+                  cpu: 50
+                  memory: 50
+                  pods: 45
+                targetThresholds:
+                  cpu: 60
+                  memory: 60
+                  pods: 55
+                evictionLimits:
+                  node: 3
+                evictableNamespaces:
+                  exclude: &excluded
+                    - storage # instance-manager PDBs allow 0 disruptions
+                    - databases # CNPG strict-local volumes, required anti-affinity
+                    - home # multus static IPs, zigbee mesh churn
+                    - kube-system
+                    - flux-system
+            - name: RemoveFailedPods
+              args:
+                minPodLifetimeSeconds: 3600
+                excludeOwnerKinds:
+                  - Job
+                namespaces:
+                  exclude: *excluded
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 100
+                includingInitContainers: true
+                namespaces:
+                  exclude: *excluded
+          plugins:
+            balance:
+              enabled:
+                - LowNodeUtilization
+            deschedule:
+              enabled:
+                - RemoveFailedPods
+                - RemovePodsHavingTooManyRestarts
