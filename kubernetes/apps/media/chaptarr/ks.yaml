@@ -9,8 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  targetNamespace: default
-  path: ./kubernetes/apps/default/chaptarr/app
+  targetNamespace: media
+  path: ./kubernetes/apps/media/chaptarr/app
   prune: true
   dependsOn:
     - name: longhorn
