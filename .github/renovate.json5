@@ -106,6 +106,7 @@
         'flux-instance',
         'ghcr.io/controlplaneio-fluxcd/charts/flux-operator',
         'ghcr.io/controlplaneio-fluxcd/charts/flux-instance',
+        'ghcr.io/controlplaneio-fluxcd/flux-operator-mcp',
       ],
       group: {
         commitMessageTopic: '{{{groupName}}} group',

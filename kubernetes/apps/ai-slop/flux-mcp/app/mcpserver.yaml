@@ -1,0 +1,55 @@
+---
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: flux
+spec:
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.59.0@sha256:ca1b36b93bb8fa22eb941af690c1788c5eddc12497eff645452f9710b2c389c0
+  # Stateless streamable HTTP (MCP spec 2026-07-28); the legacy sse transport was removed upstream.
+  transport: streamable-http
+  mcpPort: 9090
+  # Cluster credentials come from the pod service account, not a kubeconfig.
+  serviceAccount: flux-mcp
+  groupRef:
+    name: mcp-tools
+  args:
+    - serve
+    - --transport=http
+    - --port=9090
+    - --read-only=false
+    - --mask-secrets=true
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          env:
+            - name: RUNTIME_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: "500m"
+            requests:
+              cpu: "10m"
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 128Mi

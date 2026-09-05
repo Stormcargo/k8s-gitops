@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./toolhive-operator/ks.yaml
+  - ./flux-mcp/ks.yaml
   - ./grafana-mcp/ks.yaml
   - ./ha-mcp/ks.yaml
   - ./kubesearch-mcp/ks.yaml
