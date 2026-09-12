@@ -78,7 +78,6 @@ spec:
         type: LoadBalancer
         allocateLoadBalancerNodePorts: true
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "satisfactory.${SECRET_DOMAIN}" # TODO: remove after all external-dns instances are on v0.22+
           external-dns.kubernetes.io/hostname: "satisfactory.${SECRET_DOMAIN}"
           lbipam.cilium.io/ips: "${SVC_SATISFACTORY_ADDRESS}"
         externalTrafficPolicy: Cluster

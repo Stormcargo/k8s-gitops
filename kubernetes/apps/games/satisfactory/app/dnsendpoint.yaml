@@ -9,7 +9,5 @@ spec:
       recordType: A
       targets: ["${SVC_SATISFACTORY_ADDRESS}"]
       providerSpecific:
-      - name: external-dns.alpha.kubernetes.io/cloudflare-proxied # TODO: remove after all external-dns instances are on v0.22+
-        value: "false"
       - name: external-dns.kubernetes.io/cloudflare-proxied
         value: "false"
