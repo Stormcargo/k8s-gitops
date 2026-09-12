@@ -37,7 +37,14 @@ spec:
     reloader:
       enableHA: true
       deployment:
-        replicas: 1
+        replicas: 2
+        topologySpreadConstraints:
+          - maxSkew: 1
+            topologyKey: kubernetes.io/hostname
+            whenUnsatisfiable: DoNotSchedule
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: reloader
       readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
