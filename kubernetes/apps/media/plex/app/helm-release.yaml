@@ -87,7 +87,8 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.183.224
-          external-dns.alpha.kubernetes.io/hostname: plex-int.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: plex-int.${SECRET_DOMAIN} # TODO: remove after all external-dns instances are on v0.22+
+          external-dns.kubernetes.io/hostname: plex-int.${SECRET_DOMAIN}
         externalTrafficPolicy: Local
         ports:
           http:
