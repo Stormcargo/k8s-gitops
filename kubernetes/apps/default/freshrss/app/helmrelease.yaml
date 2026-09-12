@@ -36,6 +36,8 @@ spec:
               TZ: ${TIMEZONE}
               CRON_MIN: 18,48
               DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
+              # 1.30.0+ blocks feeds on local networks by default (SSRF); allow LAN + pod/svc CIDRs
+              INTERNAL_HOST_ALLOWLIST: "192.168.0.0/16,10.0.0.0/8"
             resources:
               requests:
                 cpu: 50m
