@@ -39,6 +39,13 @@ spec:
               # leaves HOME=/root, which uid 1000 cannot write. Point it at a
               # writable emptyDir rather than the PVC so it stays out of restic.
               HOME: &home /home/tunarr
+              # Tunarr spawns Meilisearch with --db-path and --snapshot-dir as
+              # absolute paths but leaves --dump-dir at its default, which is
+              # RELATIVE ("dumps/"). It means to spawn the child with cwd set to
+              # the data dir; that doesn't take, so the child inherits cwd
+              # /tunarr and dies with EROFS trying to mkdir /tunarr/dumps.
+              # Pin the dump dir instead of poking a hole in the read-only root.
+              MEILI_DUMP_DIR: /config/tunarr/dumps
               # Tunarr only defaults to /config/tunarr when it detects Docker.
               # That probe reads /.dockerenv and /proc/self/cgroup, both of which
               # come up empty under Talos + cgroup v2, so it falls back to
