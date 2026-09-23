@@ -143,15 +143,17 @@ spec:
             memory: 512Mi
 
     ##
-    ## Logs -- staged but OFF until PR 3.
+    ## Logs
     ##
-    ## vlagent's k8sCollector has almost no prior art (1 repo in the kubesearch
-    ## index; everyone else collects into VictoriaLogs with fluent-bit or alloy).
-    ## Landing metrics first keeps the cutover attributable. Flip both `enabled`
-    ## flags below to turn logs on -- the rest of the config is ready.
+    ## Operator-managed: VLSingle for storage, VLAgent's built-in k8sCollector as
+    ## the DaemonSet tailing /var/log/pods. Chosen over the standalone
+    ## victoria-logs-single + victoria-logs-collector charts (the more common
+    ## community pairing) to keep logs on the same operator and HelmRelease as
+    ## metrics. Note k8sCollector has thin prior art, so treat log delivery as the
+    ## thing to verify first -- see the checks in the PR description.
     ##
     vlsingle:
-      enabled: false
+      enabled: true
       name: logs # -> vlsingle-logs:9428
       spec:
         retentionPeriod: "14d"
@@ -182,7 +184,7 @@ spec:
           - logs.${SECRET_DOMAIN}
 
     vlagent:
-      enabled: false
+      enabled: true
       name: logs
       spec:
         k8sCollector:
