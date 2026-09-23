@@ -156,7 +156,10 @@ spec:
       enabled: true
       name: logs # -> vlsingle-logs:9428
       spec:
-        retentionPeriod: "14d"
+        # Measured ~8 MB/day at ~46 bytes/line compressed, so 14d used <1% of the
+        # 20Gi volume. 180d projects to ~1.5GB (7%). Longhorn cannot shrink, so
+        # use the space already provisioned rather than leave it idle.
+        retentionPeriod: "180d"
         replicaCount: 1
         storage:
           storageClassName: longhorn
@@ -192,6 +195,14 @@ spec:
       spec:
         k8sCollector:
           enabled: true # DaemonSet tailing /var/log/pods on every node
+          # Strip ANSI colour escapes so _msg is searchable and renders cleanly in
+          # Grafana. ~3% of lines carry them, almost all from zigbee2mqtt.
+          decolorizeFields:
+            - _msg
+          # tools-gateway emits "waiting for Kubernetes cache sync" and
+          # "kubernetes cache synced successfully" on repeat -- ~5% of all log
+          # volume, no diagnostic value. Both share the substring "cache sync".
+          excludeFilter: 'kubernetes.pod_name:~"tools-gateway" AND _msg:~"cache sync"'
         resources:
           requests:
             cpu: 50m
