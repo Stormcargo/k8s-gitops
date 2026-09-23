@@ -163,15 +163,6 @@ spec:
       disable: true
 
   valuesFrom:
-    - targetPath: communications.default-group.discord.token
-      kind: Secret
+    - kind: Secret
       name: botkube-config-secret
-      valuesKey: BOTKUBE_DISCORD_TOKEN
-    - targetPath: communications.default-group.discord.botID
-      kind: Secret
-      name: botkube-config-secret
-      valuesKey: BOTKUBE_DISCORD_BOT_ID
-    - targetPath: communications.default-group.discord.channels.default.id
-      kind: Secret
-      name: botkube-config-secret
-      valuesKey: BOTKUBE_DISCORD_CHANNEL_ID
+      valuesKey: values.yaml
