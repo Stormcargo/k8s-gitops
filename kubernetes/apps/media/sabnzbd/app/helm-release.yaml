@@ -43,16 +43,24 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
+                  httpGet: &probe-http
                     path: /api?mode=version
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 3
                   failureThreshold: 3
               readiness: *probes
+              # SABnzbd takes 20-30s+ to serve its API on a cold/slow PVC; without
+              # a startup probe the liveness budget (30s) kills it mid-boot forever.
               startup:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: *probe-http
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 60
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
