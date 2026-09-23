@@ -9,6 +9,8 @@ on:
     paths:
       - kubernetes/apps/**
       - kubernetes/flux/**
+      - kubernetes/shared/**
+      - kubernetes/templates/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
