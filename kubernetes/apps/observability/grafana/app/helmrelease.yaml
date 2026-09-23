@@ -74,6 +74,13 @@ spec:
             jsonData:
               implementation: prometheus
               handleGrafanaManagedAlerts: false
+          - name: VictoriaLogs
+            type: victoriametrics-logs-datasource
+            uid: victorialogs
+            access: proxy
+            url: http://vlsingle-logs.observability.svc.cluster.local:9428
+            jsonData:
+              maxLines: 1000
     dashboards:
       default:
         kubernetes-global:
@@ -137,6 +144,14 @@ spec:
         searchNamespace: ALL
     serviceMonitor:
       enabled: true
+    plugins:
+      # Required for the VictoriaLogs datasource above -- no built-in Grafana type
+      # speaks LogsQL. Maps to GF_INSTALL_PLUGINS, so with persistence disabled it
+      # re-downloads from grafana.com on every pod start and a failed download
+      # blocks startup. Accepted deliberately: 3 of 4 indexed home-ops repos run
+      # exactly this shape. The plugin is signed, so no
+      # GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS entry is needed.
+      - victoriametrics-logs-datasource
     persistence:
       enabled: false
     testFramework:

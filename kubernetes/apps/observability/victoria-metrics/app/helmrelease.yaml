@@ -170,7 +170,10 @@ spec:
             cpu: 100m
             memory: 512Mi
           limits:
-            memory: 2Gi
+            # 2Gi OOMKilled twice during the first-run backfill (all pod logs from
+            # 3 nodes at once). Steady state is ~250Mi, so this is headroom for
+            # burst replay after vlagent buffers up, not a reservation.
+            memory: 4Gi
       route:
         enabled: true
         annotations:
