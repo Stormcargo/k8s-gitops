@@ -46,7 +46,7 @@ spec:
   enableSuperuserAccess: true
   resources:
     requests:
-      memory: 1.5Gi
+      memory: 768Mi
     limits:
       memory: 2Gi
 

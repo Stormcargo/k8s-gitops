@@ -32,8 +32,7 @@ spec:
           emptyDir: {}
   resources:
     limits:
-      cpu: 200m
-      memory: 100Mi
+      memory: 256Mi
     requests:
       cpu: 10m
-      memory: 100Mi
+      memory: 128Mi

@@ -2,29 +2,21 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./angelnu.yaml
   - ./backube-charts.yaml
-  - ./bitnami.yaml
-  - ./bjw-s.yaml
   - ./botkubeio.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
   - ./controlplaneio.yaml
   - ./coredns.yaml
-  - ./csi-driver-nfs.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
-  - ./fairwinds.yaml
   - ./grafana.yaml
   - ./goldpinger.yaml
   - ./intel-charts.yaml
   - ./jetstack.yaml
-  # - ./kubernetes-dashboard.yaml
   - ./longhorn-charts.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery-charts.yaml
-  - ./openebs.yaml
   - ./piraeus.yaml
   - ./prometheus-community.yaml
   - ./spegel.yaml
-  - ./stakater.yaml

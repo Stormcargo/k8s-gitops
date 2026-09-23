@@ -5,3 +5,9 @@ web:
     create: true
 serviceMonitor:
   create: true
+resources:
+  requests:
+    cpu: 100m
+    memory: 320Mi # chart default 64Mi; steady state ~300Mi
+  limits:
+    memory: 1Gi

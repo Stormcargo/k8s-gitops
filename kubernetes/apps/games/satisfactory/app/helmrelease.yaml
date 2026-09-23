@@ -67,7 +67,7 @@ spec:
 
             resources:
               requests:
-                memory: 6Gi
+                memory: 3Gi
               limits:
                 memory: 20Gi
 
