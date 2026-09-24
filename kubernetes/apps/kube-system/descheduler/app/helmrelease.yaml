@@ -43,6 +43,7 @@ spec:
             - name: DefaultEvictor
               args:
                 nodeFit: true
+                minPodAge: 10m # let a freshly scheduled pod settle before moving it
                 labelSelector:
                   matchExpressions:
                     # never evict a VolSync mover mid-sync
@@ -52,15 +53,17 @@ spec:
                         - volsync
             - name: LowNodeUtilization
               args:
-                # under = ALL below thresholds, over = ANY above targetThresholds
+                # Deviations from the cluster mean, not absolute percentages, so
+                # growth cannot silently leave every node above the "under" line
+                # and strand the plugin with no target. Pods only: with cpu and
+                # memory in the maps, "under" requires ALL three below the mean,
+                # which produced zero targets on every skew this cluster has
+                # actually seen. Placement safety stays with nodeFit + scheduler.
+                useDeviationThresholds: true
                 thresholds:
-                  cpu: 50
-                  memory: 50
-                  pods: 45
+                  pods: 5 # target if >5pp below mean
                 targetThresholds:
-                  cpu: 60
-                  memory: 60
-                  pods: 55
+                  pods: 5 # source if >5pp above mean
                 evictionLimits:
                   node: 3
                 evictableNamespaces:

@@ -20,6 +20,7 @@ includes:
   k: .taskfiles/Kubernetes
   f: .taskfiles/Flux
   talos: .taskfiles/Talos
+  tuppr: .taskfiles/Tuppr
   sops: .taskfiles/Sops
   workstation: .taskfiles/Workstation
   es: .taskfiles/ExternalSecrets

@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+# Workarounds for tuppr's drain giving up on the first PodDisruptionBudget
+# refusal. With CNPG on single-replica strict-local Longhorn volumes, every node
+# drain deadlocks until the pinned pod is evicted by hand and Longhorn is given
+# ~30-60s to detach the volume and delete its instance-manager PDB.
+# Longhorn-specific; goes away with the move off Longhorn.
+
+vars:
+  TUPPR_SCRIPTS_DIR: '{{.ROOT_DIR}}/.taskfiles/Tuppr/scripts'
+  TUPPR_NS: system-upgrade
+  TUPPR_DEPLOY: tuppr
+  LONGHORN_NS: storage
+  TALOSUPGRADE: talos
+
+env:
+  TUPPR_NS: '{{.TUPPR_NS}}'
+  TUPPR_DEPLOY: '{{.TUPPR_DEPLOY}}'
+  LONGHORN_NS: '{{.LONGHORN_NS}}'
+  TALOSUPGRADE: '{{.TALOSUPGRADE}}'
+
+tasks:
+  status:
+    desc: Show the TalosUpgrade phase, node versions, and any blocking Longhorn PDBs
+    cmds:
+      - kubectl get talosupgrade {{.TALOSUPGRADE}}
+      - kubectl get nodes -o custom-columns='NAME:.metadata.name,READY:.status.conditions[?(@.type=="Ready")].status,CORDONED:.spec.unschedulable,TALOS:.status.nodeInfo.osImage'
+      - kubectl -n {{.LONGHORN_NS}} get pdb -o custom-columns='PDB:.metadata.name,NODE:.spec.selector.matchLabels.longhorn\.io/node,ALLOWED:.status.disruptionsAllowed' | grep -E 'PDB|instance-manager' || true
+    preconditions:
+      - command -v kubectl
+
+  unblock:
+    desc: Pre-stage one node so tuppr's drain succeeds (default node = TalosUpgrade currentNode)
+    summary: |
+      Stops tuppr, then `kubectl drain`s the node — which, unlike tuppr, retries
+      PDB-refused evictions until Longhorn has detached the volumes and dropped
+      the node's instance-manager PDBs — then restarts tuppr with nothing left
+      for it to evict. Pods are only evicted; PVCs are untouched.
+
+      Evicting a CNPG *primary* makes CNPG switch over to a replica first; that
+      is expected and takes a few seconds.
+
+      Args:
+        node: Node to pre-stage (default: the node tuppr is currently working on)
+    cmds:
+      - bash {{.TUPPR_SCRIPTS_DIR}}/unblock-node.sh {{.node}}
+    vars:
+      node:
+        sh: |
+          n='{{.node}}'
+          [ -n "$n" ] && { echo "$n"; exit 0; }
+          kubectl get talosupgrade {{.TALOSUPGRADE}} -o jsonpath='{.status.currentNode}'
+    preconditions:
+      - command -v kubectl jq
+      - msg: Could not determine a node (pass node=<name>)
+        sh: test -n '{{.node}}'
+
+  rollout:
+    desc: Babysit a whole TalosUpgrade run, unblocking each node as tuppr reaches it
+    summary: |
+      Polls the TalosUpgrade until it completes. Whenever tuppr is Draining a node
+      whose Longhorn instance-manager PDB is blocking, runs `unblock` for it; once
+      a node is back on the target version and Ready, makes sure it is uncordoned.
+
+      Typical use: merge the Renovate Talos PR, then run `task tuppr:rollout` and
+      walk away.
+    cmds:
+      - bash {{.TUPPR_SCRIPTS_DIR}}/rollout.sh
+    preconditions:
+      - command -v kubectl jq
+      - kubectl get talosupgrade {{.TALOSUPGRADE}}
