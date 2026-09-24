@@ -33,7 +33,6 @@ spec:
 
     cmdOptions:
       v: 3
-      dry-run: true # delete to go live; key must stay hyphenated
 
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
@@ -69,6 +68,7 @@ spec:
                     - storage # instance-manager PDBs allow 0 disruptions
                     - databases # CNPG strict-local volumes, required anti-affinity
                     - home # multus static IPs, zigbee mesh churn
+                    - network # single-replica ingress data plane, no PDBs
                     - kube-system
                     - flux-system
             - name: RemoveFailedPods
