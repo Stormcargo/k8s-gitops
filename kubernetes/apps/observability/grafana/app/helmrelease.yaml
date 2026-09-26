@@ -146,13 +146,25 @@ spec:
       enabled: true
     plugins:
       # Required for the VictoriaLogs datasource above -- no built-in Grafana type
-      # speaks LogsQL. Maps to GF_INSTALL_PLUGINS, so with persistence disabled it
-      # re-downloads from grafana.com on every pod start and a failed download
-      # blocks startup. Accepted deliberately: 3 of 4 indexed home-ops repos run
-      # exactly this shape. The plugin is signed, so no
-      # GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS entry is needed.
+      # speaks LogsQL. Maps to GF_INSTALL_PLUGINS; the plugin lands on the PVC, so
+      # restarts reuse it instead of re-downloading from grafana.com. The plugin is
+      # signed, so no GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS entry is needed.
       - victoriametrics-logs-datasource
+    resources:
+      requests:
+        cpu: 100m
+        memory: 384Mi # ~358Mi observed
+      limits:
+        memory: 1Gi
+    # Keeps the sqlite DB (users, service accounts and their tokens) across
+    # restarts; without it every rollout invalidated the grafana-mcp token.
+    # The claim comes from templates/volsync (restored from R2 on bootstrap).
     persistence:
+      enabled: true
+      type: pvc
+      existingClaim: grafana
+    # fsGroup 472 already owns the volume; skip the chart's root chown init container
+    initChownData:
       enabled: false
     testFramework:
       enabled: false

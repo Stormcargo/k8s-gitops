@@ -17,3 +17,13 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: gateway
+    - name: longhorn
+    - name: volsync
+  postBuild:
+    substitute:
+      APP: grafana
+      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_SCHEDULE: "0 6 * * *"
+      # Grafana runs as 472, not the template's 568 default
+      VOLSYNC_UID: "472"
+      VOLSYNC_GID: "472"
