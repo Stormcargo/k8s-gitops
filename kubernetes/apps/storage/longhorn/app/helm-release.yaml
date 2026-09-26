@@ -53,4 +53,4 @@ spec:
       v2DataEngine: false
     metrics:
       serviceMonitor:
-        enabled: true
+        enabled: false # blocked by the chart's longhorn-manager NetworkPolicy
