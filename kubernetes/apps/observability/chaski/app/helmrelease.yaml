@@ -44,8 +44,9 @@ spec:
       # Shared snippets. Template variables are avoided (include instead) because
       # Flux postBuild substitution runs over this file.
       templates:
-        radarr-poster: '{{ range (dig "movie" "images" .payload | default (list)) }}{{ if eq (dig "coverType" .) "poster" }}{{ dig "remoteUrl" . }}{{ end }}{{ end }}'
-        sonarr-poster: '{{ range (dig "series" "images" .payload | default (list)) }}{{ if eq (dig "coverType" .) "poster" }}{{ dig "remoteUrl" . }}{{ end }}{{ end }}'
+        # First poster that has a remote URL; empty when there is none (e.g. Test events)
+        radarr-poster: '{{ range (dig "movie" "images" .payload | default (list)) }}{{ if eq (toString (dig "coverType" .)) "poster" }}{{ with dig "remoteUrl" . }}{{ . }} {{ end }}{{ end }}{{ end }}'
+        sonarr-poster: '{{ range (dig "series" "images" .payload | default (list)) }}{{ if eq (toString (dig "coverType" .)) "poster" }}{{ with dig "remoteUrl" . }}{{ . }} {{ end }}{{ end }}{{ end }}'
         # Discord embed colours: green added, blue upgraded, orange manual, grey test
         arr-color: >-
           {{- if eq .payload.eventType "Test" }}9807270
@@ -60,7 +61,7 @@ spec:
         radarr-url: >-
           {{- dig "applicationUrl" .payload | default (env "RADARR_URL") }}/
           {{- if eq .payload.eventType "ManualInteractionRequired" }}activity/queue
-          {{- else }}movie/{{ dig "movie" "tmdbId" .payload }}{{ end }}
+          {{- else }}{{ with dig "movie" "tmdbId" .payload }}movie/{{ . }}{{ end }}{{ end }}
         radarr-desc: |-
           {{- with dig "movie" "overview" .payload }}{{ . | ellipsis 300 }}
           {{ end }}
@@ -74,7 +75,7 @@ spec:
         sonarr-url: >-
           {{- dig "applicationUrl" .payload | default (env "SONARR_URL") }}/
           {{- if eq .payload.eventType "ManualInteractionRequired" }}activity/queue
-          {{- else }}series/{{ dig "series" "titleSlug" .payload }}{{ end }}
+          {{- else }}{{ with dig "series" "titleSlug" .payload }}series/{{ . }}{{ end }}{{ end }}
         sonarr-desc: |-
           {{- with dig "episodes" .payload }}{{ if gt (len .) 0 }}{{ with dig "title" (index . 0) }}*{{ . }}*
           {{ end }}{{ end }}{{ end }}
@@ -90,10 +91,10 @@ spec:
             {"username": "Radarr",
             "avatar_url": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/radarr.png",
             "embeds": [{"title": {{ include "radarr-title" . | toJSON }},
-            "url": {{ include "radarr-url" . | toJSON }},
+            {{- with include "radarr-url" . }}{{ if hasPrefix "http" . }} "url": {{ toJSON . }},{{ end }}{{ end }}
             "description": {{ include "radarr-desc" . | toJSON }},
             "color": {{ include "arr-color" . }}
-            {{- with include "radarr-poster" . }}, "thumbnail": {"url": {{ toJSON . }}}{{ end }}}]}
+            {{- with include "radarr-poster" . | trim }}{{ with first (splitList " " .) }}, "thumbnail": {"url": {{ toJSON . }}}{{ end }}{{ end }}}]}
         sonarr:
           target: discord-media
           whenExpr: payload.eventType in ["Download", "ManualInteractionRequired", "Test"]
@@ -101,10 +102,10 @@ spec:
             {"username": "Sonarr",
             "avatar_url": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/sonarr.png",
             "embeds": [{"title": {{ include "sonarr-title" . | toJSON }},
-            "url": {{ include "sonarr-url" . | toJSON }},
+            {{- with include "sonarr-url" . }}{{ if hasPrefix "http" . }} "url": {{ toJSON . }},{{ end }}{{ end }}
             "description": {{ include "sonarr-desc" . | toJSON }},
             "color": {{ include "arr-color" . }}
-            {{- with include "sonarr-poster" . }}, "thumbnail": {"url": {{ toJSON . }}}{{ end }}}]}
+            {{- with include "sonarr-poster" . | trim }}{{ with first (splitList " " .) }}, "thumbnail": {"url": {{ toJSON . }}}{{ end }}{{ end }}}]}
     monitoring:
       serviceMonitor:
         enabled: true
