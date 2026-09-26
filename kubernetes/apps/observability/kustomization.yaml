@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./aiden-exporter/ks.yaml
   - ./botkube/ks.yaml
+  - ./chaski/ks.yaml
   - ./grafana/ks.yaml
   - ./goldpinger/ks.yaml
   - ./karma/ks.yaml

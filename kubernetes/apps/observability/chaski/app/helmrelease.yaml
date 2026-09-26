@@ -1,0 +1,116 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: chaski
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: chaski
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
+    env:
+      TZ: ${TIMEZONE}
+      # Link fallback when the app has no Settings > General > Application URL
+      SONARR_URL: https://sonarr.${SECRET_DOMAIN}
+      RADARR_URL: https://radarr.${SECRET_DOMAIN}
+    envFrom:
+      - secretRef:
+          name: chaski-secret # DISCORD_MEDIA_WEBHOOK_URL
+    # Webhook relay: Sonarr/Radarr Webhook connections -> Discord #media channel.
+    # Test a change offline before committing:
+    #   chaski validate -c <config> --route sonarr --payload sample.json
+    config:
+      targets:
+        # Posts Discord's native webhook JSON (rendered by each route's `message`).
+        # One Discord webhook = one channel; Alertmanager uses its own, separate one.
+        discord-media:
+          http:
+            url: '{{ env "DISCORD_MEDIA_WEBHOOK_URL" }}'
+            headers:
+              Content-Type: application/json
+
+      # Shared snippets. Template variables are avoided (include instead) because
+      # Flux postBuild substitution runs over this file.
+      templates:
+        radarr-poster: '{{ range (dig "movie" "images" .payload | default (list)) }}{{ if eq (dig "coverType" .) "poster" }}{{ dig "remoteUrl" . }}{{ end }}{{ end }}'
+        sonarr-poster: '{{ range (dig "series" "images" .payload | default (list)) }}{{ if eq (dig "coverType" .) "poster" }}{{ dig "remoteUrl" . }}{{ end }}{{ end }}'
+        # Discord embed colours: green added, blue upgraded, orange manual, grey test
+        arr-color: >-
+          {{- if eq .payload.eventType "Test" }}9807270
+          {{- else if eq .payload.eventType "ManualInteractionRequired" }}15105570
+          {{- else if dig "isUpgrade" .payload }}3447003
+          {{- else }}3066993{{ end }}
+
+        radarr-title: >-
+          {{- if eq .payload.eventType "Test" }}Radarr test notification
+          {{- else }}{{ if eq .payload.eventType "ManualInteractionRequired" }}Manual interaction: {{ else if dig "isUpgrade" .payload }}Upgraded: {{ end }}
+          {{- dig "movie" "title" .payload | default "unknown" }} ({{ dig "movie" "year" .payload | default "?" }}){{ end }}
+        radarr-url: >-
+          {{- dig "applicationUrl" .payload | default (env "RADARR_URL") }}/
+          {{- if eq .payload.eventType "ManualInteractionRequired" }}activity/queue
+          {{- else }}movie/{{ dig "movie" "tmdbId" .payload }}{{ end }}
+        radarr-desc: |-
+          {{- with dig "movie" "overview" .payload }}{{ . | ellipsis 300 }}
+          {{ end }}
+          {{- with dig "movieFile" "quality" .payload }}**Quality:** {{ . }} · {{ end }}**Client:** {{ dig "downloadClient" .payload | default "unknown" }}
+
+        sonarr-title: >-
+          {{- if eq .payload.eventType "Test" }}Sonarr test notification
+          {{- else }}{{ if eq .payload.eventType "ManualInteractionRequired" }}Manual interaction: {{ else if dig "isUpgrade" .payload }}Upgraded: {{ end }}
+          {{- dig "series" "title" .payload | default "unknown" }}
+          {{- with dig "episodes" .payload }}{{ if gt (len .) 0 }}{{ with index . 0 }} · {{ printf "S%02dE%02d" (toInt (dig "seasonNumber" .)) (toInt (dig "episodeNumber" .)) }}{{ end }}{{ end }}{{ end }}{{ end }}
+        sonarr-url: >-
+          {{- dig "applicationUrl" .payload | default (env "SONARR_URL") }}/
+          {{- if eq .payload.eventType "ManualInteractionRequired" }}activity/queue
+          {{- else }}series/{{ dig "series" "titleSlug" .payload }}{{ end }}
+        sonarr-desc: |-
+          {{- with dig "episodes" .payload }}{{ if gt (len .) 0 }}{{ with dig "title" (index . 0) }}*{{ . }}*
+          {{ end }}{{ end }}{{ end }}
+          {{- with dig "episodeFile" "quality" .payload }}**Quality:** {{ . }} · {{ end }}**Client:** {{ dig "downloadClient" .payload | default "unknown" }}
+
+      routes:
+        # One route per app, so each app needs a single Webhook connection:
+        # Settings > Connect > Webhook > http://chaski.observability.svc.cluster.local:8080/hooks/<app>
+        radarr:
+          target: discord-media
+          whenExpr: payload.eventType in ["Download", "ManualInteractionRequired", "Test"]
+          message: >-
+            {"username": "Radarr",
+            "avatar_url": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/radarr.png",
+            "embeds": [{"title": {{ include "radarr-title" . | toJSON }},
+            "url": {{ include "radarr-url" . | toJSON }},
+            "description": {{ include "radarr-desc" . | toJSON }},
+            "color": {{ include "arr-color" . }}
+            {{- with include "radarr-poster" . }}, "thumbnail": {"url": {{ toJSON . }}}{{ end }}}]}
+        sonarr:
+          target: discord-media
+          whenExpr: payload.eventType in ["Download", "ManualInteractionRequired", "Test"]
+          message: >-
+            {"username": "Sonarr",
+            "avatar_url": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/sonarr.png",
+            "embeds": [{"title": {{ include "sonarr-title" . | toJSON }},
+            "url": {{ include "sonarr-url" . | toJSON }},
+            "description": {{ include "sonarr-desc" . | toJSON }},
+            "color": {{ include "arr-color" . }}
+            {{- with include "sonarr-poster" . }}, "thumbnail": {"url": {{ toJSON . }}}{{ end }}}]}
+    monitoring:
+      serviceMonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        memory: 128Mi
