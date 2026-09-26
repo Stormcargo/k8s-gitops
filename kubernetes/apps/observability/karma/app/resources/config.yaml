@@ -10,7 +10,9 @@ alertmanager:
         visible: false
         filters:
           network:
-            - alertname="Watchdog"
+            # Unquoted: karma takes everything after "=" literally, so
+            # alertname="Watchdog" would only match a name containing the quotes.
+            - alertname=Watchdog
 
 alertAcknowledgement:
   enabled: true
