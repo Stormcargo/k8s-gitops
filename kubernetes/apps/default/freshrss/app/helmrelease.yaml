@@ -38,16 +38,41 @@ spec:
               DOMAIN: "https://freshrss.${SECRET_DOMAIN}/"
               # 1.30.0+ blocks feeds on local networks by default (SSRF); allow LAN + pod/svc CIDRs
               INTERNAL_HOST_ALLOWLIST: "192.168.0.0/16,10.0.0.0/8"
+              # Unprivileged port, so Apache doesn't need NET_BIND_SERVICE
+              LISTEN: &port 8080
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            # The entrypoint rewrites /etc (timezone, php.ini, Apache Listen,
+            # crontab) and starts cron + Apache as root, which then drop to
+            # www-data themselves -- so runAsNonRoot and readOnlyRootFilesystem
+            # can't work with this image. Stay root, keep only the capabilities
+            # that chown + privilege drop need.
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+                add: ["CHOWN", "DAC_OVERRIDE", "FOWNER", "SETUID", "SETGID", "KILL", "AUDIT_WRITE"]
             resources:
               requests:
                 cpu: 50m
                 memory: 256Mi
+        pod:
+          securityContext:
+            seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: *app
         ports:
           http:
-            port: 80
+            port: *port
     route:
       app:
         annotations:
