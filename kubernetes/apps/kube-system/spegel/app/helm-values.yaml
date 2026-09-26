@@ -4,6 +4,9 @@ grafanaDashboard:
 service:
   registry:
     hostPort: 29999
+    # Hints need topology.kubernetes.io/zone on nodes; single-zone cluster, so they
+    # only produced TopologyAwareHintsDisabled warning events
+    topologyAwareHintsEnabled: false
 serviceMonitor:
   enabled: true
 spegel:
