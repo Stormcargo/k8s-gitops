@@ -1,0 +1,13 @@
+---
+# Talos Image Factory schematic. topf reads it via `schematicId: "@talos/schematic.yaml"`;
+# register a changed schematic with `topf ... --submit-to-factory`.
+customization:
+  extraKernelArgs:
+    - intel_iommu=on
+    - iommu=pt
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/drbd
+      - siderolabs/i915
+      - siderolabs/intel-ucode
+      - siderolabs/realtek-firmware
