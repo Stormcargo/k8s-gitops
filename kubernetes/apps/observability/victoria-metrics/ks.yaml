@@ -23,3 +23,4 @@ spec:
   dependsOn:
     - name: longhorn # 3 PVCs: vmsingle-metrics, vlsingle-logs, vmalertmanager-alerts
     - name: gateway # HTTPRoutes for vmsingle / vmagent / vlsingle / alertmanager
+    - name: external-secrets-stores # alertmanager-secret (Discord + heartbeat URLs)

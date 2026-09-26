@@ -76,7 +76,7 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 1Gi
+            memory: 1536Mi
           limits:
             memory: 4Gi
       route:
@@ -206,7 +206,7 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 128Mi
+            memory: 320Mi
           limits:
             memory: 512Mi
 
@@ -226,6 +226,9 @@ spec:
       spec:
         replicaCount: 1
         externalURL: https://alertmanager.${SECRET_DOMAIN}
+        # Mounted at /etc/vm/secrets/alertmanager-secret/ -- see externalsecret.yaml
+        secrets:
+          - alertmanager-secret
         # NOTE: a StorageSpec, unlike the bare PVC specs on vmsingle/vlsingle above
         storage:
           volumeClaimTemplate:
@@ -257,12 +260,19 @@ spec:
             - receiver: "null"
               matchers:
                 - alertname = "InfoInhibitor"
+            # Dead-man's switch: Watchdog always fires, so the external check alerts
+            # if these pings stop (Alertmanager, vmalert or the cluster is down).
+            # Karma reads Watchdog from the API for its own health check regardless.
             - receiver: heartbeat
               matchers:
                 - alertname = "Watchdog"
               group_wait: 0s
               group_interval: 15s
               repeat_interval: 5m
+            # Everything else stays in Karma only; critical is also pushed to Discord.
+            - receiver: discord
+              matchers:
+                - severity = "critical"
         inhibit_rules:
           # NOT sourceMatch/targetMatch -- that map form was removed in Alertmanager 0.28+
           - source_matchers:
@@ -276,7 +286,12 @@ spec:
           - name: "null"
           - name: heartbeat
             webhook_configs:
-              - url: http://example.invalid
+              - url_file: /etc/vm/secrets/alertmanager-secret/heartbeat-url
+                send_resolved: false
+          - name: discord
+            discord_configs:
+              - webhook_url_file: /etc/vm/secrets/alertmanager-secret/discord-webhook-url
+                send_resolved: true
       route:
         enabled: true
         annotations:
