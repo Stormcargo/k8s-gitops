@@ -156,6 +156,19 @@
       },
     },
     {
+      description: [
+        'Intel device plugins group — the GpuDevicePlugin image must match the operator chart version',
+      ],
+      groupName: 'Intel device plugins',
+      matchPackageNames: [
+        'intel-device-plugins-operator',
+        'intel/intel-gpu-plugin',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+    },
+    {
       matchDatasources: [
         'helm',
       ],

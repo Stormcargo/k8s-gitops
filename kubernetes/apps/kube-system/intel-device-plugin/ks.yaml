@@ -14,7 +14,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
+  wait: true
   interval: 30m
   timeout: 5m
 ---
@@ -28,6 +28,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: intel-device-plugin
   path: ./kubernetes/apps/kube-system/intel-device-plugin/gpu
   prune: true
   sourceRef:
