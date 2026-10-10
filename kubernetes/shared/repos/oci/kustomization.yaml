@@ -6,8 +6,8 @@ resources:
   - ./chaski.yaml
   - ./descheduler.yaml
   - ./envoy-gateway.yaml
+  - ./external-dns.yaml
   - ./toolhive-operator-crds.yaml
   - ./toolhive-operator.yaml
   - ./tuppr.yaml
-  - ./unifi-dns.yaml
   - ./victoria-metrics-k8s-stack.yaml
