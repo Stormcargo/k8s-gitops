@@ -28,5 +28,9 @@ spec:
       namespace: kube-system
   values:
     name: intel-device-plugin-gpu
+    # Step 1 of retiring this chart: helm uninstall must leave the GpuDevicePlugin
+    # in place so Flux can adopt it as a plain manifest without the plugin going down.
+    annotations:
+      helm.sh/resource-policy: keep
     sharedDevNum: 3
     nodeFeatureRule: true
