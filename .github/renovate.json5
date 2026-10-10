@@ -67,6 +67,22 @@
     },
     {
       description: [
+        'Auto merge home-operations digest-only updates once PR checks pass — same tag re-pushed after a base image rebuild',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        '/^ghcr\\.io/home-operations//',
+      ],
+      matchUpdateTypes: [
+        'digest',
+      ],
+      automerge: true,
+      automergeType: 'pr',
+    },
+    {
+      description: [
         'Auto merge Github Actions',
       ],
       matchManagers: [
