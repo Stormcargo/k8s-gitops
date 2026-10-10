@@ -107,7 +107,6 @@ spec:
             server:
               database:
                 path: "/home/filebrowser/data/filebrowser.sqlite"
-                migrateFrom: "/home/filebrowser/data/database.db.old"
               cacheDir: "/home/filebrowser/data/tmp"
               cacheDirCleanup: true
               logging:
