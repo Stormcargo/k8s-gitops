@@ -140,6 +140,22 @@
       },
     },
     {
+      description: [
+        '1Password Connect group — connect-api and connect-sync are released together and must run matching versions',
+      ],
+      groupName: '1Password Connect',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'docker.io/1password/connect-api',
+        'docker.io/1password/connect-sync',
+      ],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+    },
+    {
       matchDatasources: [
         'helm',
       ],
