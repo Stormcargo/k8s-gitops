@@ -31,7 +31,7 @@ spec:
           multus:
             image:
               repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-              tag: v4.3.0
+              tag: v4.3.1
             args:
               - --cleanup-config-on-exit=true
             # Reach the apiserver via Talos KubePrism instead of the 10.96.0.1
