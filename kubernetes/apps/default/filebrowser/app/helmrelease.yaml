@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gtsteffaniak/filebrowser
-              tag: 1.5.6-stable
+              tag: 2.0.0-stable
             env:
               TZ: ${TIMEZONE}
               FILEBROWSER_CONFIG: /config/config.yaml
@@ -100,10 +100,14 @@ spec:
         enabled: true
         data:
           config.yaml: |
-            server:
+            http:
               port: 80
               baseURL: "/"
-              database: "/home/filebrowser/data/database.db"
+              trustProxyHeaders: true
+            server:
+              database:
+                path: "/home/filebrowser/data/filebrowser.sqlite"
+                migrateFrom: "/home/filebrowser/data/database.db.old"
               cacheDir: "/home/filebrowser/data/tmp"
               cacheDirCleanup: true
               logging:
