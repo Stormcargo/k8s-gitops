@@ -52,7 +52,15 @@ spec:
       v1DataEngine: true
       v2DataEngine: false
     networkPolicies:
-      restrictInternalTraffic: false
+      # Keep the chart's internal NetworkPolicies (restrictInternalTraffic defaults to true)
+      # and let only vmagent reach longhorn-manager's metrics on 9500, which also serves the REST API.
+      metricsScrapeSources:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vmagent
     metrics:
       serviceMonitor:
         enabled: true
