@@ -37,3 +37,8 @@ spec:
       serviceMonitor:
         enabled: true
         interval: 1m
+    # Loaded by the grafana sidecar today. Kept in observability so a future
+    # grafana-operator GrafanaDashboard (configMapRef is same-namespace) can point at it.
+    grafanaDashboard:
+      enabled: true
+      namespace: observability
