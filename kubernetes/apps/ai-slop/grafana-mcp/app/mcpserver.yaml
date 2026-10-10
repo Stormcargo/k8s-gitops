@@ -12,6 +12,9 @@ spec:
   env:
     - name: GRAFANA_URL
       value: http://grafana.observability.svc.cluster.local
+    # v2 turned anonymous usage reporting on by default
+    - name: GRAFANA_USAGE_STATS
+      value: disabled
   secrets:
     - name: grafana-mcp
       key: token
