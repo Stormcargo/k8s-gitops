@@ -8,7 +8,6 @@ resources:
   - ./cloudnative-pg.yaml
   - ./controlplaneio.yaml
   - ./coredns.yaml
-  - ./external-dns.yaml
   - ./external-secrets.yaml
   - ./grafana.yaml
   - ./goldpinger.yaml

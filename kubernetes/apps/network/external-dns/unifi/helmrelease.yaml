@@ -7,7 +7,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: unifi-dns
+    name: external-dns
     namespace: flux-system
   install:
     disableSchemaValidation: true
