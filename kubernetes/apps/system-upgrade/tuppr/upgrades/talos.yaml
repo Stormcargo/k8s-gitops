@@ -9,7 +9,6 @@ spec:
     version: v1.12.12
   policy:
     placement: hard
-    waitForVolumeDetach: true
   healthChecks:
     - apiVersion: apps/v1
       kind: DaemonSet
