@@ -431,13 +431,6 @@ spec:
 
     defaultRules:
       enabled: true
-      rules:
-        # Upstream expr is `count without(...) (up == 0)`, which returns EMPTY when
-        # every target is healthy -- so RecordingRulesNoData fires precisely because
-        # nothing is wrong. The vector(0) fallback makes it emit 0 instead.
-        "count:up0":
-          spec:
-            expr: count(up == 0) without(instance,pod,node) OR on() vector(0)
       groups:
         etcd:
           enabled: false
