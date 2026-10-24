@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/gtsteffaniak/filebrowser
-              tag: 2.0.1-stable
+              tag: 2.0.2-stable
             env:
               TZ: ${TIMEZONE}
               FILEBROWSER_CONFIG: /config/config.yaml
