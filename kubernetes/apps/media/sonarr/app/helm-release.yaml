@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/sonarr
-              tag: 5.0.0.2785@sha256:825bf13276077b2fa57dd1c0a67d10b2e71891b7391d19636615ede8ddc0a4a5
+              tag: 5.0.0.2907@sha256:75866f930b8e49c0acfc965c8ace0429231cdc69e2e4b287eb51443aa3249d86
             env:
               TZ: "Europe/London"
               SONARR__APPLICATION_URL: "https://sonarr.${SECRET_DOMAIN}"
