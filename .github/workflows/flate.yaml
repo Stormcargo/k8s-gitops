@@ -43,7 +43,7 @@ jobs:
           echo 'diff<<EOF' >> $GITHUB_OUTPUT
           flate diff ${{ matrix.resource }} \
             --path ./kubernetes/flux/config \
-            --allow-missing-secrets \
+            --allow-missing-kinds Secret \
             --strip-attr "helm.sh/chart" \
             --strip-attr "checksum/config" \
             --strip-attr "app.kubernetes.io/version" \
@@ -74,7 +74,7 @@ jobs:
           base: ""
 
       - name: Run Flate Test
-        run: flate test all --path ./kubernetes/flux/config --allow-missing-secrets
+        run: flate test all --path ./kubernetes/flux/config --allow-missing-kinds Secret
 
   flate-success:
     needs: ["flate", "flux-test"]

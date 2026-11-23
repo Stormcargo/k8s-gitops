@@ -8,9 +8,9 @@ tasks:
     desc: Render and validate every Kustomization and HelmRelease offline
     # Same invocation as the flux-test job in .github/workflows/flate.yaml, so a
     # local pass means the same thing CI's does. Renders from the working tree
-    # with no cluster contact; --allow-missing-secrets covers the SOPS and
+    # with no cluster contact; --allow-missing-kinds Secret covers the SOPS and
     # ExternalSecret values that only exist in-cluster.
-    cmd: flate test all --path {{.KUBERNETES_DIR}}/flux/config --allow-missing-secrets {{.CLI_ARGS}}
+    cmd: flate test all --path {{.KUBERNETES_DIR}}/flux/config --allow-missing-kinds Secret {{.CLI_ARGS}}
     preconditions:
       - msg: Missing flate (task workstation:generic-linux)
         sh: command -v flate
