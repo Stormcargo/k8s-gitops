@@ -4,7 +4,7 @@ kind: GpuDevicePlugin
 metadata:
   name: intel-device-plugin-gpu
 spec:
-  image: intel/intel-gpu-plugin:0.37.1
+  image: intel/intel-gpu-plugin:0.37.2
   logLevel: 2
   sharedDevNum: 3
   enableMonitoring: true
